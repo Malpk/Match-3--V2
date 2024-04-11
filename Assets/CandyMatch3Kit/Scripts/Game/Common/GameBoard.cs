@@ -23,8 +23,11 @@ namespace GameVanilla.Game.Common
     /// </summary>
     public class GameBoard : MonoBehaviour
     {
+        [SerializeField] private int _level;
         [SerializeField]
         private GameScene gameScene;
+        [SerializeField]
+        private SoundManager _sounds;
 
         [SerializeField]
         private GameUi gameUi;
@@ -40,9 +43,6 @@ namespace GameVanilla.Game.Common
 
         [SerializeField]
         private Transform boardCenter;
-
-        [SerializeField]
-        private List<AudioClip> gameSounds;
 
         [HideInInspector]
         public Level level;
@@ -136,18 +136,10 @@ namespace GameVanilla.Game.Common
         /// <summary>
         /// Unity's Start method.
         /// </summary>
-        private void Start()
-        {
-            SoundManager.instance.AddSounds(gameSounds);
-        }
 
         /// <summary>
         /// Unity's OnDestroy method.
         /// </summary>
-        protected void OnDestroy()
-        {
-            SoundManager.instance.RemoveSounds(gameSounds);
-        }
 
         /// <summary>
         /// Loads the current level.
@@ -155,7 +147,7 @@ namespace GameVanilla.Game.Common
         public void LoadLevel()
         {
             var serializer = new fsSerializer();
-            gameConfig = FileUtils.LoadJsonFile<GameConfiguration>(serializer, "game_configuration");
+            //gameConfig = FileUtils.LoadJsonFile<GameConfiguration>(serializer, "game_configuration");
 
             ResetLevelData();
         }
@@ -178,7 +170,7 @@ namespace GameVanilla.Game.Common
         {
             var serializer = new fsSerializer();
             level = FileUtils.LoadJsonFile<Level>(serializer,
-                "Levels/" + PuzzleMatchManager.instance.lastSelectedLevel);
+                "Levels/" + _level);
 
             boosterBar.SetData(level);
 
@@ -655,7 +647,7 @@ namespace GameVanilla.Game.Common
 
                         selectedTile = null;
 
-                        SoundManager.instance.PlaySound("Error");
+                        _sounds.PlaySound("Error");
                     }
                 }
             }
@@ -1129,14 +1121,15 @@ namespace GameVanilla.Game.Common
                 {
                     explodedTile.GetComponent<Tile>().ShowExplosionFx(fxPool);
                     explodedTile.GetComponent<Tile>().UpdateGameState(gameState);
-                    score += gameConfig.GetTileScore(explodedTile.GetComponent<Tile>());
+                    Debug.LogWarning("Score");
+                    //score += gameConfig.GetTileScore(explodedTile.GetComponent<Tile>());
                     DestroyElements(explodedTile);
                     DestroySpecialBlocks(explodedTile, didAnySpecialCandyExplode);
                     explodedTile.GetComponent<PooledObject>().pool.ReturnObject(explodedTile);
                     tiles[idx] = null;
                 }
 
-                SoundManager.instance.PlaySound("CandyMatch");
+                _sounds.PlaySound("CandyMatch");
             }
 
             UpdateScore(score);
@@ -1179,8 +1172,8 @@ namespace GameVanilla.Game.Common
                     }
                     
                     gameUi.UpdateGoals(gameState);
-                    
-                    SoundManager.instance.PlaySound("CandyMatch");
+
+                    _sounds.PlaySound("CandyMatch");
                 }
             }
         }
@@ -1237,7 +1230,7 @@ namespace GameVanilla.Game.Common
                 var fx = fxPool.GetElementExplosion(ElementType.Honey).GetObject();
                 fx.transform.position = tilePositions[idx];
 
-                SoundManager.instance.PlaySound("Honey");
+                _sounds.PlaySound("Honey");
             }
 
             // Check for syrup x1.
@@ -1252,7 +1245,7 @@ namespace GameVanilla.Game.Common
                 var fx = fxPool.GetElementExplosion(ElementType.Syrup1).GetObject();
                 fx.transform.position = tilePositions[idx];
 
-                SoundManager.instance.PlaySound("Syrup");
+                _sounds.PlaySound("Syrup");
             }
 
             // Check for syrup x2.
@@ -1273,7 +1266,7 @@ namespace GameVanilla.Game.Common
                 var fx = fxPool.GetElementExplosion(ElementType.Syrup2).GetObject();
                 fx.transform.position = tilePositions[idx];
 
-                SoundManager.instance.PlaySound("Syrup");
+                _sounds.PlaySound("Syrup");
             }
 
             // Check for ices.
@@ -1288,7 +1281,7 @@ namespace GameVanilla.Game.Common
                 var fx = fxPool.GetElementExplosion(ElementType.Ice).GetObject();
                 fx.transform.position = tilePositions[idx];
 
-                SoundManager.instance.PlaySound("Ice");
+                _sounds.PlaySound("Ice");
             }
 
         }
@@ -1349,11 +1342,11 @@ namespace GameVanilla.Game.Common
                 if (tile.GetComponent<Chocolate>() != null)
                 {
                     explodedChocolate = true;
-                    SoundManager.instance.PlaySound("Chocolate");
+                    _sounds.PlaySound("Chocolate");
                 }
                 else if (tile.GetComponent<Marshmallow>() != null)
                 {
-                    SoundManager.instance.PlaySound("Marshmallow");
+                    _sounds.PlaySound("Marshmallow");
                 }
             }
         }
@@ -1847,7 +1840,7 @@ namespace GameVanilla.Game.Common
                     var fx = fxPool.collectableExplosion.GetObject();
                     fx.transform.position = tile.transform.position;
 
-                    SoundManager.instance.PlaySound("Collectable");
+                    _sounds.PlaySound("Collectable");
 
                     tile.Explode();
                     tile.GetComponent<PooledObject>().pool.ReturnObject(tile.gameObject);
@@ -1915,7 +1908,7 @@ namespace GameVanilla.Game.Common
                                         if (!fallingSoundPlayed)
                                         {
                                             fallingSoundPlayed = true;
-                                            SoundManager.instance.PlaySound("CandyFalling");
+                                            _sounds.PlaySound("CandyFalling");
                                         }
                                     }
                                 }
@@ -2016,7 +2009,7 @@ namespace GameVanilla.Game.Common
                             neighbour.GetComponent<PooledObject>().pool.ReturnObject(neighbour);
                             foundSpot = true;
 
-                            SoundManager.instance.PlaySound("ChocolateExpand");
+                            _sounds.PlaySound("ChocolateExpand");
 
                             break;
                         }
@@ -2321,7 +2314,7 @@ namespace GameVanilla.Game.Common
                     CreateWrappedTile(randomIdx % level.width, randomIdx / level.width, GetRandomCandyColor());
                 }
 
-                SoundManager.instance.PlaySound("BoosterAward");
+                _sounds.PlaySound("BoosterAward");
 
                 currentLimit -= 1;
                 UpdateLimitText();

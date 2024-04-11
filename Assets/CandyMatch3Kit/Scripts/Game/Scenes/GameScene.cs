@@ -59,7 +59,6 @@ namespace GameVanilla.Game.Scenes
 		private void Start()
 		{
 			gameBoard.LoadLevel();
-
 			level = gameBoard.level;
             OpenPopup<LevelGoalsPopup>("Popups/LevelGoalsPopup", popup => popup.SetGoals(level.goals));
 		}
