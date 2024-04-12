@@ -22,8 +22,6 @@ namespace GameVanilla.Game.Scenes
 	{
 		public GameBoard gameBoard;
 
-		public GameUi gameUi;
-
 		public Level level;
 
 		public FxPool fxPool;
@@ -47,7 +45,6 @@ namespace GameVanilla.Game.Scenes
 		private void Awake()
 		{
 			Assert.IsNotNull(gameBoard);
-			Assert.IsNotNull(gameUi);
 			Assert.IsNotNull(fxPool);
 			Assert.IsNotNull(ingameBoosterPanel);
 			Assert.IsNotNull(ingameBoosterText);
@@ -135,115 +132,6 @@ namespace GameVanilla.Game.Scenes
             gameBoard.Continue();
         }
 
-        /// <summary>
-        /// Checks if the game has finished.
-        /// </summary>
-        public void CheckEndGame()
-        {
-            if (gameFinished)
-            {
-                return;
-            }
-
-            var goalsComplete = true;
-            foreach (var goal in level.goals)
-            {
-                if (!goal.IsComplete(gameBoard.gameState))
-                {
-                    goalsComplete = false;
-                    break;
-                }
-            }
-
-            if (gameBoard.currentLimit == 0)
-            {
-                EndGame();
-            }
-
-            if (goalsComplete)
-            {
-                EndGame();
-
-                var nextLevel = PlayerPrefs.GetInt("next_level");
-                if (nextLevel == 0)
-                {
-                    nextLevel = 1;
-                }
-                if (level.id == nextLevel)
-                {
-                    PlayerPrefs.SetInt("next_level", level.id + 1);
-                    PuzzleMatchManager.instance.unlockedNextLevel = true;
-                }
-                else
-                {
-                    PuzzleMatchManager.instance.unlockedNextLevel = false;
-                }
-
-                if (level.limitType == LimitType.Moves && level.awardSpecialCandies && gameBoard.currentLimit > 0)
-                {
-                    gameBoard.AwardSpecialCandies();
-                }
-                else
-                {
-                    StartCoroutine(OpenWinPopupAsync());
-                }
-            }
-            else
-            {
-                if (gameFinished)
-                {
-                    StartCoroutine(OpenNoMovesOrTimePopupAsync());
-                }
-            }
-        }
-
-        /// <summary>
-        /// Opens the win popup.
-        /// </summary>
-        public void OpenWinPopup()
-        {
-            OpenPopup<WinPopup>("Popups/WinPopup", popup =>
-            {
-                var levelStars = PlayerPrefs.GetInt("level_stars_" + level.id);
-                var gameState = gameBoard.gameState;
-                if (gameState.score >= level.score3)
-                {
-                    popup.SetStars(3);
-                    PlayerPrefs.SetInt("level_stars_" + level.id, 3);
-                }
-                else if (gameState.score >= level.score2)
-                {
-                    popup.SetStars(2);
-                    if (levelStars < 3)
-                    {
-                        PlayerPrefs.SetInt("level_stars_" + level.id, 2);
-                    }
-                }
-                else if (gameState.score >= level.score1)
-                {
-                    popup.SetStars(1);
-                    if (levelStars < 2)
-                    {
-                        PlayerPrefs.SetInt("level_stars_" + level.id, 1);
-                    }
-                }
-                else
-                {
-                    popup.SetStars(0);
-                }
-
-                popup.SetLevel(level.id);
-
-                var levelScore = PlayerPrefs.GetInt("level_score_" + level.id);
-                if (levelScore < gameState.score)
-                {
-                    PlayerPrefs.SetInt("level_score_" + level.id, gameState.score);
-                }
-
-                popup.SetScore(gameState.score);
-                popup.SetGoals(gameUi.goalGroup);
-            });
-        }
 
         /// <summary>
         /// Opens the lose popup.
@@ -254,8 +142,6 @@ namespace GameVanilla.Game.Scenes
             OpenPopup<LosePopup>("Popups/LosePopup", popup =>
             {
                 popup.SetLevel(level.id);
-                popup.SetScore(gameBoard.gameState.score);
-                popup.SetGoals(gameUi.goalGroup);
             });
         }
 
@@ -283,20 +169,6 @@ namespace GameVanilla.Game.Scenes
             }
         }
 
-        /// <summary>
-        /// Opens the win popup.
-        /// </summary>
-        /// <returns>The coroutine.</returns>
-        private IEnumerator OpenWinPopupAsync()
-        {
-            yield return new WaitForSeconds(GameplayConstants.EndGamePopupDelay);
-            OpenWinPopup();
-        }
-
-        /// <summary>
-        /// Opens the popup for buying additional moves or time.
-        /// </summary>
-        /// <returns>The coroutine.</returns>
         private IEnumerator OpenNoMovesOrTimePopupAsync()
         {
             yield return new WaitForSeconds(GameplayConstants.EndGamePopupDelay);

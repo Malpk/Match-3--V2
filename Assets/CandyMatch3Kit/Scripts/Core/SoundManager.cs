@@ -26,14 +26,11 @@ namespace GameVanilla.Core
         /// </summary>
         private void Awake()
         {
-            if (instance != null)
+            if (instance == null)
             {
-                Destroy(gameObject);
-                return;
+                instance = this;
+                DontDestroyOnLoad(gameObject);
             }
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-
             soundPool = GetComponent<ObjectPool>();
         }
 

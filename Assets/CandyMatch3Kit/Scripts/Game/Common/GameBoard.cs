@@ -18,16 +18,25 @@ using GameVanilla.Game.UI;
 
 namespace GameVanilla.Game.Common
 {
-    /// <summary>
-    /// This class is responsible for managing the match-3 gameplay of the kit.
-    /// </summary>
+    public class Swap
+    {
+        public GameObject tileA;
+        public GameObject tileB;
+    }
+
+    public enum SwapDirection
+    {
+        Horizontal,
+        Vertical
+    }
+
     public class GameBoard : MonoBehaviour
     {
+        [SerializeField] private int _level;
+        [SerializeField] private SoundManager _sounds;
+        #region trashProperty
         [SerializeField]
         private GameScene gameScene;
-
-        [SerializeField]
-        private GameUi gameUi;
 
         [SerializeField]
         private BoosterBar boosterBar;
@@ -41,14 +50,9 @@ namespace GameVanilla.Game.Common
         [SerializeField]
         private Transform boardCenter;
 
-        [SerializeField]
-        private List<AudioClip> gameSounds;
 
         [HideInInspector]
         public Level level;
-
-        [HideInInspector]
-        public GameState gameState = new GameState();
 
         [HideInInspector]
         public int currentLimit;
@@ -100,17 +104,7 @@ namespace GameVanilla.Game.Common
 
         private bool explodedChocolate;
 
-        private class Swap
-        {
-            public GameObject tileA;
-            public GameObject tileB;
-        }
-
-        private enum SwapDirection
-        {
-            Horizontal,
-            Vertical
-        }
+        #endregion
 
         private SwapDirection swapDirection;
 
@@ -123,35 +117,18 @@ namespace GameVanilla.Game.Common
 
         private int consecutiveCascades;
 
+        public event Action<int> OnScore;
+        public event Action OnSwipe;
+
         /// <summary>
         /// Unity's Awake method.
         /// </summary>
         private void Awake()
         {
             Assert.IsNotNull(gameScene);
-            Assert.IsNotNull(gameUi);
             Assert.IsNotNull(boosterBar);
         }
 
-        /// <summary>
-        /// Unity's Start method.
-        /// </summary>
-        private void Start()
-        {
-            SoundManager.instance.AddSounds(gameSounds);
-        }
-
-        /// <summary>
-        /// Unity's OnDestroy method.
-        /// </summary>
-        protected void OnDestroy()
-        {
-            SoundManager.instance.RemoveSounds(gameSounds);
-        }
-
-        /// <summary>
-        /// Loads the current level.
-        /// </summary>
         public void LoadLevel()
         {
             var serializer = new fsSerializer();
@@ -166,9 +143,7 @@ namespace GameVanilla.Game.Common
         /// <param name="score">The score.</param>
         private void UpdateScore(int score)
         {
-            gameState.score += score;
-            gameUi.SetScore(gameState.score);
-            gameUi.SetProgressBar(gameState.score);
+            OnScore?.Invoke(score);
         }
 
         /// <summary>
@@ -178,7 +153,7 @@ namespace GameVanilla.Game.Common
         {
             var serializer = new fsSerializer();
             level = FileUtils.LoadJsonFile<Level>(serializer,
-                "Levels/" + PuzzleMatchManager.instance.lastSelectedLevel);
+                "Levels/" + _level);
 
             boosterBar.SetData(level);
 
@@ -215,14 +190,6 @@ namespace GameVanilla.Game.Common
             consecutiveCascades = 0;
 
             explodedChocolate = false;
-
-            gameState.Reset();
-
-            gameUi.SetLimitType(level.limitType);
-            gameUi.SetLimit(level.limit);
-            gameUi.SetGoals(level.goals, true);
-            gameUi.InitializeProgressBar(level.score1, level.score2, level.score3);
-            UpdateScore(0);
 
             foreach (var pool in tilePool.GetComponentsInChildren<ObjectPool>())
             {
@@ -401,12 +368,10 @@ namespace GameVanilla.Game.Common
             if (level.limitType == LimitType.Moves)
             {
                 currentLimit = gameConfig.numExtraMoves;
-                gameUi.SetLimit(currentLimit);
             }
             else if (level.limitType == LimitType.Time)
             {
                 currentLimit = gameConfig.numExtraTime;
-                gameUi.SetLimit(currentLimit);
                 countdownCoroutine = StartCoroutine(StartCountdown());
             }
         }
@@ -420,32 +385,10 @@ namespace GameVanilla.Game.Common
             while (currentLimit > 0)
             {
                 --currentLimit;
-                UpdateLimitText();
                 yield return new WaitForSeconds(1.0f);
             }
-
-            gameScene.CheckEndGame();
         }
 
-        /// <summary>
-        /// Updates the limit text.
-        /// </summary>
-        private void UpdateLimitText()
-        {
-            if (level.limitType == LimitType.Moves)
-            {
-                gameUi.SetLimit(currentLimit);
-            }
-            else if (level.limitType == LimitType.Time)
-            {
-                var timeSpan = TimeSpan.FromSeconds(currentLimit);
-                gameUi.SetLimit(string.Format("{0:D2}:{1:D2}", timeSpan.Minutes, timeSpan.Seconds));
-            }
-        }
-
-        /// <summary>
-        /// Handles the player's input.
-        /// </summary>
         public void HandleInput()
         {
             if (inputLocked)
@@ -655,7 +598,7 @@ namespace GameVanilla.Game.Common
 
                         selectedTile = null;
 
-                        SoundManager.instance.PlaySound("Error");
+                        _sounds.PlaySound("Error");
                     }
                 }
             }
@@ -787,8 +730,6 @@ namespace GameVanilla.Game.Common
                 {
                     currentLimit = 0;
                 }
-
-                gameUi.SetLimit(currentLimit);
             }
         }
 
@@ -1128,7 +1069,6 @@ namespace GameVanilla.Game.Common
                 if (idx != -1)
                 {
                     explodedTile.GetComponent<Tile>().ShowExplosionFx(fxPool);
-                    explodedTile.GetComponent<Tile>().UpdateGameState(gameState);
                     score += gameConfig.GetTileScore(explodedTile.GetComponent<Tile>());
                     DestroyElements(explodedTile);
                     DestroySpecialBlocks(explodedTile, didAnySpecialCandyExplode);
@@ -1136,11 +1076,9 @@ namespace GameVanilla.Game.Common
                     tiles[idx] = null;
                 }
 
-                SoundManager.instance.PlaySound("CandyMatch");
+                _sounds.PlaySound("CandyMatch");
             }
-
             UpdateScore(score);
-            gameUi.UpdateGoals(gameState);
         }
 
         /// <summary>
@@ -1165,7 +1103,6 @@ namespace GameVanilla.Game.Common
                 if (idx != -1)
                 {
                     tile.GetComponent<Tile>().ShowExplosionFx(fxPool);
-                    tile.GetComponent<Tile>().UpdateGameState(gameState);
                     UpdateScore(gameConfig.GetTileScore(tile.GetComponent<Tile>()));
                     DestroyElements(tile);
                     
@@ -1173,14 +1110,8 @@ namespace GameVanilla.Game.Common
                     tiles[idx] = null;
 
                     var chocolates = tiles.FindAll(t => t != null && t.GetComponent<Chocolate>() != null);
-                    if (chocolates.Count == 0)
-                    {
-                        gameState.destroyedAllChocolates = true;
-                    }
-                    
-                    gameUi.UpdateGoals(gameState);
-                    
-                    SoundManager.instance.PlaySound("CandyMatch");
+
+                    _sounds.PlaySound("CandyMatch");
                 }
             }
         }
@@ -1231,13 +1162,12 @@ namespace GameVanilla.Game.Common
                 honeys[idx].GetComponent<PooledObject>().pool.ReturnObject(honeys[idx]);
                 level.tiles[idx].elementType = ElementType.None;
                 honeys[idx] = null;
-                gameState.AddElement(ElementType.Honey);
                 UpdateScore(gameConfig.GetElementScore(ElementType.Honey));
 
                 var fx = fxPool.GetElementExplosion(ElementType.Honey).GetObject();
                 fx.transform.position = tilePositions[idx];
 
-                SoundManager.instance.PlaySound("Honey");
+                _sounds.PlaySound("Honey");
             }
 
             // Check for syrup x1.
@@ -1246,13 +1176,12 @@ namespace GameVanilla.Game.Common
                 syrups1[idx].GetComponent<PooledObject>().pool.ReturnObject(syrups1[idx]);
                 level.tiles[idx].elementType = ElementType.None;
                 syrups1[idx] = null;
-                gameState.AddElement(ElementType.Syrup1);
                 UpdateScore(gameConfig.GetElementScore(ElementType.Syrup1));
 
                 var fx = fxPool.GetElementExplosion(ElementType.Syrup1).GetObject();
                 fx.transform.position = tilePositions[idx];
 
-                SoundManager.instance.PlaySound("Syrup");
+                _sounds.PlaySound("Syrup");
             }
 
             // Check for syrup x2.
@@ -1267,13 +1196,12 @@ namespace GameVanilla.Game.Common
                 syrups2[idx] = null;
                 syrups1[idx] = syrup;
 
-                gameState.AddElement(ElementType.Syrup2);
                 UpdateScore(gameConfig.GetElementScore(ElementType.Syrup2));
 
                 var fx = fxPool.GetElementExplosion(ElementType.Syrup2).GetObject();
                 fx.transform.position = tilePositions[idx];
 
-                SoundManager.instance.PlaySound("Syrup");
+                _sounds.PlaySound("Syrup");
             }
 
             // Check for ices.
@@ -1282,13 +1210,12 @@ namespace GameVanilla.Game.Common
                 ices[idx].GetComponent<PooledObject>().pool.ReturnObject(ices[idx]);
                 level.tiles[idx].elementType = ElementType.None;
                 ices[idx] = null;
-                gameState.AddElement(ElementType.Ice);
                 UpdateScore(gameConfig.GetElementScore(ElementType.Ice));
 
                 var fx = fxPool.GetElementExplosion(ElementType.Ice).GetObject();
                 fx.transform.position = tilePositions[idx];
 
-                SoundManager.instance.PlaySound("Ice");
+                _sounds.PlaySound("Ice");
             }
 
         }
@@ -1317,10 +1244,6 @@ namespace GameVanilla.Game.Common
                 DestroySpecialBlocksInternal(tile);
 
                 var chocolates = tiles.FindAll(t => t != null && t.GetComponent<Chocolate>() != null);
-                if (chocolates.Count == 0)
-                {
-                    gameState.destroyedAllChocolates = true;
-                }
             }
         }
 
@@ -1336,7 +1259,6 @@ namespace GameVanilla.Game.Common
                 var blockIdx = tiles.FindIndex(t => t == tile);
                 if (blockIdx != -1)
                 {
-                    gameState.AddSpecialBlock(tile.GetComponent<SpecialBlock>().type);
                     UpdateScore(gameConfig.GetTileScore(tile.GetComponent<SpecialBlock>()));
 
                     var fx = fxPool.GetSpecialBlockExplosion(tile.GetComponent<SpecialBlock>().type).GetObject();
@@ -1349,11 +1271,11 @@ namespace GameVanilla.Game.Common
                 if (tile.GetComponent<Chocolate>() != null)
                 {
                     explodedChocolate = true;
-                    SoundManager.instance.PlaySound("Chocolate");
+                    _sounds.PlaySound("Chocolate");
                 }
                 else if (tile.GetComponent<Marshmallow>() != null)
                 {
-                    SoundManager.instance.PlaySound("Marshmallow");
+                    _sounds.PlaySound("Marshmallow");
                 }
             }
         }
@@ -1770,11 +1692,7 @@ namespace GameVanilla.Game.Common
             ApplyGravityInternal();
             possibleSwaps = DetectPossibleSwaps();
             yield return new WaitForSeconds(1.0f);
-            if (currentlyAwarding)
-            {
-                gameScene.CheckEndGame();
-            }
-            else
+            if (!currentlyAwarding)
             {
                 if (!HandleMatches(false))
                 {
@@ -1787,6 +1705,7 @@ namespace GameVanilla.Game.Common
                     inputLocked = false;
                     explodedChocolate = false;
                     suggestedMatchCoroutine = StartCoroutine(HighlightRandomMatchAsync());
+                    OnSwipe?.Invoke();
                 }
             }
 
@@ -1794,7 +1713,6 @@ namespace GameVanilla.Game.Common
             {
                 ApplyGravity();
             }
-            gameScene.CheckEndGame();
         }
 
         /// <summary>
@@ -1841,20 +1759,16 @@ namespace GameVanilla.Game.Common
             {
                 foreach (var tile in collectablesToDestroy)
                 {
-                    gameState.AddCollectable(tile.GetComponent<Collectable>().type);
                     UpdateScore(gameConfig.GetTileScore(tile.GetComponent<Tile>()));
 
                     var fx = fxPool.collectableExplosion.GetObject();
                     fx.transform.position = tile.transform.position;
 
-                    SoundManager.instance.PlaySound("Collectable");
+                    _sounds.PlaySound("Collectable");
 
                     tile.Explode();
                     tile.GetComponent<PooledObject>().pool.ReturnObject(tile.gameObject);
                 }
-
-                gameUi.UpdateGoals(gameState);
-
                 return true;
             }
 
@@ -1915,7 +1829,7 @@ namespace GameVanilla.Game.Common
                                         if (!fallingSoundPlayed)
                                         {
                                             fallingSoundPlayed = true;
-                                            SoundManager.instance.PlaySound("CandyFalling");
+                                            _sounds.PlaySound("CandyFalling");
                                         }
                                     }
                                 }
@@ -2016,7 +1930,7 @@ namespace GameVanilla.Game.Common
                             neighbour.GetComponent<PooledObject>().pool.ReturnObject(neighbour);
                             foundSpot = true;
 
-                            SoundManager.instance.PlaySound("ChocolateExpand");
+                            _sounds.PlaySound("ChocolateExpand");
 
                             break;
                         }
@@ -2321,10 +2235,9 @@ namespace GameVanilla.Game.Common
                     CreateWrappedTile(randomIdx % level.width, randomIdx / level.width, GetRandomCandyColor());
                 }
 
-                SoundManager.instance.PlaySound("BoosterAward");
+                _sounds.PlaySound("BoosterAward");
 
                 currentLimit -= 1;
-                UpdateLimitText();
                 yield return new WaitForSeconds(GameplayConstants.TimeBetweenRewardedCandiesCreation);
             }
 
@@ -2337,8 +2250,6 @@ namespace GameVanilla.Game.Common
                     yield return new WaitForSeconds(GameplayConstants.TimeBetweenRewardedCandiesExplosion);
                 }
             }
-
-            gameScene.OpenWinPopup();
         }
 
         /// <summary>

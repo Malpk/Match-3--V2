@@ -4,7 +4,7 @@
 PlayerSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 24
-  productGUID: 00000000000000000000000000000000
+  productGUID: 068deb7de6cb6a4479c063cd8403f1f7
   AndroidProfiler: 0
   AndroidFilterTouchesWhenObscured: 0
   AndroidEnableSustainedPerformanceMode: 0
@@ -916,7 +916,7 @@ PlayerSettings:
   cloudProjectId: f5e00f16-c6ba-47c8-b231-a1d1f50b746c
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: JellyGarden
+  projectName: Match 3 dd
   organizationId: unity_79333333641s
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
