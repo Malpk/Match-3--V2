@@ -8,9 +8,6 @@ using UnityEngine;
 
 namespace GameVanilla.Game.Common
 {
-	/// <summary>
-	/// The base class used for the tiles in the game.
-	/// </summary>
 	public abstract class Tile : MonoBehaviour
 	{
 		[HideInInspector] public GameBoard board;
@@ -18,6 +15,8 @@ namespace GameVanilla.Game.Common
 		[HideInInspector] public int y;
 
 		public bool destructable;
+
+		public abstract BotTileMarker Marker { get; }
 
 		public abstract List<GameObject> Explode();
 		public abstract void ShowExplosionFx(FxPool pool);

@@ -117,6 +117,7 @@ namespace GameVanilla.Game.Common
 
         private int consecutiveCascades;
 
+
         public event Action<int> OnScore;
         public event Action OnSwipeStart;
         public event Action OnSwipeStop;
@@ -214,6 +215,8 @@ namespace GameVanilla.Game.Common
                 {
                     var levelTile = level.tiles[i + (j * level.width)];
                     var tile = CreateTileFromLevel(levelTile, i, j);
+                    tile.transform.parent = boardCenter;
+                    var tileC = tile.GetComponent<Tile>();
                     if (tile != null)
                     {
                         var spriteRenderer = tile.GetComponent<SpriteRenderer>();
@@ -923,6 +926,7 @@ namespace GameVanilla.Game.Common
         {
             var tileIdx = x + (y * level.width);
             var tile = tilePool.GetStripedCandyPool(StripeDirection.Horizontal, color).GetObject();
+            tile.transform.parent = boardCenter;
             tile.GetComponent<Tile>().board = this;
             tile.GetComponent<Tile>().x = x;
             tile.GetComponent<Tile>().y = y;
@@ -943,6 +947,7 @@ namespace GameVanilla.Game.Common
         {
             var tileIdx = x + (y * level.width);
             var tile = tilePool.GetStripedCandyPool(StripeDirection.Vertical, color).GetObject();
+            tile.transform.parent = boardCenter;
             tile.GetComponent<Tile>().board = this;
             tile.GetComponent<Tile>().x = x;
             tile.GetComponent<Tile>().y = y;
@@ -963,6 +968,7 @@ namespace GameVanilla.Game.Common
         {
             var tileIdx = x + (y * level.width);
             var tile = tilePool.GetWrappedCandyPool(color).GetObject();
+            tile.transform.parent = boardCenter;
             tile.GetComponent<Tile>().board = this;
             tile.GetComponent<Tile>().x = x;
             tile.GetComponent<Tile>().y = y;
@@ -982,6 +988,7 @@ namespace GameVanilla.Game.Common
         {
             var tileIdx = x + (y * level.width);
             var tile = tilePool.colorBombCandyPool.GetObject();
+            tile.transform.parent = boardCenter;
             tile.GetComponent<Tile>().board = this;
             tile.GetComponent<Tile>().x = x;
             tile.GetComponent<Tile>().y = y;

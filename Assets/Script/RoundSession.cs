@@ -90,8 +90,9 @@ public class RoundSession : MonoBehaviour
     {
         _uiPanel.Switch(_isPlayer);
         _curretState = _isPlayer ? _player : _enemy;
-        _isPlayer = !_isPlayer;
         _uiPanel.Switch(_isPlayer);
+        _curretState.Enter();
+        _isPlayer = !_isPlayer;
     }
 
 
