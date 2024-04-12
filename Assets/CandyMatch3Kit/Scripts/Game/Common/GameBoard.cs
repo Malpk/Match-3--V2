@@ -119,7 +119,7 @@ namespace GameVanilla.Game.Common
         private int consecutiveCascades;
 
         private Vector2 _start;
-
+        private MatchCell[,] _cells;
 
         public event Action<int> OnScore;
         public event Action OnSwipe;
@@ -176,9 +176,9 @@ namespace GameVanilla.Game.Common
                 StopCoroutine(suggestedMatchCoroutine);
                 suggestedMatchCoroutine = null;
             }
-
             ClearSuggestedMatch();
 
+            _cells = new MatchCell[level.width, level.height];
             tiles = new List<GameObject>(level.width * level.height);
             honeys = new List<GameObject>(level.width * level.height);
             ices = new List<GameObject>(level.width * level.height);
@@ -198,15 +198,9 @@ namespace GameVanilla.Game.Common
                 }
             }
 
-            currentLimit = level.limit;
             currentlyAwarding = false;
-
             consecutiveCascades = 0;
-
             explodedChocolate = false;
-
-
-            UpdateScore(0);
 
             tilePool.Reset();
             fxPool.Reset();
@@ -304,9 +298,9 @@ namespace GameVanilla.Game.Common
                     var levelTile = level.tiles[i + (j * level.width)];
                     if (!(levelTile is HoleTile))
                     {
-                        var bgTile = tilePool.CreateBackTile(i, j);
-                        bgTile.transform.position = GetPosition(i, j);
-                        tilePositions.Add(bgTile.transform.position);
+                        var bgTile = tilePool.CreateBackTile(i, j).GetComponent<MatchCell>();
+                        bgTile.SetPosition(GetPosition(i, j), new Vector2Int(i, j));
+                        _cells[j, i] = bgTile;
                     }
                 }
             }
@@ -322,6 +316,7 @@ namespace GameVanilla.Game.Common
             _start /= 2;
             boosterBar.SetData(level);
             gameUi.SetLevel(level);
+            currentLimit = level.limit;
         }
 
         private Vector2 GetPosition(int x, int y)

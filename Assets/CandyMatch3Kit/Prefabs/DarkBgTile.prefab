@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4807684205177664}
   - component: {fileID: 212043374515598310}
+  - component: {fileID: 4536392278637987690}
   m_Layer: 0
   m_Name: DarkBgTile
   m_TagString: Untagged
@@ -84,3 +85,15 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &4536392278637987690
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1949676032732060}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 053ea8e7dc571144ea00988eed8f60ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
