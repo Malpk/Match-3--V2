@@ -161,6 +161,43 @@ namespace GameVanilla.Game.Common
         /// </summary>
         /// <param name="color">The candy color.</param>
         /// <returns>The pool of the specified candy color.</returns>
+        /// 
+
+        public void Reset()
+        {
+            foreach (var pool in GetComponentsInChildren<ObjectPool>())
+            {
+                pool.Reset();
+            }
+        }
+
+        public GameObject CreateBackTile(int x, int y)
+        {
+            if (y % 2 == 0)
+                return x % 2 == 0 ? darkBgTilePool.GetObject() : lightBgTilePool.GetObject();
+            else
+                return x % 2 == 0 ? lightBgTilePool.GetObject() : darkBgTilePool.GetObject();
+        }
+
+        public GameObject CreateTileFromLevel(LevelTile levelTile)
+        {
+            if (levelTile is SpecialCandyTile specialCandyTile)
+            {
+                return CreateSpecialCandyTile(specialCandyTile);
+            }
+            else if (levelTile is SpecialBlockTile specialBlockTile)
+            {
+                return GetSpecialBlockPool(specialBlockTile.type).GetObject();
+            }
+            else if (levelTile is CollectableTile collectableTile)
+            {
+                return GetCollectablePool(collectableTile.type).GetObject();
+            }
+
+            return null;
+        }
+
+
         public ObjectPool GetCandyPool(CandyColor color)
         {
             return candies[(int) color];
@@ -214,5 +251,30 @@ namespace GameVanilla.Game.Common
         {
             return collectables[(int) collectable];
         }
+
+        public GameObject CreateSpecialCandyTile(SpecialCandyTile specialCandyTile)
+        {
+            var specialCandyType = (int)specialCandyTile.type;
+            if (specialCandyType >= 0 && specialCandyType <= (int)SpecialCandyType.YellowCandyHorizontalStriped)
+            {
+                return GetStripedCandyPool(StripeDirection.Horizontal,
+                    (CandyColor)(specialCandyType % 6)) .GetObject();
+            }
+            else if (specialCandyType <= (int)SpecialCandyType.YellowCandyVerticalStriped)
+            {
+                return GetStripedCandyPool(StripeDirection.Vertical, 
+                    (CandyColor)(specialCandyType % 6)).GetObject();
+            }
+            else if (specialCandyType <= (int)SpecialCandyType.YellowCandyWrapped)
+            {
+                return GetWrappedCandyPool((CandyColor)(specialCandyType % 6)).GetObject();
+            }
+            else
+            {
+                return colorBombCandyPool.GetObject();
+            }
+        }
+
+
     }
 }

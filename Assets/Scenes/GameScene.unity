@@ -5147,6 +5147,7 @@ GameObject:
   m_Component:
   - component: {fileID: 27524763}
   - component: {fileID: 27524762}
+  - component: {fileID: 27524764}
   m_Layer: 0
   m_Name: GameBoard
   m_TagString: Untagged
@@ -5167,13 +5168,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _level: 1
+  _boardGrid: {fileID: 27524764}
   gameScene: {fileID: 7324049}
   _sounds: {fileID: 1798632582}
   gameUi: {fileID: 1314994282}
   boosterBar: {fileID: 783116384}
   tilePool: {fileID: 882554316}
   fxPool: {fileID: 59497834}
-  boardCenter: {fileID: 964005146}
   currentLimit: 0
 --- !u!4 &27524763
 Transform:
@@ -5193,6 +5194,24 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &27524764
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 27524761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d6e0c38122a234438cc00f8ecf465f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tileSize: {x: 1.3, y: 1.3}
+  _board: {fileID: 27524762}
+  _tilePool: {fileID: 882554316}
+  _boardCenter: {fileID: 964005146}
+  Tiles: []
+  tilePositions: []
 --- !u!1 &57897205
 GameObject:
   m_ObjectHideFlags: 0
@@ -15431,7 +15450,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 10
   m_TargetDisplay: 0
 --- !u!224 &1647710678
 RectTransform:
@@ -16248,6 +16267,9 @@ MonoBehaviour:
   - {fileID: 8300000, guid: f8978fd31a96542c98d6c37a3390dbd6, type: 3}
   - {fileID: 8300000, guid: 06bad3cef25a447d5aa580cc57b9ef73, type: 3}
   - {fileID: 8300000, guid: 318103f526ece4934bcb644f591ae8f3, type: 3}
+  - {fileID: 8300000, guid: a19399c1056102547ad91af5947928e4, type: 3}
+  - {fileID: 8300000, guid: 27281ad828d8bd547b0a2d5edd70a48b, type: 3}
+  - {fileID: 8300000, guid: 2f4ed2b2c996deb4c836898dc5e77786, type: 3}
 --- !u!114 &1798632583
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17685,6 +17707,37 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 1834606758426242, guid: 87af08003e264714a894ff53cfb780c0, type: 3}
   initialSize: 16
+--- !u!1 &2029488594
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2029488595}
+  m_Layer: 0
+  m_Name: Board
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2029488595
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2029488594}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.74648327, y: 0.13745633, z: 105.283585}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2039331558
 PrefabInstance:
   m_ObjectHideFlags: 0

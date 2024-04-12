@@ -50,6 +50,16 @@ namespace GameVanilla.Game.Common
         /// <summary>
         /// Unity's Awake method.
         /// </summary>
+        /// 
+        public void Reset()
+        {
+            foreach (var pool in GetComponentsInChildren<ObjectPool>())
+            {
+                pool.Reset();
+            }
+
+        }
+
         private void Awake()
         {
             Assert.IsNotNull(spawnParticles);

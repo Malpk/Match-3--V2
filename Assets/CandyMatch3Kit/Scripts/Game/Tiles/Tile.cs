@@ -23,6 +23,7 @@ namespace GameVanilla.Game.Common
 		public abstract void ShowExplosionFx(FxPool pool);
 		public abstract void UpdateGameState(GameState state);
 
+	
 		/// <summary>
 		/// Unity's OnEnable method.
 		/// </summary>
@@ -56,5 +57,17 @@ namespace GameVanilla.Game.Common
 			transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
 			transform.localRotation = Quaternion.identity;
 		}
+
+		public void SetPosition(int x, int y)
+		{
+			this.x = x;
+			this.y = y;
+		}
+
+		public void SetPosition(Vector2 position)
+		{
+			transform.position = position;
+		}
+
 	}
 }

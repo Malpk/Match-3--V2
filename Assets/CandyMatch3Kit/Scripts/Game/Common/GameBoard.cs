@@ -24,6 +24,7 @@ namespace GameVanilla.Game.Common
     public class GameBoard : MonoBehaviour
     {
         [SerializeField] private int _level;
+        [SerializeField] private Vector2 _cellSize;
         [SerializeField]
         private GameScene gameScene;
         [SerializeField]
@@ -48,9 +49,6 @@ namespace GameVanilla.Game.Common
         public Level level;
 
         [HideInInspector]
-        public GameState gameState = new GameState();
-
-        [HideInInspector]
         public int currentLimit;
 
         private List<GameObject> tiles;
@@ -66,14 +64,11 @@ namespace GameVanilla.Game.Common
 
         private List<Swap> possibleSwaps = new List<Swap>();
 
-        private float tileW;
-        private float tileH;
-
         private GameObject lastSelectedTile;
         private int lastSelectedTileX;
         private int lastSelectedTileY;
         private CandyColor lastSelectedCandyColor;
-        
+
         private GameObject lastOtherSelectedTile;
         private int lastOtherSelectedTileX;
         private int lastOtherSelectedTileY;
@@ -123,6 +118,12 @@ namespace GameVanilla.Game.Common
 
         private int consecutiveCascades;
 
+        private Vector2 _start;
+
+
+        public event Action<int> OnScore;
+        public event Action OnSwipe;
+
         /// <summary>
         /// Unity's Awake method.
         /// </summary>
@@ -147,7 +148,7 @@ namespace GameVanilla.Game.Common
         public void LoadLevel()
         {
             var serializer = new fsSerializer();
-            //gameConfig = FileUtils.LoadJsonFile<GameConfiguration>(serializer, "game_configuration");
+            gameConfig = FileUtils.LoadJsonFile<GameConfiguration>(serializer, "game_configuration");
 
             ResetLevelData();
         }
@@ -158,22 +159,18 @@ namespace GameVanilla.Game.Common
         /// <param name="score">The score.</param>
         private void UpdateScore(int score)
         {
-            gameState.score += score;
-            gameUi.SetScore(gameState.score);
-            gameUi.SetProgressBar(gameState.score);
+            OnScore?.Invoke(score);
         }
 
         /// <summary>
         /// Resets the current level data.
         /// </summary>
+        /// 
+
+        #region CreateLevel
         public void ResetLevelData()
         {
-            var serializer = new fsSerializer();
-            level = FileUtils.LoadJsonFile<Level>(serializer,
-                "Levels/" + _level);
-
-            boosterBar.SetData(level);
-
+            LoadLevelData();
             if (suggestedMatchCoroutine != null)
             {
                 StopCoroutine(suggestedMatchCoroutine);
@@ -208,101 +205,38 @@ namespace GameVanilla.Game.Common
 
             explodedChocolate = false;
 
-            gameState.Reset();
 
-            gameUi.SetLimitType(level.limitType);
-            gameUi.SetLimit(level.limit);
-            gameUi.SetGoals(level.goals, true);
-            gameUi.InitializeProgressBar(level.score1, level.score2, level.score3);
             UpdateScore(0);
 
-            foreach (var pool in tilePool.GetComponentsInChildren<ObjectPool>())
-            {
-                pool.Reset();
-            }
-
-            foreach (var pool in fxPool.GetComponentsInChildren<ObjectPool>())
-            {
-                pool.Reset();
-            }
-
+            tilePool.Reset();
+            fxPool.Reset();
             tilePositions.Clear();
             possibleSwaps.Clear();
-
-            const float horizontalSpacing = 0.0f;
-            const float verticalSpacing = 0.0f;
 
             for (var j = 0; j < level.height; j++)
             {
                 for (var i = 0; i < level.width; i++)
                 {
                     var levelTile = level.tiles[i + (j * level.width)];
-                    var tile = CreateTileFromLevel(levelTile, i, j);
+                    var tile = CreateTileFromLevel(levelTile, i, j).GetComponent<Tile>();
                     if (tile != null)
                     {
-                        var spriteRenderer = tile.GetComponent<SpriteRenderer>();
-                        tileW = spriteRenderer.bounds.size.x;
-                        tileH = spriteRenderer.bounds.size.y;
-                        tile.transform.position =
-                            new Vector2(i * (tileW + horizontalSpacing), -j * (tileH + verticalSpacing));
-
-                        var collectable = tile.GetComponent<Collectable>();
-                        if (collectable != null)
+                        tile.board = this;
+                        tile.SetPosition(i, j);
+                        tile.transform.position = GetPosition(i, j);
+                        if (tile.TryGetComponent(out Collectable collectable))
                         {
                             var cidx = eligibleCollectables.FindIndex(x => x == collectable.type);
                             if (cidx != -1)
                             {
                                 eligibleCollectables.RemoveAt(cidx);
                             }
-
                         }
                     }
-
-                    tiles.Add(tile);
+                    tiles.Add(tile.gameObject);
                 }
             }
-
-            var totalWidth = (level.width - 1) * (tileW + horizontalSpacing);
-            var totalHeight = (level.height - 1) * (tileH + verticalSpacing);
-            for (var j = 0; j < level.height; j++)
-            {
-                for (var i = 0; i < level.width; i++)
-                {
-                    var tilePos = new Vector2(i * (tileW + horizontalSpacing), -j * (tileH + verticalSpacing));
-                    var newPos = tilePos;
-                    newPos.x -= totalWidth / 2;
-                    newPos.y += totalHeight / 2;
-                    newPos.y += boardCenter.position.y;
-                    var tile = tiles[i + (j * level.width)];
-                    if (tile != null)
-                    {
-                        tile.transform.position = newPos;
-                    }
-
-                    tilePositions.Add(newPos);
-
-                    var levelTile = level.tiles[i + (j * level.width)];
-                    if (!(levelTile is HoleTile))
-                    {
-                        GameObject bgTile;
-                        if (j % 2 == 0)
-                        {
-                            bgTile = i % 2 == 0
-                                ? tilePool.darkBgTilePool.GetObject()
-                                : tilePool.lightBgTilePool.GetObject();
-                        }
-                        else
-                        {
-                            bgTile = i % 2 == 0
-                                ? tilePool.lightBgTilePool.GetObject()
-                                : tilePool.darkBgTilePool.GetObject();
-                        }
-
-                        bgTile.transform.position = newPos;
-                    }
-                }
-            }
-
+            CreateBackTile();
             for (var j = 0; j < level.height; j++)
             {
                 for (var i = 0; i < level.width; i++)
@@ -360,6 +294,49 @@ namespace GameVanilla.Game.Common
 
             possibleSwaps = DetectPossibleSwaps();
         }
+
+        private void CreateBackTile()
+        {
+            for (var j = 0; j < level.height; j++)
+            {
+                for (var i = 0; i < level.width; i++)
+                {
+                    var levelTile = level.tiles[i + (j * level.width)];
+                    if (!(levelTile is HoleTile))
+                    {
+                        var bgTile = tilePool.CreateBackTile(i, j);
+                        bgTile.transform.position = GetPosition(i, j);
+                        tilePositions.Add(bgTile.transform.position);
+                    }
+                }
+            }
+        }
+
+        private void LoadLevelData()
+        {
+            var serializer = new fsSerializer();
+            level = FileUtils.LoadJsonFile<Level>(serializer,
+                "Levels/" + _level);
+            _start = new Vector2((level.width - 1) * (_cellSize.x),
+                (level.height - 1) * (_cellSize.y));
+            _start /= 2;
+            boosterBar.SetData(level);
+            gameUi.SetLevel(level);
+        }
+
+        private Vector2 GetPosition(int x, int y)
+        {
+            var newPos = new Vector2(x * _cellSize.x - _start.x,
+                        -y * _cellSize.y + _start.y);
+            return newPos + Vector2.up * boardCenter.position.y;
+        }
+
+        public Tile GetTileFormList(int x, int y)
+        {
+            return tiles[x + (y * level.width)].GetComponent<Tile>();
+        }
+
+        #endregion
 
         /// <summary>
         /// Starts a new game.
@@ -825,77 +802,18 @@ namespace GameVanilla.Game.Common
         /// <param name="x">The x-coordinate of the tile.</param>
         /// <param name="y">The y-coordinate of the tile.</param>
         /// <returns>The new tile created from the specified level data.</returns>
+        /// 
         private GameObject CreateTileFromLevel(LevelTile levelTile, int x, int y)
         {
-            if (levelTile is CandyTile)
+            if (levelTile is CandyTile candyTile)
             {
-                var candyTile = (CandyTile) levelTile;
                 if (candyTile.type == CandyType.RandomCandy)
-                {
                     return CreateTile(x, y, false);
-                }
-                else
-                {
-                    var tile = tilePool.GetCandyPool((CandyColor) ((int) candyTile.type)).GetObject();
-                    tile.GetComponent<Tile>().board = this;
-                    tile.GetComponent<Tile>().x = x;
-                    tile.GetComponent<Tile>().y = y;
-                    return tile;
-                }
             }
-
-            if (levelTile is SpecialCandyTile)
+            else if (levelTile.TryGetTile(tilePool, out GameObject tile))
             {
-                GameObject tile;
-
-                var specialCandyTile = (SpecialCandyTile) levelTile;
-                var specialCandyType = (int) specialCandyTile.type;
-                if (specialCandyType >= 0 &&
-                    specialCandyType <= (int) SpecialCandyType.YellowCandyHorizontalStriped)
-                {
-                    tile = tilePool.GetStripedCandyPool(StripeDirection.Horizontal, (CandyColor) (specialCandyType % 6))
-                        .GetObject();
-                }
-                else if (specialCandyType <= (int) SpecialCandyType.YellowCandyVerticalStriped)
-                {
-                    tile = tilePool.GetStripedCandyPool(StripeDirection.Vertical, (CandyColor) (specialCandyType % 6))
-                        .GetObject();
-                }
-                else if (specialCandyType <= (int) SpecialCandyType.YellowCandyWrapped)
-                {
-                    tile = tilePool.GetWrappedCandyPool((CandyColor) (specialCandyType % 6)).GetObject();
-                }
-                else
-                {
-                    tile = tilePool.colorBombCandyPool.GetObject();
-                }
-
-                tile.GetComponent<Tile>().board = this;
-                tile.GetComponent<Tile>().x = x;
-                tile.GetComponent<Tile>().y = y;
                 return tile;
             }
-
-            if (levelTile is SpecialBlockTile)
-            {
-                var specialBlockTile = (SpecialBlockTile) levelTile;
-                var block = tilePool.GetSpecialBlockPool(specialBlockTile.type).GetObject();
-                block.GetComponent<Tile>().board = this;
-                block.GetComponent<Tile>().x = x;
-                block.GetComponent<Tile>().y = y;
-                return block;
-            }
-
-            if (levelTile is CollectableTile)
-            {
-                var collectableTile = (CollectableTile) levelTile;
-                var tile = tilePool.GetCollectablePool(collectableTile.type).GetObject();
-                tile.GetComponent<Tile>().board = this;
-                tile.GetComponent<Tile>().x = x;
-                tile.GetComponent<Tile>().y = y;
-                return tile;
-            }
-
             return null;
         }
 
@@ -1120,7 +1038,6 @@ namespace GameVanilla.Game.Common
                 if (idx != -1)
                 {
                     explodedTile.GetComponent<Tile>().ShowExplosionFx(fxPool);
-                    explodedTile.GetComponent<Tile>().UpdateGameState(gameState);
                     Debug.LogWarning("Score");
                     //score += gameConfig.GetTileScore(explodedTile.GetComponent<Tile>());
                     DestroyElements(explodedTile);
@@ -1133,7 +1050,6 @@ namespace GameVanilla.Game.Common
             }
 
             UpdateScore(score);
-            gameUi.UpdateGoals(gameState);
         }
 
         /// <summary>
@@ -1158,7 +1074,6 @@ namespace GameVanilla.Game.Common
                 if (idx != -1)
                 {
                     tile.GetComponent<Tile>().ShowExplosionFx(fxPool);
-                    tile.GetComponent<Tile>().UpdateGameState(gameState);
                     UpdateScore(gameConfig.GetTileScore(tile.GetComponent<Tile>()));
                     DestroyElements(tile);
                     
@@ -1166,12 +1081,6 @@ namespace GameVanilla.Game.Common
                     tiles[idx] = null;
 
                     var chocolates = tiles.FindAll(t => t != null && t.GetComponent<Chocolate>() != null);
-                    if (chocolates.Count == 0)
-                    {
-                        gameState.destroyedAllChocolates = true;
-                    }
-                    
-                    gameUi.UpdateGoals(gameState);
 
                     _sounds.PlaySound("CandyMatch");
                 }
@@ -1224,7 +1133,6 @@ namespace GameVanilla.Game.Common
                 honeys[idx].GetComponent<PooledObject>().pool.ReturnObject(honeys[idx]);
                 level.tiles[idx].elementType = ElementType.None;
                 honeys[idx] = null;
-                gameState.AddElement(ElementType.Honey);
                 UpdateScore(gameConfig.GetElementScore(ElementType.Honey));
 
                 var fx = fxPool.GetElementExplosion(ElementType.Honey).GetObject();
@@ -1239,7 +1147,6 @@ namespace GameVanilla.Game.Common
                 syrups1[idx].GetComponent<PooledObject>().pool.ReturnObject(syrups1[idx]);
                 level.tiles[idx].elementType = ElementType.None;
                 syrups1[idx] = null;
-                gameState.AddElement(ElementType.Syrup1);
                 UpdateScore(gameConfig.GetElementScore(ElementType.Syrup1));
 
                 var fx = fxPool.GetElementExplosion(ElementType.Syrup1).GetObject();
@@ -1260,7 +1167,6 @@ namespace GameVanilla.Game.Common
                 syrups2[idx] = null;
                 syrups1[idx] = syrup;
 
-                gameState.AddElement(ElementType.Syrup2);
                 UpdateScore(gameConfig.GetElementScore(ElementType.Syrup2));
 
                 var fx = fxPool.GetElementExplosion(ElementType.Syrup2).GetObject();
@@ -1275,7 +1181,6 @@ namespace GameVanilla.Game.Common
                 ices[idx].GetComponent<PooledObject>().pool.ReturnObject(ices[idx]);
                 level.tiles[idx].elementType = ElementType.None;
                 ices[idx] = null;
-                gameState.AddElement(ElementType.Ice);
                 UpdateScore(gameConfig.GetElementScore(ElementType.Ice));
 
                 var fx = fxPool.GetElementExplosion(ElementType.Ice).GetObject();
@@ -1310,10 +1215,6 @@ namespace GameVanilla.Game.Common
                 DestroySpecialBlocksInternal(tile);
 
                 var chocolates = tiles.FindAll(t => t != null && t.GetComponent<Chocolate>() != null);
-                if (chocolates.Count == 0)
-                {
-                    gameState.destroyedAllChocolates = true;
-                }
             }
         }
 
@@ -1329,7 +1230,6 @@ namespace GameVanilla.Game.Common
                 var blockIdx = tiles.FindIndex(t => t == tile);
                 if (blockIdx != -1)
                 {
-                    gameState.AddSpecialBlock(tile.GetComponent<SpecialBlock>().type);
                     UpdateScore(gameConfig.GetTileScore(tile.GetComponent<SpecialBlock>()));
 
                     var fx = fxPool.GetSpecialBlockExplosion(tile.GetComponent<SpecialBlock>().type).GetObject();
@@ -1778,6 +1678,7 @@ namespace GameVanilla.Game.Common
                     }
                     ExpandChocolate();
                     inputLocked = false;
+                    OnSwipe?.Invoke();
                     explodedChocolate = false;
                     suggestedMatchCoroutine = StartCoroutine(HighlightRandomMatchAsync());
                 }
@@ -1834,7 +1735,6 @@ namespace GameVanilla.Game.Common
             {
                 foreach (var tile in collectablesToDestroy)
                 {
-                    gameState.AddCollectable(tile.GetComponent<Collectable>().type);
                     UpdateScore(gameConfig.GetTileScore(tile.GetComponent<Tile>()));
 
                     var fx = fxPool.collectableExplosion.GetObject();
@@ -1845,8 +1745,6 @@ namespace GameVanilla.Game.Common
                     tile.Explode();
                     tile.GetComponent<PooledObject>().pool.ReturnObject(tile.gameObject);
                 }
-
-                gameUi.UpdateGoals(gameState);
 
                 return true;
             }
@@ -1954,7 +1852,7 @@ namespace GameVanilla.Game.Common
                             var sourcePos = tilePositions[i];
                             var targetPos = tilePositions[tileIndex];
                             var pos = sourcePos;
-                            pos.y = tilePositions[i].y + (numEmpties * (tileH));
+                            pos.y = tilePositions[i].y + (numEmpties * (_cellSize.y));
                             --numEmpties;
                             tile.transform.position = pos;
                             var tween = LeanTween.move(tile,

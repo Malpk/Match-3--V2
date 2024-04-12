@@ -41,6 +41,16 @@ namespace GameVanilla.Game.Common
         /// <summary>
         /// Unity's Awake method.
         /// </summary>
+        /// 
+
+        public void SetLevel(Level level)
+        {
+            SetLimitType(level.limitType);
+            SetLimit(level.limit);
+            SetGoals(level.goals, true);
+            InitializeProgressBar(level.score1, level.score2, level.score3);
+        }
+
         private void Awake()
         {
             Assert.IsNotNull(limitTitleText);
