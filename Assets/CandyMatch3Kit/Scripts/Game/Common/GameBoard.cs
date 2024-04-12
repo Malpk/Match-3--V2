@@ -118,7 +118,8 @@ namespace GameVanilla.Game.Common
         private int consecutiveCascades;
 
         public event Action<int> OnScore;
-        public event Action OnSwipe;
+        public event Action OnSwipeStart;
+        public event Action OnSwipeStop;
 
         /// <summary>
         /// Unity's Awake method.
@@ -1686,8 +1687,8 @@ namespace GameVanilla.Game.Common
                 StopCoroutine(suggestedMatchCoroutine);
                 suggestedMatchCoroutine = null;
             }
-
             inputLocked = true;
+            OnSwipeStart?.Invoke();
             yield return new WaitForSeconds(delay);
             ApplyGravityInternal();
             possibleSwaps = DetectPossibleSwaps();
@@ -1705,7 +1706,7 @@ namespace GameVanilla.Game.Common
                     inputLocked = false;
                     explodedChocolate = false;
                     suggestedMatchCoroutine = StartCoroutine(HighlightRandomMatchAsync());
-                    OnSwipe?.Invoke();
+                    OnSwipeStop?.Invoke();
                 }
             }
 
