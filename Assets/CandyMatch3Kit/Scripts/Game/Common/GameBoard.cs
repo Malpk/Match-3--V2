@@ -122,6 +122,10 @@ namespace GameVanilla.Game.Common
         public event Action OnSwipeStart;
         public event Action OnSwipeStop;
 
+
+        public int Width => level.width;
+        public int Height => level.height;
+
         /// <summary>
         /// Unity's Awake method.
         /// </summary>

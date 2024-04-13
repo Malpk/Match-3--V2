@@ -10,6 +10,11 @@ public class PlayerRoundState : MonoBehaviour
     [Header("Events")]
     [SerializeField] private UnityEvent _onUpdate;
 
+    private void Start()
+    {
+        _sckoreText.SetText("0");
+    }
+
     public void Enter()
     {
         _onUpdate.Invoke();
