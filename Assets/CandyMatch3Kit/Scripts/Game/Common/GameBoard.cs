@@ -448,167 +448,167 @@ namespace GameVanilla.Game.Common
             if (drag && selectedTile != null)
             {
                 var hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
-                if (hit.collider != null && hit.collider.gameObject != selectedTile)
+                var tile = hit ? hit.collider.GetComponent<Tile>() : null;
+                if (!tile)
+                    return;
+                if (tile.gameObject != selectedTile)
                 {
-                    if (hit.collider.GetComponent<SpecialBlock>() != null)
-                    {
+                    if (tile.GetComponent<SpecialBlock>() != null)
                         return;
-                    }
-
                     if (selectedTile.GetComponent<Animator>() != null && selectedTile.gameObject.activeSelf)
                     {
                         selectedTile.GetComponent<Animator>().SetTrigger("Unpressed");
                     }
 
-                    var idx = tiles.FindIndex(x => x == hit.collider.gameObject);
+                    var idx = tiles.FindIndex(x => x == tile.gameObject);
                     if (level.tiles[idx] != null && level.tiles[idx].elementType == ElementType.Ice)
-                    {
                         return;
-                    }
 
                     var idxSelected = tiles.FindIndex(x => x == selectedTile);
                     var xSelected = idxSelected % level.width;
                     var ySelected = idxSelected / level.width;
-                    var idxNew = tiles.FindIndex(x => x == hit.collider.gameObject);
+                    var idxNew = tiles.FindIndex(x => x == tile.gameObject);
                     var xNew = idxNew % level.width;
                     var yNew = idxNew / level.width;
                     if (Math.Abs(xSelected - xNew) > 1 || Math.Abs(ySelected - yNew) > 1)
-                    {
                         return;
-                    }
 
-                    var combo = comboDetector.GetCombo(hit.collider.gameObject.GetComponent<Tile>(),
-                        selectedTile.GetComponent<Tile>());
-                    if (combo != null)
-                    {
-                        var selectedTileCopy = selectedTile;
-                        selectedTile.GetComponent<SpriteRenderer>().sortingOrder = 1;
-                        currentlySwapping = true;
-                        LeanTween.move(selectedTile, hit.collider.gameObject.transform.position, 0.25f).setOnComplete(
-                            () =>
-                            {
-                                currentlySwapping = false;
-                                selectedTileCopy.GetComponent<SpriteRenderer>().sortingOrder = 0;
-                                combo.Resolve(this, tiles, fxPool);
-                            });
-                        LeanTween.move(hit.collider.gameObject, selectedTile.transform.position, 0.25f);
-
-                        var tileA = hit.collider.gameObject;
-                        var tileB = selectedTile;
-                        var idxA = tiles.FindIndex(x => x == tileA);
-                        var idxB = tiles.FindIndex(x => x == tileB);
-                        tiles[idxA] = tileB;
-                        tiles[idxB] = tileA;
-
-                        tileA.GetComponent<Tile>().x = idxB % level.width;
-                        tileA.GetComponent<Tile>().y = idxB / level.width;
-                        tileB.GetComponent<Tile>().x = idxA % level.width;
-                        tileB.GetComponent<Tile>().y = idxA / level.width;
-
-                        lastSelectedTile = selectedTile;
-                        lastSelectedTileX = idxA % level.width;
-                        lastSelectedTileY = idxA / level.width;
-                        
-                        lastOtherSelectedTile = hit.collider.gameObject;
-                        lastOtherSelectedTileX = idxB % level.width;
-                        lastOtherSelectedTileY = idxB / level.width;
-
-                        selectedTile = null;
-
-                        PerformMove();
-                    }
-                    else if (possibleSwaps.Find(x => x.tileA == hit.collider.gameObject && x.tileB == selectedTile) !=
-                             null ||
-                             possibleSwaps.Find(x => x.tileB == hit.collider.gameObject && x.tileA == selectedTile) !=
-                             null)
-                    {
-                        var selectedTileCopy = selectedTile;
-                        selectedTile.GetComponent<SpriteRenderer>().sortingOrder = 1;
-                        currentlySwapping = true;
-                        LeanTween.move(selectedTile, hit.collider.gameObject.transform.position, 0.25f).setOnComplete(
-                            () =>
-                            {
-                                currentlySwapping = false;
-                                selectedTileCopy.GetComponent<SpriteRenderer>().sortingOrder = 0;
-                                HandleMatches(true);
-                            });
-                        LeanTween.move(hit.collider.gameObject, selectedTile.transform.position, 0.25f);
-
-                        var tileA = hit.collider.gameObject;
-                        var tileB = selectedTile;
-                        var idxA = tiles.FindIndex(x => x == tileA);
-                        var idxB = tiles.FindIndex(x => x == tileB);
-                        tiles[idxA] = tileB;
-                        tiles[idxB] = tileA;
-
-                        if (tileA.GetComponent<Tile>().x != tileB.GetComponent<Tile>().x)
-                        {
-                            swapDirection = SwapDirection.Horizontal;
-                        }
-                        else
-                        {
-                            swapDirection = SwapDirection.Vertical;
-                        }
-
-                        tileA.GetComponent<Tile>().x = idxB % level.width;
-                        tileA.GetComponent<Tile>().y = idxB / level.width;
-                        tileB.GetComponent<Tile>().x = idxA % level.width;
-                        tileB.GetComponent<Tile>().y = idxA / level.width;
-
-                        lastSelectedTile = selectedTile;
-                        lastSelectedTileX = idxA % level.width;
-                        lastSelectedTileY = idxA / level.width;
-                        if (selectedTileCopy.GetComponent<Candy>() != null)
-                        {
-                            lastSelectedCandyColor = selectedTile.GetComponent<Candy>().color;
-                        }
-                        
-                        lastOtherSelectedTile = hit.collider.gameObject;
-                        lastOtherSelectedTileX = idxB % level.width;
-                        lastOtherSelectedTileY = idxB / level.width;
-                        if (hit.collider.gameObject.GetComponent<Candy>() != null)
-                        {
-                            lastOtherSelectedCandyColor = hit.collider.gameObject.GetComponent<Candy>().color;
-                        }
-
-                        selectedTile = null;
-
-                        possibleSwaps = DetectPossibleSwaps();
-
-                        PerformMove();
-                    }
-                    else
-                    {
-                        var selectedTileCopy = selectedTile;
-                        var hitTileCopy = hit.collider.gameObject;
-                        selectedTile.GetComponent<SpriteRenderer>().sortingOrder = 1;
-
-                        var selectedTilePos = selectedTile.transform.position;
-                        var hitTilePos = hit.collider.gameObject.transform.position;
-
-                        var tileA = hit.collider.gameObject;
-                        var tileB = selectedTile;
-                        if (!(tileA.GetComponent<Tile>().x != tileB.GetComponent<Tile>().x &&
-                              tileA.GetComponent<Tile>().y != tileB.GetComponent<Tile>().y))
-                        {
-                            currentlySwapping = true;
-                            LeanTween.move(selectedTile, hitTilePos, 0.2f);
-                            LeanTween.move(hit.collider.gameObject, selectedTilePos, 0.2f).setOnComplete(() =>
-                            {
-                                LeanTween.move(selectedTileCopy, selectedTilePos, 0.2f).setOnComplete(() =>
-                                {
-                                    currentlySwapping = false;
-                                    selectedTileCopy.GetComponent<SpriteRenderer>().sortingOrder = 0;
-                                });
-                                LeanTween.move(hitTileCopy, hitTilePos, 0.2f);
-                            });
-                        }
-
-                        selectedTile = null;
-
-                        _sounds.PlaySound("Error");
-                    }
+                    InputBoard(tile, selectedTile.GetComponent<Tile>());
                 }
+            }
+        }
+
+        public void InputBoard(Tile tile, Tile selected)
+        {
+            var combo = comboDetector.GetCombo(tile, selected);
+            if (combo != null)
+            {
+                var selectedTileCopy = selected;
+                selected.GetComponent<SpriteRenderer>().sortingOrder = 1;
+                currentlySwapping = true;
+                LeanTween.move(selected.gameObject, tile.transform.position, 0.25f).setOnComplete(
+                    () =>
+                    {
+                        currentlySwapping = false;
+                        selectedTileCopy.GetComponent<SpriteRenderer>().sortingOrder = 0;
+                        combo.Resolve(this, tiles, fxPool);
+                    });
+                LeanTween.move(tile.gameObject, selected.transform.position, 0.25f);
+
+                var tileA = tile.gameObject;
+                var tileB = selected.gameObject;
+                var idxA = tiles.FindIndex(x => x == tileA);
+                var idxB = tiles.FindIndex(x => x == tileB);
+                tiles[idxA] = tileB;
+                tiles[idxB] = tileA;
+
+                tileA.GetComponent<Tile>().x = idxB % level.width;
+                tileA.GetComponent<Tile>().y = idxB / level.width;
+                tileB.GetComponent<Tile>().x = idxA % level.width;
+                tileB.GetComponent<Tile>().y = idxA / level.width;
+
+                lastSelectedTile = selected.gameObject;
+                lastSelectedTileX = idxA % level.width;
+                lastSelectedTileY = idxA / level.width;
+
+                lastOtherSelectedTile = tile.gameObject;
+                lastOtherSelectedTileX = idxB % level.width;
+                lastOtherSelectedTileY = idxB / level.width;
+
+                selected = null;
+
+                PerformMove();
+            }
+            else if (possibleSwaps.Find(x => x.tileA == tile.gameObject && x.tileB == selected.gameObject) !=
+                     null ||
+                     possibleSwaps.Find(x => x.tileB == tile.gameObject && x.tileA == selected.gameObject) !=
+                     null)
+            {
+                var selectedTileCopy = selected.gameObject;
+                selected.GetComponent<SpriteRenderer>().sortingOrder = 1;
+                currentlySwapping = true;
+                LeanTween.move(selected.gameObject, tile.transform.position, 0.25f).setOnComplete(
+                    () =>
+                    {
+                        currentlySwapping = false;
+                        selectedTileCopy.GetComponent<SpriteRenderer>().sortingOrder = 0;
+                        HandleMatches(true);
+                    });
+                LeanTween.move(tile.gameObject, selected.transform.position, 0.25f);
+
+                var tileA = tile.gameObject;
+                var tileB = selected.gameObject;
+                var idxA = tiles.FindIndex(x => x == tileA);
+                var idxB = tiles.FindIndex(x => x == tileB);
+                tiles[idxA] = tileB;
+                tiles[idxB] = tileA;
+
+                if (tileA.GetComponent<Tile>().x != tileB.GetComponent<Tile>().x)
+                {
+                    swapDirection = SwapDirection.Horizontal;
+                }
+                else
+                {
+                    swapDirection = SwapDirection.Vertical;
+                }
+
+                tileA.GetComponent<Tile>().x = idxB % level.width;
+                tileA.GetComponent<Tile>().y = idxB / level.width;
+                tileB.GetComponent<Tile>().x = idxA % level.width;
+                tileB.GetComponent<Tile>().y = idxA / level.width;
+
+                lastSelectedTile = selected.gameObject;
+                lastSelectedTileX = idxA % level.width;
+                lastSelectedTileY = idxA / level.width;
+                if (selectedTileCopy.GetComponent<Candy>() != null)
+                {
+                    lastSelectedCandyColor = selected.GetComponent<Candy>().color;
+                }
+
+                lastOtherSelectedTile = tile.gameObject;
+                lastOtherSelectedTileX = idxB % level.width;
+                lastOtherSelectedTileY = idxB / level.width;
+                if (tile.gameObject.GetComponent<Candy>() != null)
+                {
+                    lastOtherSelectedCandyColor = tile.gameObject.GetComponent<Candy>().color;
+                }
+
+                selectedTile = null;
+
+                possibleSwaps = DetectPossibleSwaps();
+
+                PerformMove();
+            }
+            else
+            {
+                var selectedTileCopy = selected;
+                var hitTileCopy = tile.gameObject;
+                selected.GetComponent<SpriteRenderer>().sortingOrder = 1;
+
+                var selectedTilePos = selected.transform.position;
+                var hitTilePos = tile.transform.position;
+
+                var tileA = tile.gameObject;
+                var tileB = selected;
+                if (!(tileA.GetComponent<Tile>().x != tileB.GetComponent<Tile>().x &&
+                      tileA.GetComponent<Tile>().y != tileB.GetComponent<Tile>().y))
+                {
+                    currentlySwapping = true;
+                    LeanTween.move(selected.gameObject, hitTilePos, 0.2f);
+                    LeanTween.move(tile.gameObject, selectedTilePos, 0.2f).setOnComplete(() =>
+                    {
+                        LeanTween.move(selectedTileCopy.gameObject, selectedTilePos, 0.2f).setOnComplete(() =>
+                        {
+                            currentlySwapping = false;
+                            selectedTileCopy.GetComponent<SpriteRenderer>().sortingOrder = 0;
+                        });
+                        LeanTween.move(hitTileCopy, hitTilePos, 0.2f);
+                    });
+                }
+
+                selectedTile = null;
+
+                _sounds.PlaySound("Error");
             }
         }
 

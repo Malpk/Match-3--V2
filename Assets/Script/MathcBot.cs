@@ -29,40 +29,41 @@ public class MathcBot : MonoBehaviour
 
     private IEnumerator Playing()
     {
+        yield return null;
         _temp.Clear();
         yield return Maping();
         var size = 4;
-        var list = new Dictionary<Candy, int>();
+        var list = new List<BotSwapeItem>();
         for (int y = 0; y < _tileHolder.Height - size; y++)
         {
             for (int x = 0; x < _tileHolder.Width - size; x++)
             {
                 foreach (var item in SearchHorizontal(_map[y, x], size))
                 {
-                    if (list.ContainsKey(item.Key))
-                    {
-                        list[item.Key] += item.Value;
-                    }
-                    else
-                    {
-                        list.Add(item.Key, item.Value);
-                    }
+                    list.Add(item);
                 }
-                
+                foreach (var item in SearchVertical(_map[y, x], size))
+                {
+                    list.Add(item);
+                }
             }
             yield return null;
         }
-        foreach (var item in list)
+        if (list.Count > 0)
         {
-            Debug.Log($"candy  x : {item.Key.x} y : {item.Key.y} temp : {item.Value}");
+            var swape = list[Random.Range(0, list.Count)];
+            _tileHolder.InputBoard(swape.Tile, swape.Select);
+            Debug.Log($"candy {swape.Select.color} => {swape.Tile.color} = {swape.CountTemp}");
+            
         }
+        
         yield return null;
     }
 
     #region searchTemp
-    private Dictionary<Candy, int> SearchHorizontal(Candy candy, int size)
+    private List<BotSwapeItem> SearchHorizontal(Candy candy, int size)
     {
-        var list = new Dictionary<Candy, int>();
+        var list = new List<BotSwapeItem>();
         var map = CopyMap(candy, size);
         for (int y = 0; y < size; y++)
         {
@@ -71,14 +72,45 @@ public class MathcBot : MonoBehaviour
                 var temp = map[y, x];
                 map[y, x] = map[y, x + 1];
                 map[y, x + 1] = temp;
-                var countTemp = CheakHorizontalTemp(map) 
-                    + CheakVeritacalTemp(map);
-                temp = map[y, x];
-                map[y, x] = map[y, x + 1];
-                map[y, x + 1] = temp;
+                var countTemp = CheakHorizontalTemp(map) + CheakVeritacalTemp(map);
+                map[y, x + 1] = map[y, x];
+                map[y, x] = temp;
                 if (countTemp > 0)
                 {
-                    list.Add(_map[candy.y + y,candy.x + x], countTemp);
+                    var item = new BotSwapeItem();
+                    item.Select = _map[candy.y + y, candy.x + x];
+                    item.Tile = _map[candy.y + y, candy.x + x + 1];
+                    item.CountTemp = countTemp;
+                    list.Add(item);
+                }
+            }
+        }
+        return list;
+    }
+
+    private List<BotSwapeItem> SearchVertical(Candy candy, int size)
+    {
+        var list = new List<BotSwapeItem>();
+        var map = CopyMap(candy, size);
+        for (int y = 0; y < size - 1; y++)
+        {
+            for (int x = 0; x < size; x++)
+            {
+                var temp = map[y, x];
+                map[y, x] = map[y + 1, x];
+                map[y + 1, x] = temp;
+                var countTemp = CheakHorizontalTemp(map)
+                    + CheakVeritacalTemp(map);
+                temp = map[y, x];
+                map[y, x] = map[y + 1, x];
+                map[y + 1, x] = temp;
+                if (countTemp > 0)
+                {
+                    var item = new BotSwapeItem();
+                    item.Select = _map[candy.y + y, candy.x + x];
+                    item.Tile = _map[candy.y + y + 1, candy.x + x];
+                    item.CountTemp = countTemp;
+                    list.Add(item);
                 }
             }
         }
@@ -86,19 +118,20 @@ public class MathcBot : MonoBehaviour
     }
 
 
+
     public int CheakHorizontalTemp(CandyColor[,] map)
     {
-        var count = 0;
         var countTemp = 0;
-        var color = CandyColor.None;
         for (int y = 0; y < map.GetLength(0); y++)
-        {
+        { 
+            var count = 0;
+            var color = CandyColor.None;
             for (int x = 0; x < map.GetLength(1); x++)
             {
                 if (color == CandyColor.None)
                 {
                     color = map[y, x];
-                    count++;
+                    count = 1;
                 }
                 else if (color == map[y, x])
                 {
@@ -108,7 +141,7 @@ public class MathcBot : MonoBehaviour
                 {
                     if (count >= 3)
                         countTemp++;
-                    count = 0;
+                    count = 1;
                     color = map[y, x];
                 }
             }
@@ -118,17 +151,17 @@ public class MathcBot : MonoBehaviour
 
     public int CheakVeritacalTemp(CandyColor[,] map)
     {
-        var count = 0;
         var countTemp = 0;
-        var color = CandyColor.None;
         for (int x = 0; x < map.GetLength(1); x++)
         {
+            var count = 0;
+            var color = CandyColor.None;
             for (int y = 0; y < map.GetLength(0); y++)
             {
                 if (color == CandyColor.None)
                 {
                     color = map[y, x];
-                    count++;
+                    count = 1;
                 }
                 else if (color == map[y, x])
                 {
@@ -138,7 +171,7 @@ public class MathcBot : MonoBehaviour
                 {
                     if (count >= 3)
                         countTemp++;
-                    count = 0;
+                    count = 1;
                     color = map[y, x];
                 }
             }
@@ -147,42 +180,7 @@ public class MathcBot : MonoBehaviour
     }
 
     #endregion
-    private int GetTem(Candy start)
-    {
-        var count = 0;
-        foreach (var temp in _temps)
-        {
-            if (Cheak(start, temp))
-            {
-                count++;
-            }
-        }
-        return count;
-    }
 
-    private bool Cheak(Candy center, int[,] temp)
-    {
-        var color = CandyColor.None;
-        for (int y = 0; y < temp.GetLength(0); y++)
-        {
-            for (int x = 0; x < temp.GetLength(1); x++)
-            {
-                if (temp[y, x] == 1)
-                {
-                    if (color == CandyColor.None)
-                    {
-                        color = _map[center.y + y, center.x + x].color;
-                    }
-                    else if(color != _map[center.y + y, center.x + x].color)
-                    {
-                        return false;
-                    }
-                }
-            }
-        }
-        return true;
-    }
-   
     public CandyColor[,] CopyMap(Candy center, int size)
     {
         var map = new CandyColor[size, size];
