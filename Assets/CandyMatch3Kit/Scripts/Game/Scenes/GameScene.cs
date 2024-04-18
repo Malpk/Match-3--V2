@@ -36,8 +36,11 @@ namespace GameVanilla.Game.Scenes
 		private bool gameFinished;
 
 		private bool boosterMode;
+		private bool _blockInput;
 		private BuyBoosterButton currentBoosterButton;
 		private int ingameBoosterBgTweenId;
+
+		public event System.Action OnStartGame;
 
 	    /// <summary>
 	    /// Unity's Awake method.
@@ -56,9 +59,9 @@ namespace GameVanilla.Game.Scenes
 		private void Start()
 		{
 			gameBoard.LoadLevel();
-
 			level = gameBoard.level;
             OpenPopup<LevelGoalsPopup>("Popups/LevelGoalsPopup", popup => popup.SetGoals(level.goals));
+			OnStartGame?.Invoke();
 		}
 
 	    /// <summary>
@@ -87,10 +90,15 @@ namespace GameVanilla.Game.Scenes
 					gameBoard.HandleBoosterInput(currentBoosterButton);
 				}
 			}
-			else
+			else if (!_blockInput)
 			{
 				gameBoard.HandleInput();
 			}
+		}
+
+		public void BlcokInput(bool mode)
+        {
+			_blockInput = mode;
 		}
 
 	    /// <summary>
