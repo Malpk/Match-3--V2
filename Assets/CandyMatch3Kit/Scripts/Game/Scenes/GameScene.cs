@@ -56,13 +56,13 @@ namespace GameVanilla.Game.Scenes
 	    /// <summary>
 	    /// Unity's Start method.
 	    /// </summary>
-		private void Start()
-		{
-			gameBoard.LoadLevel();
-			level = gameBoard.level;
-            OpenPopup<LevelGoalsPopup>("Popups/LevelGoalsPopup", popup => popup.SetGoals(level.goals));
-			OnStartGame?.Invoke();
-		}
+		//private void Start()
+		//{
+		//	gameBoard.LoadLevel();
+		//	level = gameBoard.level;
+  //          OpenPopup<LevelGoalsPopup>("Popups/LevelGoalsPopup", popup => popup.SetGoals(level.goals));
+		//	OnStartGame?.Invoke();
+		//}
 
 	    /// <summary>
 	    /// Unity's Update method.

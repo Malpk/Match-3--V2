@@ -1,18 +1,22 @@
 using UnityEngine;
 using TMPro;
+using Mirror;
 
-public class PlayerPanel : MonoBehaviour
+public class PlayerPanel : NetworkBehaviour
 {
     [Header("Reference")]
-    [SerializeField] private PlayerState _bind;
     [SerializeField] private TextMeshProUGUI _name;
+    [SerializeField] private TextMeshProUGUI _score;
 
-    public void Bind(PlayerState player)
+    [ClientRpc]
+    public void Bind(string name)
     {
-        _bind = player;
-        if (_bind)
-            _name.SetText(_bind.Name);
-        else
-            _name.SetText("Неизвестный");
+        _name.SetText(name);
+    }
+
+    [ClientRpc]
+    public void SetScore(int score)
+    {
+        _score.SetText(score.ToString());
     }
 }
