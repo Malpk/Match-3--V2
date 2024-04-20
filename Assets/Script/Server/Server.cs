@@ -19,4 +19,10 @@ public class Server : NetworkManager
         _session.SetPlayer(player,_bot);
         OnAddPlayer?.Invoke(player, _bot);
     }
+
+    public void Spawn(GameObject asset)
+    {
+        NetworkServer.Spawn(asset);
+    }
+
 }

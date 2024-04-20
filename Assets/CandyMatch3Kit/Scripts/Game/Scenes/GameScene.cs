@@ -53,21 +53,22 @@ namespace GameVanilla.Game.Scenes
 			Assert.IsNotNull(ingameBoosterText);
 		}
 
-	    /// <summary>
-	    /// Unity's Start method.
-	    /// </summary>
-		//private void Start()
-		//{
-		//	gameBoard.LoadLevel();
-		//	level = gameBoard.level;
-  //          OpenPopup<LevelGoalsPopup>("Popups/LevelGoalsPopup", popup => popup.SetGoals(level.goals));
-		//	OnStartGame?.Invoke();
-		//}
+        /// <summary>
+        /// Unity's Start method.
+        /// </summary>
+        public void Play()
+        {
+			enabled = true;
+            gameBoard.LoadLevel();
+            level = gameBoard.level;
+            //OpenPopup<LevelGoalsPopup>("Popups/LevelGoalsPopup", popup => popup.SetGoals(level.goals));
+            OnStartGame?.Invoke();
+        }
 
-	    /// <summary>
-	    /// Unity's Update method.
-	    /// </summary>
-		private void Update()
+        /// <summary>
+        /// Unity's Update method.
+        /// </summary>
+        private void Update()
 		{
 			if (!gameStarted || gameFinished)
 			{

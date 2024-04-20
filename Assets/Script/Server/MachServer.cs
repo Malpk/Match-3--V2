@@ -1,9 +1,11 @@
 using UnityEngine;
 using Mirror;
+using GameVanilla.Game.Scenes;
 
 public class MachServer : MonoBehaviour
 {
     [SerializeField] private Server _server;
+    [SerializeField] private GameScene _scene;
     [SerializeField] private RoundSession _session;
 
     private void Awake()
@@ -21,6 +23,7 @@ public class MachServer : MonoBehaviour
         if (_server.numPlayers > 0)
         {
             _session.StartGame();
+            _scene.Play();
         }
     }
 

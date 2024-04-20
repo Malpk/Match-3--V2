@@ -33,7 +33,9 @@ namespace GameVanilla.Game.Common
     public class GameBoard : MonoBehaviour
     {
         [SerializeField] private int _level;
+        [SerializeField] private Server _server;
         [SerializeField] private SoundManager _sounds;
+
         #region trashProperty
         [SerializeField]
         private GameScene gameScene;
@@ -219,6 +221,7 @@ namespace GameVanilla.Game.Common
                 {
                     var levelTile = level.tiles[i + (j * level.width)];
                     var tile = CreateTileFromLevel(levelTile, i, j);
+                    _server.Spawn(tile);
                     tile.transform.parent = boardCenter;
                     var tileC = tile.GetComponent<Tile>();
                     if (tile != null)
@@ -280,7 +283,7 @@ namespace GameVanilla.Game.Common
                                 ? tilePool.lightBgTilePool.GetObject()
                                 : tilePool.darkBgTilePool.GetObject();
                         }
-
+                        _server.Spawn(bgTile);
                         bgTile.transform.position = newPos;
                     }
                 }
@@ -916,6 +919,7 @@ namespace GameVanilla.Game.Common
             tile.GetComponent<Tile>().board = this;
             tile.GetComponent<Tile>().x = x;
             tile.GetComponent<Tile>().y = y;
+            _server.Spawn(tile);
             return tile;
         }
 
@@ -937,6 +941,7 @@ namespace GameVanilla.Game.Common
             tile.transform.position = tilePositions[tileIdx];
             tiles[tileIdx] = tile;
             CreateSpawnParticles(tile.transform.position);
+            _server.Spawn(tile);
             return tile;
         }
 
@@ -958,6 +963,7 @@ namespace GameVanilla.Game.Common
             tile.transform.position = tilePositions[tileIdx];
             tiles[tileIdx] = tile;
             CreateSpawnParticles(tile.transform.position);
+            _server.Spawn(tile);
             return tile;
         }
 
@@ -979,6 +985,7 @@ namespace GameVanilla.Game.Common
             tile.transform.position = tilePositions[tileIdx];
             tiles[tileIdx] = tile;
             CreateSpawnParticles(tile.transform.position);
+            _server.Spawn(tile);
             return tile;
         }
 
@@ -999,6 +1006,7 @@ namespace GameVanilla.Game.Common
             tile.transform.position = tilePositions[tileIdx];
             tiles[tileIdx] = tile;
             CreateSpawnParticles(tile.transform.position);
+            _server.Spawn(tile);
             return tile;
         }
 
@@ -1018,6 +1026,7 @@ namespace GameVanilla.Game.Common
             tile.transform.position = tilePositions[tileIdx];
             tiles[tileIdx] = tile;
             CreateSpawnParticles(tile.transform.position);
+            _server.Spawn(tile);
             return tile;
         }
 
