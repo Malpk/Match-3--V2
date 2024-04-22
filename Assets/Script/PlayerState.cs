@@ -59,7 +59,6 @@ public class PlayerState : NetworkBehaviour
 
     public void Enter()
     {
-        Debug.Log($"Enter {name}");
         OnEnter?.Invoke();
         EnterClient();
     }
@@ -67,7 +66,6 @@ public class PlayerState : NetworkBehaviour
     [ClientRpc]
     private void EnterClient()
     {
-        Debug.Log($"Enter {name}");
         OnEnter?.Invoke();
     }
 
