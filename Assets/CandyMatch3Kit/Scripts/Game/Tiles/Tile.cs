@@ -5,10 +5,11 @@
 using System.Collections.Generic;
 
 using UnityEngine;
+using Mirror;
 
 namespace GameVanilla.Game.Common
 {
-	public abstract class Tile : MonoBehaviour
+	public abstract class Tile : NetworkBehaviour
 	{
 		[HideInInspector] public GameBoard board;
 		[HideInInspector] public int x;

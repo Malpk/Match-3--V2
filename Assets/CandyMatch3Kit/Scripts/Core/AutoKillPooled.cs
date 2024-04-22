@@ -3,6 +3,7 @@
 // a copy of which is available at http://unity3d.com/company/legal/as_terms.
 
 using UnityEngine;
+using Mirror;
 
 namespace GameVanilla.Core
 {
@@ -10,7 +11,7 @@ namespace GameVanilla.Core
     /// This class automatically returns the associated pooled object to its origin pool after a certain amount of
     /// time has passed.
     /// </summary>
-    public class AutoKillPooled : MonoBehaviour
+    public class AutoKillPooled : NetworkBehaviour
     {
         public float time = 2.0f;
 
@@ -38,6 +39,8 @@ namespace GameVanilla.Core
         /// </summary>
         private void Update()
         {
+            if (isClient)
+                return;
             accTime += Time.deltaTime;
             if (accTime >= time)
             {

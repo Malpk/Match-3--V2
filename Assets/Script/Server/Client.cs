@@ -7,7 +7,8 @@ public class Client : MonoBehaviour
     [SerializeField] private string _name;
     [SerializeField] private PlayerPanel _playerPanel;
     [SerializeField] private PlayerPanel _enemy;
-    [SerializeField] private MathcClient _client;
+    [SerializeField] private Server _client;
+    [SerializeField] private PlayerHandler _player;
 
 
     private void Awake()
@@ -21,6 +22,7 @@ public class Client : MonoBehaviour
         {
             var player = NetworkClient.localPlayer.GetComponent<PlayerState>();
             player.SetNick(_name);
+            _player.Play(player);
         }
         else
         {

@@ -134,6 +134,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7324050}
   - component: {fileID: 7324049}
+  - component: {fileID: 7324051}
   m_Layer: 0
   m_Name: GameScene
   m_TagString: Untagged
@@ -166,13 +167,136 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7324048}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.34325892, y: -1.6946057, z: -2.3212934}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 654782227}
-  m_RootOrder: 2
+  m_Children:
+  - {fileID: 824988567}
+  m_Father: {fileID: 0}
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7324051
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7324048}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 108ad488adc189b4682a0c648b782bd1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dontDestroyOnLoad: 1
+  runInBackground: 1
+  headlessStartMode: 0
+  editorAutoStart: 0
+  sendRate: 60
+  autoStartServerBuild: 0
+  autoConnectClientBuild: 0
+  offlineScene: Assets/Scenes/GameScene.unity
+  onlineScene: Assets/Scenes/GameScene.unity
+  transport: {fileID: 824988566}
+  networkAddress: localhost
+  maxConnections: 100
+  disconnectInactiveConnections: 0
+  disconnectInactiveTimeout: 60
+  authenticator: {fileID: 0}
+  playerPrefab: {fileID: 4270766740363541608, guid: 4e39f6e615d9ef344abd844e8ca41b36,
+    type: 3}
+  autoCreatePlayer: 1
+  playerSpawnMethod: 0
+  spawnPrefabs:
+  - {fileID: 1834606758426242, guid: 681034cceb632894695501777b5ec41b, type: 3}
+  - {fileID: 1957330277183174, guid: ca9487777d5cc42878b8435b99ef023a, type: 3}
+  - {fileID: 4722458647815537014, guid: 9138f40cbf7bbd349bd5bdfd21f03668, type: 3}
+  - {fileID: 1380951460432540, guid: a64e6356765d55d4b843cbdb13e91e18, type: 3}
+  - {fileID: 1380951460432540, guid: 16af51fd439e2f64f8bcbe0a1c39b1e2, type: 3}
+  - {fileID: 1957330277183174, guid: ec6f4fbc97dca4683b54f2783a7ac595, type: 3}
+  - {fileID: 1957330277183174, guid: 216f33954c6854d3094be162f80890bd, type: 3}
+  - {fileID: 1834606758426242, guid: e46e5ffec9ee2b94faa12cf9bead29a7, type: 3}
+  - {fileID: 1582325896820010, guid: 12fcde19099ed46baac08392ce7e4eed, type: 3}
+  - {fileID: 1949676032732060, guid: a45deb2df5000ef49a068ce11d6bd058, type: 3}
+  - {fileID: 1442056598855054469, guid: e011543594454c94eb85a0dae54ad481, type: 3}
+  - {fileID: 1834606758426242, guid: 87af08003e264714a894ff53cfb780c0, type: 3}
+  - {fileID: 1957330277183174, guid: f5788da2e513746db9f5d16664850227, type: 3}
+  - {fileID: 1957330277183174, guid: 28523f5a3ce774d7b81dfe2d4253b417, type: 3}
+  - {fileID: 1287472507236224, guid: 83ef916ae1a9e4057997885149566f6c, type: 3}
+  - {fileID: 1957330277183174, guid: 2a647ce8a56c048dbb12d60a24d534bf, type: 3}
+  - {fileID: 1026050874022020, guid: 8bfdbee94b46e6045b0a1c7a1219ed7f, type: 3}
+  - {fileID: 1380951460432540, guid: 61cecf6e85ef46d4fac558e32526a43f, type: 3}
+  - {fileID: 1957330277183174, guid: 3756f2ab15cdf4b1bbbc4ed6213db08d, type: 3}
+  - {fileID: 1834606758426242, guid: 9f0d7c3f369f3a4468edf0b6a974d6d1, type: 3}
+  - {fileID: 1957330277183174, guid: 8fe924cc4fe404be4bcabe7dc3a6ad44, type: 3}
+  - {fileID: 6721722832062226477, guid: ba11c37b730feb04b864796b86bc094d, type: 3}
+  - {fileID: 1834606758426242, guid: aacbea462597db345b15e526c4acab07, type: 3}
+  - {fileID: 1957330277183174, guid: c6de1edf9d7a64b9c988c52fec8a5449, type: 3}
+  - {fileID: 1834606758426242, guid: d37fa34a58bf41947be8c251a31bd268, type: 3}
+  - {fileID: 1957330277183174, guid: 46fcdd51ca3da49caaa00d1b1949a5df, type: 3}
+  - {fileID: 5450815737333948019, guid: cf3c2efd19eca9041888c0acd087948c, type: 3}
+  - {fileID: 1983649845024492, guid: dbaae733e5a0f49a190918aba35d401c, type: 3}
+  - {fileID: 1834606758426242, guid: 8407bf7912a82c0478009fc9a7a8f855, type: 3}
+  - {fileID: 1834606758426242, guid: e65c54c30bc9c3143ada1decfb4e6c07, type: 3}
+  - {fileID: 1834606758426242, guid: cb7f2aba8ec375a45b941c0a943e5d33, type: 3}
+  - {fileID: 1834606758426242, guid: a1209d5002c5eaf47adf3936a0addcbd, type: 3}
+  - {fileID: 1834606758426242, guid: cc2f9008d699a6f4794d37932c243bfd, type: 3}
+  - {fileID: 1834606758426242, guid: e5bb6e740b827614ab4f9596431e0326, type: 3}
+  - {fileID: 1834606758426242, guid: 0aa65e6ad284df24283b3b7f7ccaa646, type: 3}
+  - {fileID: 1834606758426242, guid: 5e578c5e5834c434eb8fe8ed1caa9c43, type: 3}
+  - {fileID: 1834606758426242, guid: 8853e59359f3dc64ca85afd00780e719, type: 3}
+  - {fileID: 1834606758426242, guid: 4fc99c45db904264ab6ebd954971e4c7, type: 3}
+  - {fileID: 1834606758426242, guid: f107dec0ccab79d4dbc09f5b2fb8a3ed, type: 3}
+  - {fileID: 1834606758426242, guid: bc05967e56a8ced47b26c96d0c284f91, type: 3}
+  - {fileID: 1957330277183174, guid: 7240fdedc3da540d1a329219624fdff9, type: 3}
+  - {fileID: 8706204833152523774, guid: 43d75a299fd638846a7e2e51c4a530be, type: 3}
+  - {fileID: 1380951460432540, guid: 437a176625bfe1f4b92fd95e1fb4eb92, type: 3}
+  - {fileID: 1287472507236224, guid: cd0653f58bc2140f8b4388d4781a7d8f, type: 3}
+  - {fileID: 1380951460432540, guid: d3cf8e694722ce24895ac9d7c0a1f518, type: 3}
+  - {fileID: 1834606758426242, guid: 8e68ede699516644c83bb874d44a3713, type: 3}
+  - {fileID: 1569230519641290, guid: 84033c06d13bb4793940be1c7cc553a7, type: 3}
+  - {fileID: 1834606758426242, guid: 78dbf485571dc4d4eb9f67d5176b2738, type: 3}
+  - {fileID: 1834606758426242, guid: 718a0cb6fea893540872e7e6afb8d5f4, type: 3}
+  - {fileID: 1834606758426242, guid: a5b0f0b0747559e439eae52ecb83ac17, type: 3}
+  - {fileID: 1834606758426242, guid: 012ae93f04616a040bcb1991855d6489, type: 3}
+  - {fileID: 1834606758426242, guid: 99d1a24500be67842ba2de6161b834ee, type: 3}
+  - {fileID: 1834606758426242, guid: abd89676b9e9306488c5b1413447855f, type: 3}
+  - {fileID: 1957330277183174, guid: d6303a9874db04a1ab17b035e0e06603, type: 3}
+  - {fileID: 1957330277183174, guid: ca9487777d5cc42878b8435b99ef023a, type: 3}
+  - {fileID: 1957330277183174, guid: ec6f4fbc97dca4683b54f2783a7ac595, type: 3}
+  - {fileID: 1957330277183174, guid: 216f33954c6854d3094be162f80890bd, type: 3}
+  - {fileID: 1582325896820010, guid: 12fcde19099ed46baac08392ce7e4eed, type: 3}
+  - {fileID: 1957330277183174, guid: f5788da2e513746db9f5d16664850227, type: 3}
+  - {fileID: 1957330277183174, guid: 28523f5a3ce774d7b81dfe2d4253b417, type: 3}
+  - {fileID: 1287472507236224, guid: 83ef916ae1a9e4057997885149566f6c, type: 3}
+  - {fileID: 1957330277183174, guid: 2a647ce8a56c048dbb12d60a24d534bf, type: 3}
+  - {fileID: 1957330277183174, guid: 3756f2ab15cdf4b1bbbc4ed6213db08d, type: 3}
+  - {fileID: 1957330277183174, guid: 8fe924cc4fe404be4bcabe7dc3a6ad44, type: 3}
+  - {fileID: 1957330277183174, guid: c6de1edf9d7a64b9c988c52fec8a5449, type: 3}
+  - {fileID: 1957330277183174, guid: 46fcdd51ca3da49caaa00d1b1949a5df, type: 3}
+  - {fileID: 1983649845024492, guid: dbaae733e5a0f49a190918aba35d401c, type: 3}
+  - {fileID: 1957330277183174, guid: 7240fdedc3da540d1a329219624fdff9, type: 3}
+  - {fileID: 1287472507236224, guid: cd0653f58bc2140f8b4388d4781a7d8f, type: 3}
+  - {fileID: 1569230519641290, guid: 84033c06d13bb4793940be1c7cc553a7, type: 3}
+  - {fileID: 1957330277183174, guid: d6303a9874db04a1ab17b035e0e06603, type: 3}
+  - {fileID: 1259321441582268, guid: 8fe6eb2ec44a9d942a4e462c0273127d, type: 3}
+  exceptionsDisconnect: 1
+  snapshotSettings:
+    bufferTimeMultiplier: 2
+    bufferLimit: 32
+    catchupNegativeThreshold: -1
+    catchupPositiveThreshold: 1
+    catchupSpeed: 0.019999999552965164
+    slowdownSpeed: 0.03999999910593033
+    driftEmaDuration: 1
+    dynamicAdjustment: 1
+    dynamicAdjustmentTolerance: 1
+    deliveryTimeEmaDuration: 2
+  evaluationMethod: 0
+  evaluationInterval: 3
+  timeInterpolationGui: 0
+  _botPrefab: {fileID: 4722458647815537015, guid: 9138f40cbf7bbd349bd5bdfd21f03668,
+    type: 3}
+  _session: {fileID: 126594400}
 --- !u!1 &12945307
 GameObject:
   m_ObjectHideFlags: 0
@@ -249,206 +373,30 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 12945307}
   m_CullTransparentMesh: 1
---- !u!1 &27524761
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 27524763}
-  - component: {fileID: 27524762}
-  - component: {fileID: 27524764}
-  m_Layer: 0
-  m_Name: GameBoard
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &27524762
+--- !u!114 &27524762 stripped
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 1442056598855054470, guid: e011543594454c94eb85a0dae54ad481,
+    type: 3}
+  m_PrefabInstance: {fileID: 1442056598865349148}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 27524761}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0b278d3545c7d054f997e22ab189b83e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _level: 1
-  _server: {fileID: 654782228}
-  _sounds: {fileID: 510115913}
-  gameScene: {fileID: 7324049}
-  boosterBar: {fileID: 783116384}
-  tilePool: {fileID: 882554316}
-  fxPool: {fileID: 59497834}
-  boardCenter: {fileID: 964005146}
-  currentLimit: 0
---- !u!4 &27524763
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 27524761}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 964005146}
-  - {fileID: 510115912}
-  - {fileID: 1746477283}
-  m_Father: {fileID: 0}
-  m_RootOrder: 8
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &27524764
+--- !u!114 &59497834 stripped
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 1442056598891222902, guid: e011543594454c94eb85a0dae54ad481,
+    type: 3}
+  m_PrefabInstance: {fileID: 1442056598865349148}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 27524761}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sceneId: 447392634
-  _assetId: 0
-  serverOnly: 0
-  visibility: 0
-  hasSpawned: 0
---- !u!1 &57897205
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 57897206}
-  - component: {fileID: 57897207}
-  m_Layer: 0
-  m_Name: PurpleWrappedCandyPool
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &57897206
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 57897205}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 882554315}
-  m_RootOrder: 21
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &57897207
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 57897205}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36fa1b3a050f52747a37fc16cdf85f57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 1834606758426242, guid: a5b0f0b0747559e439eae52ecb83ac17, type: 3}
-  initialSize: 16
---- !u!1 &59497832
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 59497833}
-  - component: {fileID: 59497834}
-  m_Layer: 0
-  m_Name: FxPool
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &59497833
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 59497832}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.36, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 641128864}
-  - {fileID: 1644740607}
-  - {fileID: 112511859}
-  - {fileID: 641532768}
-  - {fileID: 1261640264}
-  - {fileID: 415206631}
-  - {fileID: 214273440}
-  - {fileID: 1783395051}
-  - {fileID: 766872117}
-  - {fileID: 1224999202}
-  - {fileID: 1381467598}
-  - {fileID: 1454383494}
-  - {fileID: 1584369983}
-  - {fileID: 1443102678}
-  - {fileID: 2075563785}
-  - {fileID: 1877193690}
-  - {fileID: 1913156326}
-  - {fileID: 1948785733}
-  m_Father: {fileID: 1746477283}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &59497834
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 59497832}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 33a7e0becfbe70642a7c09baa467ca88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnParticles: {fileID: 641128865}
-  blueCandyExplosion: {fileID: 1644740608}
-  greenCandyExplosion: {fileID: 112511860}
-  orangeCandyExplosion: {fileID: 641532769}
-  purpleCandyExplosion: {fileID: 1261640265}
-  redCandyExplosion: {fileID: 415206632}
-  yellowCandyExplosion: {fileID: 214273441}
-  horizontalStripedCandyExplosion: {fileID: 1783395052}
-  verticalStripedCandyExplosion: {fileID: 766872118}
-  wrappedCandyExplosion: {fileID: 1224999203}
-  colorBombExplosion: {fileID: 1381467599}
-  honeyExplosion: {fileID: 1454383495}
-  iceExplosion: {fileID: 1584369984}
-  syrupExplosion: {fileID: 1443102679}
-  marshmallowExplosion: {fileID: 2075563786}
-  chocolateExplosion: {fileID: 1877193689}
-  collectableExplosion: {fileID: 1913156327}
-  complimentTextPool: {fileID: 1948785732}
 --- !u!1 &69699770
 GameObject:
   m_ObjectHideFlags: 0
@@ -517,236 +465,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &71934728
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 71934729}
-  - component: {fileID: 71934730}
-  m_Layer: 0
-  m_Name: GreenHorizontalStripedCandyPool
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &71934729
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 71934728}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 882554315}
-  m_RootOrder: 7
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &71934730
+--- !u!114 &126594400 stripped
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 708457228, guid: 558f0112e700d054a8587a6dcffdc6de,
+    type: 3}
+  m_PrefabInstance: {fileID: 654782226}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 71934728}
-  m_Enabled: 1
+  m_GameObject: {fileID: 0}
+  m_Enabled: 0
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36fa1b3a050f52747a37fc16cdf85f57, type: 3}
+  m_Script: {fileID: 11500000, guid: 833bd635c60a1ef459ed4336cc4462f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab: {fileID: 1834606758426242, guid: e65c54c30bc9c3143ada1decfb4e6c07, type: 3}
-  initialSize: 16
---- !u!1 &74623442
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 74623443}
-  - component: {fileID: 74623444}
-  m_Layer: 0
-  m_Name: GreenWrappedCandyPool
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &74623443
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 74623442}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 882554315}
-  m_RootOrder: 19
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &74623444
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 74623442}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36fa1b3a050f52747a37fc16cdf85f57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 1834606758426242, guid: 78dbf485571dc4d4eb9f67d5176b2738, type: 3}
-  initialSize: 16
---- !u!1 &91507471
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 91507472}
-  - component: {fileID: 91507473}
-  m_Layer: 0
-  m_Name: YellowCandyPool
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &91507472
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 91507471}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 882554315}
-  m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &91507473
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 91507471}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36fa1b3a050f52747a37fc16cdf85f57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 1834606758426242, guid: abd89676b9e9306488c5b1413447855f, type: 3}
-  initialSize: 16
---- !u!1 &112511858
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 112511859}
-  - component: {fileID: 112511860}
-  m_Layer: 0
-  m_Name: GreenCandyExplosionPool
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &112511859
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 112511858}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 59497833}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &112511860
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 112511858}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36fa1b3a050f52747a37fc16cdf85f57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 1957330277183174, guid: f5788da2e513746db9f5d16664850227, type: 3}
-  initialSize: 16
---- !u!1 &120520792
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 120520793}
-  - component: {fileID: 120520794}
-  m_Layer: 0
-  m_Name: PurpleCandyPool
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &120520793
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 120520792}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 882554315}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &120520794
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 120520792}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36fa1b3a050f52747a37fc16cdf85f57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 1834606758426242, guid: aacbea462597db345b15e526c4acab07, type: 3}
-  initialSize: 16
 --- !u!1 &206539635
 GameObject:
   m_ObjectHideFlags: 0
@@ -823,98 +553,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 206539635}
   m_CullTransparentMesh: 1
---- !u!1 &214273439
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 214273440}
-  - component: {fileID: 214273441}
-  m_Layer: 0
-  m_Name: YellowCandyExplosionPool
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &214273440
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 214273439}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 59497833}
-  m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &214273441
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 214273439}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36fa1b3a050f52747a37fc16cdf85f57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 1957330277183174, guid: d6303a9874db04a1ab17b035e0e06603, type: 3}
-  initialSize: 16
---- !u!1 &252913081
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 252913082}
-  - component: {fileID: 252913083}
-  m_Layer: 0
-  m_Name: YellowWrappedCandyPool
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &252913082
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 252913081}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 882554315}
-  m_RootOrder: 23
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &252913083
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 252913081}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36fa1b3a050f52747a37fc16cdf85f57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 1834606758426242, guid: 99d1a24500be67842ba2de6161b834ee, type: 3}
-  initialSize: 16
 --- !u!1 &254755066
 GameObject:
   m_ObjectHideFlags: 0
@@ -991,236 +629,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 254755066}
   m_CullTransparentMesh: 1
---- !u!1 &316303581
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 316303582}
-  - component: {fileID: 316303583}
-  m_Layer: 0
-  m_Name: OrangeWrappedCandyPool
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &316303582
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 316303581}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 882554315}
-  m_RootOrder: 20
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &316303583
+--- !u!114 &510115913 stripped
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 1442056598557510229, guid: e011543594454c94eb85a0dae54ad481,
+    type: 3}
+  m_PrefabInstance: {fileID: 1442056598865349148}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 316303581}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36fa1b3a050f52747a37fc16cdf85f57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 1834606758426242, guid: 718a0cb6fea893540872e7e6afb8d5f4, type: 3}
-  initialSize: 16
---- !u!1 &371250607
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 371250608}
-  - component: {fileID: 371250609}
-  m_Layer: 0
-  m_Name: PurpleVerticalStripedCandyPool
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &371250608
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 371250607}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 882554315}
-  m_RootOrder: 15
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &371250609
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 371250607}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36fa1b3a050f52747a37fc16cdf85f57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 1834606758426242, guid: 4fc99c45db904264ab6ebd954971e4c7, type: 3}
-  initialSize: 16
---- !u!1 &415206630
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 415206631}
-  - component: {fileID: 415206632}
-  m_Layer: 0
-  m_Name: RedCandyExplosionPool
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &415206631
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 415206630}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 59497833}
-  m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &415206632
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 415206630}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36fa1b3a050f52747a37fc16cdf85f57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 1957330277183174, guid: 46fcdd51ca3da49caaa00d1b1949a5df, type: 3}
-  initialSize: 16
---- !u!1 &510115911
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 510115912}
-  - component: {fileID: 510115913}
-  - component: {fileID: 510115914}
-  m_Layer: 0
-  m_Name: Sound
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &510115912
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 510115911}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 2134767493}
-  m_Father: {fileID: 27524763}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &510115913
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 510115911}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 838c61a0feae8014595368f62f5ca029, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sounds:
-  - {fileID: 8300000, guid: 173f0d04d4b0ba84789af543979c2f52, type: 3}
-  - {fileID: 8300000, guid: 173b4e2fb58254725aff68fe7ac1634c, type: 3}
-  - {fileID: 8300000, guid: f2ee79924bbe9684baa2e63436259ef8, type: 3}
-  - {fileID: 8300000, guid: 25d460114338cde4e9ab4e42af0d3335, type: 3}
-  - {fileID: 8300000, guid: ea487aa88e6b94b5f98bf5f1a8a78a66, type: 3}
-  - {fileID: 8300000, guid: f8978fd31a96542c98d6c37a3390dbd6, type: 3}
-  - {fileID: 8300000, guid: 0480a44be531742f9a31bd80405f9b09, type: 3}
-  - {fileID: 8300000, guid: 469c01a9973ac6847962965c280c7849, type: 3}
-  - {fileID: 8300000, guid: 318103f526ece4934bcb644f591ae8f3, type: 3}
-  - {fileID: 8300000, guid: 5b2c5d43251222040a9ba2e29b5ef802, type: 3}
-  - {fileID: 8300000, guid: f764bd42aee5a4fd8bd999ec397aefac, type: 3}
-  - {fileID: 8300000, guid: 4daaa3cf592cb7745a6b0881a9fc49d1, type: 3}
-  - {fileID: 8300000, guid: 5994527430a5c2049bef8e569f8c14fb, type: 3}
-  - {fileID: 8300000, guid: 92db17ef6aa251648b5f4e08c497191e, type: 3}
-  - {fileID: 8300000, guid: 8192c49bc08245c4697c384a5794ca62, type: 3}
-  - {fileID: 8300000, guid: 06bad3cef25a447d5aa580cc57b9ef73, type: 3}
-  - {fileID: 8300000, guid: 3a1ae27dd179646d38ab00dd91b00b0f, type: 3}
-  - {fileID: 8300000, guid: f6fba64d1709b40ca8c8a4677fb132fc, type: 3}
-  - {fileID: 8300000, guid: fb2e28a8bf409774784c3072531fb2f3, type: 3}
-  - {fileID: 8300000, guid: 77af96134fd7cd74a8e8042b13d7cc7a, type: 3}
-  - {fileID: 8300000, guid: 28c7d5dcd2278864c8c2523332d873b3, type: 3}
-  - {fileID: 8300000, guid: ae0b4c28fc79a3648a6fcd0d61e1f781, type: 3}
-  - {fileID: 8300000, guid: 8dfb80fa04c4e48a0923d17ed767a859, type: 3}
-  - {fileID: 8300000, guid: 27281ad828d8bd547b0a2d5edd70a48b, type: 3}
-  - {fileID: 8300000, guid: 4e2d9f322c6a1af4eb6d6ac3d75b0170, type: 3}
-  - {fileID: 8300000, guid: 2f4ed2b2c996deb4c836898dc5e77786, type: 3}
-  - {fileID: 8300000, guid: da0d4a97cdc44f54ba7a492fa7fd4bba, type: 3}
-  - {fileID: 8300000, guid: a19399c1056102547ad91af5947928e4, type: 3}
-  - {fileID: 8300000, guid: d6c6034f97d068b478fe64297fe32035, type: 3}
-  - {fileID: 8300000, guid: dd8162a3e9df954449d14d98cfbfb193, type: 3}
-  - {fileID: 8300000, guid: 18e7625467947ca41a522ce8a6aa3b3e, type: 3}
---- !u!114 &510115914
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 510115911}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36fa1b3a050f52747a37fc16cdf85f57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 1259321441582268, guid: 8fe6eb2ec44a9d942a4e462c0273127d, type: 3}
-  initialSize: 16
 --- !u!1 &624043671
 GameObject:
   m_ObjectHideFlags: 0
@@ -1297,98 +717,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 624043671}
   m_CullTransparentMesh: 1
---- !u!1 &641128863
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 641128864}
-  - component: {fileID: 641128865}
-  m_Layer: 0
-  m_Name: SpawnParticles
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &641128864
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 641128863}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 59497833}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &641128865
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 641128863}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36fa1b3a050f52747a37fc16cdf85f57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 1983649845024492, guid: dbaae733e5a0f49a190918aba35d401c, type: 3}
-  initialSize: 16
---- !u!1 &641532767
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 641532768}
-  - component: {fileID: 641532769}
-  m_Layer: 0
-  m_Name: OrangeCandyExplosionPool
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &641532768
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 641532767}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 59497833}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &641532769
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 641532767}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36fa1b3a050f52747a37fc16cdf85f57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 1957330277183174, guid: 8fe924cc4fe404be4bcabe7dc3a6ad44, type: 3}
-  initialSize: 16
 --- !u!1001 &654782226
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1445,12 +773,22 @@ PrefabInstance:
         type: 3}
       propertyPath: _bot
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1837074988}
+    - target: {fileID: 8719481289753010914, guid: 558f0112e700d054a8587a6dcffdc6de,
+        type: 3}
+      propertyPath: _board
+      value: 
+      objectReference: {fileID: 27524762}
     - target: {fileID: 8719481289753010914, guid: 558f0112e700d054a8587a6dcffdc6de,
         type: 3}
       propertyPath: _scene
       value: 
       objectReference: {fileID: 7324049}
+    - target: {fileID: 8719481289753010914, guid: 558f0112e700d054a8587a6dcffdc6de,
+        type: 3}
+      propertyPath: _server
+      value: 
+      objectReference: {fileID: 7324051}
     - target: {fileID: 8719481289753010915, guid: 558f0112e700d054a8587a6dcffdc6de,
         type: 3}
       propertyPath: _bot
@@ -1475,7 +813,7 @@ PrefabInstance:
     - target: {fileID: 8719481289753010915, guid: 558f0112e700d054a8587a6dcffdc6de,
         type: 3}
       propertyPath: spawnPrefabs.Array.size
-      value: 30
+      value: 32
       objectReference: {fileID: 0}
     - target: {fileID: 8719481289753010915, guid: 558f0112e700d054a8587a6dcffdc6de,
         type: 3}
@@ -1655,13 +993,13 @@ PrefabInstance:
         type: 3}
       propertyPath: spawnPrefabs.Array.data[30]
       value: 
-      objectReference: {fileID: 1834606758426242, guid: abd89676b9e9306488c5b1413447855f,
+      objectReference: {fileID: 1442056598855054469, guid: e011543594454c94eb85a0dae54ad481,
         type: 3}
     - target: {fileID: 8719481289753010915, guid: 558f0112e700d054a8587a6dcffdc6de,
         type: 3}
       propertyPath: spawnPrefabs.Array.data[31]
       value: 
-      objectReference: {fileID: 1026050874022020, guid: 8bfdbee94b46e6045b0a1c7a1219ed7f,
+      objectReference: {fileID: 6721722832062226477, guid: ba11c37b730feb04b864796b86bc094d,
         type: 3}
     - target: {fileID: 8719481289753010915, guid: 558f0112e700d054a8587a6dcffdc6de,
         type: 3}
@@ -1672,7 +1010,7 @@ PrefabInstance:
     - target: {fileID: 8719481289753010924, guid: 558f0112e700d054a8587a6dcffdc6de,
         type: 3}
       propertyPath: m_RootOrder
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8719481289753010924, guid: 558f0112e700d054a8587a6dcffdc6de,
         type: 3}
@@ -1732,74 +1070,11 @@ PrefabInstance:
     - target: {fileID: 8719481289753010926, guid: 558f0112e700d054a8587a6dcffdc6de,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8719481289753010915, guid: 558f0112e700d054a8587a6dcffdc6de, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 558f0112e700d054a8587a6dcffdc6de, type: 3}
---- !u!4 &654782227 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8719481289753010924, guid: 558f0112e700d054a8587a6dcffdc6de,
-    type: 3}
-  m_PrefabInstance: {fileID: 654782226}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &654782228 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8719481289753010915, guid: 558f0112e700d054a8587a6dcffdc6de,
-    type: 3}
-  m_PrefabInstance: {fileID: 654782226}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 108ad488adc189b4682a0c648b782bd1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!1 &716916831
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 716916833}
-  - component: {fileID: 716916832}
-  m_Layer: 0
-  m_Name: IcePool
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &716916832
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 716916831}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36fa1b3a050f52747a37fc16cdf85f57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 1380951460432540, guid: 5569b44bca59eae4096f3742b6789dfc, type: 3}
-  initialSize: 16
---- !u!4 &716916833
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 716916831}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 882554315}
-  m_RootOrder: 26
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &726551044
 GameObject:
   m_ObjectHideFlags: 0
@@ -1962,52 +1237,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6e1a837f3a62f654dbb0b52f65bd88f0, type: 3}
---- !u!1 &766872116
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 766872117}
-  - component: {fileID: 766872118}
-  m_Layer: 0
-  m_Name: VerticalStripedCandyExplosionPool
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &766872117
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 766872116}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 59497833}
-  m_RootOrder: 8
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &766872118
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 766872116}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36fa1b3a050f52747a37fc16cdf85f57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 1287472507236224, guid: cd0653f58bc2140f8b4388d4781a7d8f, type: 3}
-  initialSize: 4
 --- !u!1 &783116382
 GameObject:
   m_ObjectHideFlags: 0
@@ -2069,7 +1298,7 @@ MonoBehaviour:
   button2: {fileID: 1314019173}
   button3: {fileID: 1810081461}
   button4: {fileID: 1840226884}
---- !u!1 &786456923
+--- !u!1 &824988565
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2077,206 +1306,71 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 786456924}
-  - component: {fileID: 786456925}
+  - component: {fileID: 824988567}
+  - component: {fileID: 824988566}
   m_Layer: 0
-  m_Name: BlueWrappedCandyPool
+  m_Name: NewtworkManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &786456924
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 786456923}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 882554315}
-  m_RootOrder: 18
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &786456925
+--- !u!114 &824988566
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 786456923}
+  m_GameObject: {fileID: 824988565}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36fa1b3a050f52747a37fc16cdf85f57, type: 3}
+  m_Script: {fileID: 11500000, guid: 6b0fecffa3f624585964b0d0eb21b18e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab: {fileID: 1834606758426242, guid: 8e68ede699516644c83bb874d44a3713, type: 3}
-  initialSize: 16
---- !u!1 &880328613
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 880328614}
-  - component: {fileID: 880328615}
-  m_Layer: 0
-  m_Name: BlueHorizontalStripedCandyPool
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &880328614
+  port: 7777
+  DualMode: 1
+  NoDelay: 1
+  Interval: 10
+  Timeout: 10000
+  RecvBufferSize: 7361536
+  SendBufferSize: 7361536
+  FastResend: 2
+  ReceiveWindowSize: 4096
+  SendWindowSize: 4096
+  MaxRetransmit: 40
+  MaximizeSocketBuffers: 1
+  ReliableMaxMessageSize: 297433
+  UnreliableMaxMessageSize: 1194
+  debugLog: 0
+  statisticsGUI: 0
+  statisticsLog: 0
+--- !u!4 &824988567
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 880328613}
+  m_GameObject: {fileID: 824988565}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -3.6290178, y: 1.1901855, z: 2.3649483}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 882554315}
-  m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &880328615
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 880328613}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36fa1b3a050f52747a37fc16cdf85f57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 1834606758426242, guid: 8407bf7912a82c0478009fc9a7a8f855, type: 3}
-  initialSize: 16
---- !u!1 &882554314
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 882554315}
-  - component: {fileID: 882554316}
-  m_Layer: 0
-  m_Name: TilePool
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &882554315
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 882554314}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.36, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1007039933}
-  - {fileID: 1994857264}
-  - {fileID: 1374428719}
-  - {fileID: 120520793}
-  - {fileID: 1668627413}
-  - {fileID: 91507472}
-  - {fileID: 880328614}
-  - {fileID: 71934729}
-  - {fileID: 1639231225}
-  - {fileID: 2110745457}
-  - {fileID: 1454163370}
-  - {fileID: 1913844048}
-  - {fileID: 1653591325}
-  - {fileID: 1949039729}
-  - {fileID: 1947865109}
-  - {fileID: 371250608}
-  - {fileID: 1599683957}
-  - {fileID: 1193861925}
-  - {fileID: 786456924}
-  - {fileID: 74623443}
-  - {fileID: 316303582}
-  - {fileID: 57897206}
-  - {fileID: 1350519032}
-  - {fileID: 252913082}
-  - {fileID: 1774125303}
-  - {fileID: 1551116279}
-  - {fileID: 716916833}
-  - {fileID: 2121612132}
-  - {fileID: 1126528599}
-  - {fileID: 1328486689}
-  - {fileID: 2093113815}
-  - {fileID: 981279849}
-  - {fileID: 1840976270}
-  - {fileID: 1535988632}
-  - {fileID: 1428915866}
-  - {fileID: 1559309338}
-  m_Father: {fileID: 1746477283}
+  m_Father: {fileID: 7324050}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &882554316
+--- !u!114 &882554316 stripped
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 1442056599210966992, guid: e011543594454c94eb85a0dae54ad481,
+    type: 3}
+  m_PrefabInstance: {fileID: 1442056598865349148}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 882554314}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c67b9b09d648e314892887926498d1d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blueCandyPool: {fileID: 1007039934}
-  greenCandyPool: {fileID: 1994857265}
-  orangeCandyPool: {fileID: 1374428720}
-  purpleCandyPool: {fileID: 120520794}
-  redCandyPool: {fileID: 1668627414}
-  yellowCandyPool: {fileID: 91507473}
-  blueHorizontalStripedCandyPool: {fileID: 880328615}
-  greenHorizontalStripedCandyPool: {fileID: 71934730}
-  orangeHorizontalStripedCandyPool: {fileID: 1639231226}
-  purpleHorizontalStripedCandyPool: {fileID: 2110745458}
-  redHorizontalStripedCandyPool: {fileID: 1454163371}
-  yellowHorizontalStripedCandyPool: {fileID: 1913844049}
-  blueVerticalStripedCandyPool: {fileID: 1653591326}
-  greenVerticalStripedCandyPool: {fileID: 1949039730}
-  orangeVerticalStripedCandyPool: {fileID: 1947865110}
-  purpleVerticalStripedCandyPool: {fileID: 371250609}
-  redVerticalStripedCandyPool: {fileID: 1599683958}
-  yellowVerticalStripedCandyPool: {fileID: 1193861926}
-  blueWrappedCandyPool: {fileID: 786456925}
-  greenWrappedCandyPool: {fileID: 74623444}
-  orangeWrappedCandyPool: {fileID: 316303583}
-  purpleWrappedCandyPool: {fileID: 57897207}
-  redWrappedCandyPool: {fileID: 1350519033}
-  yellowWrappedCandyPool: {fileID: 252913083}
-  colorBombCandyPool: {fileID: 1774125304}
-  honeyPool: {fileID: 1551116278}
-  icePool: {fileID: 716916832}
-  syrup1Pool: {fileID: 2121612133}
-  syrup2Pool: {fileID: 1126528600}
-  marshmallowPool: {fileID: 1328486688}
-  chocolatePool: {fileID: 2093113814}
-  unbreakablePool: {fileID: 981279850}
-  cherryPool: {fileID: 1840976271}
-  watermelonPool: {fileID: 1535988631}
-  lightBgTilePool: {fileID: 1428915867}
-  darkBgTilePool: {fileID: 1559309337}
 --- !u!114 &915834867 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8706204833152523772, guid: 43d75a299fd638846a7e2e51c4a530be,
@@ -2289,175 +1383,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8190bacc4cfaf184eb9021250f9ae45f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &964005145
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 964005146}
-  m_Layer: 0
-  m_Name: BoardCenter
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &964005146
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 964005145}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -2.26, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 27524763}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &981279848
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 981279849}
-  - component: {fileID: 981279850}
-  m_Layer: 0
-  m_Name: UnbreakablePool
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &981279849
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 981279848}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 882554315}
-  m_RootOrder: 31
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &981279850
+--- !u!114 &949300637 stripped
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 6721722832062226476, guid: ba11c37b730feb04b864796b86bc094d,
+    type: 3}
+  m_PrefabInstance: {fileID: 6721722831381892529}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 981279848}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36fa1b3a050f52747a37fc16cdf85f57, type: 3}
+  m_Script: {fileID: 11500000, guid: 559e99e96c65a9e45b4f99902e099b4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab: {fileID: 1380951460432540, guid: 437a176625bfe1f4b92fd95e1fb4eb92, type: 3}
-  initialSize: 16
---- !u!1 &1007039932
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1007039933}
-  - component: {fileID: 1007039934}
-  m_Layer: 0
-  m_Name: BlueCandyPool
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1007039933
+--- !u!4 &964005146 stripped
 Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 1442056598977840902, guid: e011543594454c94eb85a0dae54ad481,
+    type: 3}
+  m_PrefabInstance: {fileID: 1442056598865349148}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1007039932}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 882554315}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1007039934
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1007039932}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36fa1b3a050f52747a37fc16cdf85f57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 1834606758426242, guid: 681034cceb632894695501777b5ec41b, type: 3}
-  initialSize: 16
---- !u!1 &1126528598
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1126528599}
-  - component: {fileID: 1126528600}
-  m_Layer: 0
-  m_Name: Syrup2Pool
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1126528599
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1126528598}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 882554315}
-  m_RootOrder: 28
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1126528600
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1126528598}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36fa1b3a050f52747a37fc16cdf85f57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 1380951460432540, guid: 2d8e0d38ef096de43a8f9d80492ac9b0, type: 3}
-  initialSize: 16
 --- !u!114 &1184704116 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8706204834494413947, guid: 43d75a299fd638846a7e2e51c4a530be,
@@ -2470,52 +1413,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a423194dc839deb4c94b8f1bcf356082, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &1193861924
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1193861925}
-  - component: {fileID: 1193861926}
-  m_Layer: 0
-  m_Name: YellowVerticalStripedCandyPool
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1193861925
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1193861924}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 882554315}
-  m_RootOrder: 17
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1193861926
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1193861924}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36fa1b3a050f52747a37fc16cdf85f57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 1834606758426242, guid: bc05967e56a8ced47b26c96d0c284f91, type: 3}
-  initialSize: 16
 --- !u!1 &1211007650
 GameObject:
   m_ObjectHideFlags: 0
@@ -2592,98 +1489,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1211007650}
   m_CullTransparentMesh: 1
---- !u!1 &1224999201
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1224999202}
-  - component: {fileID: 1224999203}
-  m_Layer: 0
-  m_Name: WrappedCandyExplosionPool
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1224999202
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1224999201}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 59497833}
-  m_RootOrder: 9
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1224999203
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1224999201}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36fa1b3a050f52747a37fc16cdf85f57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 1569230519641290, guid: 84033c06d13bb4793940be1c7cc553a7, type: 3}
-  initialSize: 4
---- !u!1 &1261640263
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1261640264}
-  - component: {fileID: 1261640265}
-  m_Layer: 0
-  m_Name: PurpleCandyExplosionPool
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1261640264
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1261640263}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 59497833}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1261640265
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1261640263}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36fa1b3a050f52747a37fc16cdf85f57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 1957330277183174, guid: c6de1edf9d7a64b9c988c52fec8a5449, type: 3}
-  initialSize: 16
 --- !u!1001 &1314019171
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2846,190 +1651,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bdbf35634bba824381389034550cd0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &1328486687
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1328486689}
-  - component: {fileID: 1328486688}
-  m_Layer: 0
-  m_Name: MarshmallowPool
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1328486688
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1328486687}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36fa1b3a050f52747a37fc16cdf85f57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 1380951460432540, guid: 61cecf6e85ef46d4fac558e32526a43f, type: 3}
-  initialSize: 16
---- !u!4 &1328486689
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1328486687}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 882554315}
-  m_RootOrder: 29
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1350519031
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1350519032}
-  - component: {fileID: 1350519033}
-  m_Layer: 0
-  m_Name: RedWrappedCandyPool
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1350519032
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1350519031}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 882554315}
-  m_RootOrder: 22
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1350519033
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1350519031}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36fa1b3a050f52747a37fc16cdf85f57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 1834606758426242, guid: 012ae93f04616a040bcb1991855d6489, type: 3}
-  initialSize: 16
---- !u!1 &1374428718
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1374428719}
-  - component: {fileID: 1374428720}
-  m_Layer: 0
-  m_Name: OrangeCandyPool
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1374428719
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1374428718}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 882554315}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1374428720
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1374428718}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36fa1b3a050f52747a37fc16cdf85f57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 1834606758426242, guid: 9f0d7c3f369f3a4468edf0b6a974d6d1, type: 3}
-  initialSize: 16
---- !u!1 &1381467597
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1381467598}
-  - component: {fileID: 1381467599}
-  m_Layer: 0
-  m_Name: ColorBombExplosionPool
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1381467598
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1381467597}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 59497833}
-  m_RootOrder: 10
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1381467599
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1381467597}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36fa1b3a050f52747a37fc16cdf85f57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 1582325896820010, guid: 12fcde19099ed46baac08392ce7e4eed, type: 3}
-  initialSize: 4
 --- !u!1 &1418041050
 GameObject:
   m_ObjectHideFlags: 0
@@ -3106,190 +1727,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1418041050}
   m_CullTransparentMesh: 1
---- !u!1 &1428915865
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1428915866}
-  - component: {fileID: 1428915867}
-  m_Layer: 0
-  m_Name: LightBgTilePool
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1428915866
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1428915865}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 882554315}
-  m_RootOrder: 34
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1428915867
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1428915865}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36fa1b3a050f52747a37fc16cdf85f57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 1026050874022020, guid: 8bfdbee94b46e6045b0a1c7a1219ed7f, type: 3}
-  initialSize: 32
---- !u!1 &1443102677
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1443102678}
-  - component: {fileID: 1443102679}
-  m_Layer: 0
-  m_Name: SyrupExplosionPool
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1443102678
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1443102677}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 59497833}
-  m_RootOrder: 13
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1443102679
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1443102677}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36fa1b3a050f52747a37fc16cdf85f57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 1957330277183174, guid: 7240fdedc3da540d1a329219624fdff9, type: 3}
-  initialSize: 4
---- !u!1 &1454163369
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1454163370}
-  - component: {fileID: 1454163371}
-  m_Layer: 0
-  m_Name: RedHorizontalStripedCandyPool
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1454163370
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1454163369}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 882554315}
-  m_RootOrder: 10
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1454163371
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1454163369}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36fa1b3a050f52747a37fc16cdf85f57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 1834606758426242, guid: cc2f9008d699a6f4794d37932c243bfd, type: 3}
-  initialSize: 16
---- !u!1 &1454383493
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1454383494}
-  - component: {fileID: 1454383495}
-  m_Layer: 0
-  m_Name: HoneyExplosionPool
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1454383494
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1454383493}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 59497833}
-  m_RootOrder: 11
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1454383495
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1454383493}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36fa1b3a050f52747a37fc16cdf85f57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 1957330277183174, guid: 28523f5a3ce774d7b81dfe2d4253b417, type: 3}
-  initialSize: 4
 --- !u!114 &1521686118 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8706204834832698473, guid: 43d75a299fd638846a7e2e51c4a530be,
@@ -3302,190 +1739,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a423194dc839deb4c94b8f1bcf356082, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &1535988630
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1535988632}
-  - component: {fileID: 1535988631}
-  m_Layer: 0
-  m_Name: WatermelonPool
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1535988631
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1535988630}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36fa1b3a050f52747a37fc16cdf85f57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 1380951460432540, guid: d3cf8e694722ce24895ac9d7c0a1f518, type: 3}
-  initialSize: 16
---- !u!4 &1535988632
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1535988630}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 882554315}
-  m_RootOrder: 33
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1551116277
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1551116279}
-  - component: {fileID: 1551116278}
-  m_Layer: 0
-  m_Name: HoneyPool
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1551116278
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1551116277}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36fa1b3a050f52747a37fc16cdf85f57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 1380951460432540, guid: 3cd7348ecf9d53240818e456980b9295, type: 3}
-  initialSize: 16
---- !u!4 &1551116279
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1551116277}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 882554315}
-  m_RootOrder: 25
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1559309336
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1559309338}
-  - component: {fileID: 1559309337}
-  m_Layer: 0
-  m_Name: DarkBgTilePool
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1559309337
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1559309336}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36fa1b3a050f52747a37fc16cdf85f57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 1949676032732060, guid: a45deb2df5000ef49a068ce11d6bd058, type: 3}
-  initialSize: 32
---- !u!4 &1559309338
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1559309336}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 882554315}
-  m_RootOrder: 35
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1584369982
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1584369983}
-  - component: {fileID: 1584369984}
-  m_Layer: 0
-  m_Name: IceExplosionPool
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1584369983
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1584369982}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 59497833}
-  m_RootOrder: 12
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1584369984
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1584369982}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36fa1b3a050f52747a37fc16cdf85f57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 1957330277183174, guid: 2a647ce8a56c048dbb12d60a24d534bf, type: 3}
-  initialSize: 4
 --- !u!1 &1598465208
 GameObject:
   m_ObjectHideFlags: 0
@@ -3524,98 +1777,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 172}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1 &1599683956
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1599683957}
-  - component: {fileID: 1599683958}
-  m_Layer: 0
-  m_Name: RedVerticalStripedCandyPool
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1599683957
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1599683956}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 882554315}
-  m_RootOrder: 16
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1599683958
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1599683956}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36fa1b3a050f52747a37fc16cdf85f57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 1834606758426242, guid: f107dec0ccab79d4dbc09f5b2fb8a3ed, type: 3}
-  initialSize: 16
---- !u!1 &1639231224
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1639231225}
-  - component: {fileID: 1639231226}
-  m_Layer: 0
-  m_Name: OrangeHorizontalStripedCandyPool
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1639231225
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1639231224}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 882554315}
-  m_RootOrder: 8
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1639231226
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1639231224}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36fa1b3a050f52747a37fc16cdf85f57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 1834606758426242, guid: cb7f2aba8ec375a45b941c0a943e5d33, type: 3}
-  initialSize: 16
 --- !u!1 &1643463435
 GameObject:
   m_ObjectHideFlags: 0
@@ -3709,52 +1870,6 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
---- !u!1 &1644740606
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1644740607}
-  - component: {fileID: 1644740608}
-  m_Layer: 0
-  m_Name: BlueCandyExplosionPool
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1644740607
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1644740606}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 59497833}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1644740608
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1644740606}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36fa1b3a050f52747a37fc16cdf85f57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 1957330277183174, guid: ca9487777d5cc42878b8435b99ef023a, type: 3}
-  initialSize: 16
 --- !u!1 &1647710674
 GameObject:
   m_ObjectHideFlags: 0
@@ -3855,98 +1970,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!1 &1653591324
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1653591325}
-  - component: {fileID: 1653591326}
-  m_Layer: 0
-  m_Name: BlueVerticalStripedCandyPool
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1653591325
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1653591324}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 882554315}
-  m_RootOrder: 12
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1653591326
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1653591324}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36fa1b3a050f52747a37fc16cdf85f57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 1834606758426242, guid: 0aa65e6ad284df24283b3b7f7ccaa646, type: 3}
-  initialSize: 16
---- !u!1 &1668627412
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1668627413}
-  - component: {fileID: 1668627414}
-  m_Layer: 0
-  m_Name: RedCandyPool
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1668627413
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1668627412}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 882554315}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1668627414
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1668627412}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36fa1b3a050f52747a37fc16cdf85f57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 1834606758426242, guid: d37fa34a58bf41947be8c251a31bd268, type: 3}
-  initialSize: 16
 --- !u!1 &1716043531
 GameObject:
   m_ObjectHideFlags: 0
@@ -4191,6 +2214,16 @@ PrefabInstance:
       objectReference: {fileID: 1521686118}
     - target: {fileID: 1867655420170066583, guid: 6676c4057c4755449bcb4abbfa7df3b8,
         type: 3}
+      propertyPath: _client
+      value: 
+      objectReference: {fileID: 7324051}
+    - target: {fileID: 1867655420170066583, guid: 6676c4057c4755449bcb4abbfa7df3b8,
+        type: 3}
+      propertyPath: _player
+      value: 
+      objectReference: {fileID: 949300637}
+    - target: {fileID: 1867655420170066583, guid: 6676c4057c4755449bcb4abbfa7df3b8,
+        type: 3}
       propertyPath: _playerPanel
       value: 
       objectReference: {fileID: 1184704116}
@@ -4268,7 +2301,7 @@ PrefabInstance:
     - target: {fileID: 1867655420170066585, guid: 6676c4057c4755449bcb4abbfa7df3b8,
         type: 3}
       propertyPath: spawnPrefabs.Array.size
-      value: 30
+      value: 32
       objectReference: {fileID: 0}
     - target: {fileID: 1867655420170066585, guid: 6676c4057c4755449bcb4abbfa7df3b8,
         type: 3}
@@ -4450,138 +2483,31 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1026050874022020, guid: 8bfdbee94b46e6045b0a1c7a1219ed7f,
         type: 3}
+    - target: {fileID: 1867655420170066585, guid: 6676c4057c4755449bcb4abbfa7df3b8,
+        type: 3}
+      propertyPath: spawnPrefabs.Array.data[30]
+      value: 
+      objectReference: {fileID: 1442056598855054469, guid: e011543594454c94eb85a0dae54ad481,
+        type: 3}
+    - target: {fileID: 1867655420170066585, guid: 6676c4057c4755449bcb4abbfa7df3b8,
+        type: 3}
+      propertyPath: spawnPrefabs.Array.data[31]
+      value: 
+      objectReference: {fileID: 6721722832062226477, guid: ba11c37b730feb04b864796b86bc094d,
+        type: 3}
     - target: {fileID: 1867655420170066586, guid: 6676c4057c4755449bcb4abbfa7df3b8,
         type: 3}
       propertyPath: m_Name
       value: Client
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 1867655420170066586, guid: 6676c4057c4755449bcb4abbfa7df3b8,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 1867655420170066585, guid: 6676c4057c4755449bcb4abbfa7df3b8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 6676c4057c4755449bcb4abbfa7df3b8, type: 3}
---- !u!1 &1746477282
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1746477283}
-  m_Layer: 0
-  m_Name: Pools
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1746477283
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1746477282}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 882554315}
-  - {fileID: 59497833}
-  m_Father: {fileID: 27524763}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1774125302
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1774125303}
-  - component: {fileID: 1774125304}
-  m_Layer: 0
-  m_Name: ColorBombPool
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1774125303
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1774125302}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 882554315}
-  m_RootOrder: 24
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1774125304
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1774125302}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36fa1b3a050f52747a37fc16cdf85f57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 1834606758426242, guid: e46e5ffec9ee2b94faa12cf9bead29a7, type: 3}
-  initialSize: 16
---- !u!1 &1783395050
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1783395051}
-  - component: {fileID: 1783395052}
-  m_Layer: 0
-  m_Name: HorizontalStripedCandyExplosionPool
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1783395051
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1783395050}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 59497833}
-  m_RootOrder: 7
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1783395052
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1783395050}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36fa1b3a050f52747a37fc16cdf85f57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 1287472507236224, guid: 83ef916ae1a9e4057997885149566f6c, type: 3}
-  initialSize: 4
 --- !u!1001 &1810081459
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4754,6 +2680,52 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bdbf35634bba824381389034550cd0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1837074986
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1837074987}
+  - component: {fileID: 1837074988}
+  m_Layer: 0
+  m_Name: Bot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1837074987
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1837074986}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2073123397}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1837074988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1837074986}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c865d267359c7cf4db11f7a30963db7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tileHolder: {fileID: 27524762}
+  _tiles: []
 --- !u!1001 &1840226882
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4926,104 +2898,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bdbf35634bba824381389034550cd0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &1840976269
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1840976270}
-  - component: {fileID: 1840976271}
-  m_Layer: 0
-  m_Name: CherryPool
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1840976270
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1840976269}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 882554315}
-  m_RootOrder: 32
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1840976271
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1840976269}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36fa1b3a050f52747a37fc16cdf85f57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 1380951460432540, guid: a64e6356765d55d4b843cbdb13e91e18, type: 3}
-  initialSize: 16
 --- !u!224 &1853613774 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 224839444793264298, guid: 162318272717942b2a654fc9529231b5,
     type: 3}
   m_PrefabInstance: {fileID: 2039331558}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1877193688
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1877193690}
-  - component: {fileID: 1877193689}
-  m_Layer: 0
-  m_Name: ChocolateExplosionPool
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1877193689
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1877193688}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36fa1b3a050f52747a37fc16cdf85f57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 1957330277183174, guid: ec6f4fbc97dca4683b54f2783a7ac595, type: 3}
-  initialSize: 4
---- !u!4 &1877193690
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1877193688}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 59497833}
-  m_RootOrder: 15
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1897807766
 GameObject:
   m_ObjectHideFlags: 0
@@ -5117,282 +2997,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1913156325
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1913156326}
-  - component: {fileID: 1913156327}
-  m_Layer: 0
-  m_Name: CollectableExplosionPool
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1913156326
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1913156325}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 59497833}
-  m_RootOrder: 16
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1913156327
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1913156325}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36fa1b3a050f52747a37fc16cdf85f57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 1957330277183174, guid: 216f33954c6854d3094be162f80890bd, type: 3}
-  initialSize: 4
---- !u!1 &1913844047
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1913844048}
-  - component: {fileID: 1913844049}
-  m_Layer: 0
-  m_Name: YellowHorizontalStripedCandyPool
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1913844048
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1913844047}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 882554315}
-  m_RootOrder: 11
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1913844049
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1913844047}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36fa1b3a050f52747a37fc16cdf85f57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 1834606758426242, guid: e5bb6e740b827614ab4f9596431e0326, type: 3}
-  initialSize: 16
---- !u!1 &1947865108
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1947865109}
-  - component: {fileID: 1947865110}
-  m_Layer: 0
-  m_Name: OrangeVerticalStripedCandyPool
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1947865109
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1947865108}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 882554315}
-  m_RootOrder: 14
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1947865110
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1947865108}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36fa1b3a050f52747a37fc16cdf85f57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 1834606758426242, guid: 8853e59359f3dc64ca85afd00780e719, type: 3}
-  initialSize: 16
---- !u!1 &1948785731
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1948785733}
-  - component: {fileID: 1948785732}
-  m_Layer: 0
-  m_Name: ComplimentTextPool
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1948785732
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1948785731}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36fa1b3a050f52747a37fc16cdf85f57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 1685611425626796, guid: 6f776270e67befa4d8cb2ee17848cf4a, type: 3}
-  initialSize: 4
---- !u!4 &1948785733
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1948785731}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 59497833}
-  m_RootOrder: 17
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1949039728
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1949039729}
-  - component: {fileID: 1949039730}
-  m_Layer: 0
-  m_Name: GreenVerticalStripedCandyPool
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1949039729
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1949039728}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 882554315}
-  m_RootOrder: 13
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1949039730
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1949039728}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36fa1b3a050f52747a37fc16cdf85f57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 1834606758426242, guid: 5e578c5e5834c434eb8fe8ed1caa9c43, type: 3}
-  initialSize: 16
---- !u!1 &1994857263
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1994857264}
-  - component: {fileID: 1994857265}
-  m_Layer: 0
-  m_Name: GreenCandyPool
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1994857264
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1994857263}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 882554315}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1994857265
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1994857263}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36fa1b3a050f52747a37fc16cdf85f57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 1834606758426242, guid: 87af08003e264714a894ff53cfb780c0, type: 3}
-  initialSize: 16
 --- !u!1001 &2039331558
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5509,98 +3113,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bdbf35634bba824381389034550cd0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &2075563784
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2075563785}
-  - component: {fileID: 2075563786}
-  m_Layer: 0
-  m_Name: MarshmallowExplosionPool
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2075563785
+--- !u!4 &2073123397 stripped
 Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 8719481289753010924, guid: 558f0112e700d054a8587a6dcffdc6de,
+    type: 3}
+  m_PrefabInstance: {fileID: 654782226}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2075563784}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 59497833}
-  m_RootOrder: 14
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2075563786
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2075563784}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36fa1b3a050f52747a37fc16cdf85f57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 1957330277183174, guid: 3756f2ab15cdf4b1bbbc4ed6213db08d, type: 3}
-  initialSize: 4
---- !u!1 &2093113813
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2093113815}
-  - component: {fileID: 2093113814}
-  m_Layer: 0
-  m_Name: ChocolatePool
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &2093113814
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2093113813}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36fa1b3a050f52747a37fc16cdf85f57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 1380951460432540, guid: 16af51fd439e2f64f8bcbe0a1c39b1e2, type: 3}
-  initialSize: 16
---- !u!4 &2093113815
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2093113813}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 882554315}
-  m_RootOrder: 30
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2107780407
 GameObject:
   m_ObjectHideFlags: 0
@@ -5701,173 +3219,179 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!1 &2110745456
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2110745457}
-  - component: {fileID: 2110745458}
-  m_Layer: 0
-  m_Name: PurpleHorizontalStripedCandyPool
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2110745457
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2110745456}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 882554315}
-  m_RootOrder: 9
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2110745458
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2110745456}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36fa1b3a050f52747a37fc16cdf85f57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 1834606758426242, guid: a1209d5002c5eaf47adf3936a0addcbd, type: 3}
-  initialSize: 16
---- !u!1 &2121612131
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2121612132}
-  - component: {fileID: 2121612133}
-  m_Layer: 0
-  m_Name: Syrup1Pool
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2121612132
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2121612131}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 882554315}
-  m_RootOrder: 27
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2121612133
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2121612131}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36fa1b3a050f52747a37fc16cdf85f57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 1380951460432540, guid: 0b81c51861602af46a26325c012ff0a1, type: 3}
-  initialSize: 16
---- !u!4 &2134767493 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6386351895750367189, guid: 884384dae575d8a45bb7f1cef658ca77,
-    type: 3}
-  m_PrefabInstance: {fileID: 2139433565}
-  m_PrefabAsset: {fileID: 0}
---- !u!1001 &2139433565
+--- !u!1001 &1442056598865349148
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 510115912}
+    m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 6386351895750367147, guid: 884384dae575d8a45bb7f1cef658ca77,
+    - target: {fileID: 1442056598855054464, guid: e011543594454c94eb85a0dae54ad481,
+        type: 3}
+      propertyPath: sceneId
+      value: 447392634
+      objectReference: {fileID: 0}
+    - target: {fileID: 1442056598855054469, guid: e011543594454c94eb85a0dae54ad481,
         type: 3}
       propertyPath: m_Name
-      value: BackgroundMusic
+      value: GameBoard
       objectReference: {fileID: 0}
-    - target: {fileID: 6386351895750367189, guid: 884384dae575d8a45bb7f1cef658ca77,
+    - target: {fileID: 1442056598855054470, guid: e011543594454c94eb85a0dae54ad481,
+        type: 3}
+      propertyPath: _server
+      value: 
+      objectReference: {fileID: 7324051}
+    - target: {fileID: 1442056598855054470, guid: e011543594454c94eb85a0dae54ad481,
+        type: 3}
+      propertyPath: gameScene
+      value: 
+      objectReference: {fileID: 7324049}
+    - target: {fileID: 1442056598855054470, guid: e011543594454c94eb85a0dae54ad481,
+        type: 3}
+      propertyPath: boosterBar
+      value: 
+      objectReference: {fileID: 783116384}
+    - target: {fileID: 1442056598855054471, guid: e011543594454c94eb85a0dae54ad481,
         type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 10
       objectReference: {fileID: 0}
-    - target: {fileID: 6386351895750367189, guid: 884384dae575d8a45bb7f1cef658ca77,
+    - target: {fileID: 1442056598855054471, guid: e011543594454c94eb85a0dae54ad481,
         type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6386351895750367189, guid: 884384dae575d8a45bb7f1cef658ca77,
+    - target: {fileID: 1442056598855054471, guid: e011543594454c94eb85a0dae54ad481,
         type: 3}
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6386351895750367189, guid: 884384dae575d8a45bb7f1cef658ca77,
+    - target: {fileID: 1442056598855054471, guid: e011543594454c94eb85a0dae54ad481,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.25
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6386351895750367189, guid: 884384dae575d8a45bb7f1cef658ca77,
+    - target: {fileID: 1442056598855054471, guid: e011543594454c94eb85a0dae54ad481,
         type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 6386351895750367189, guid: 884384dae575d8a45bb7f1cef658ca77,
+    - target: {fileID: 1442056598855054471, guid: e011543594454c94eb85a0dae54ad481,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 6386351895750367189, guid: 884384dae575d8a45bb7f1cef658ca77,
+    - target: {fileID: 1442056598855054471, guid: e011543594454c94eb85a0dae54ad481,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 6386351895750367189, guid: 884384dae575d8a45bb7f1cef658ca77,
+    - target: {fileID: 1442056598855054471, guid: e011543594454c94eb85a0dae54ad481,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 6386351895750367189, guid: 884384dae575d8a45bb7f1cef658ca77,
+    - target: {fileID: 1442056598855054471, guid: e011543594454c94eb85a0dae54ad481,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6386351895750367189, guid: 884384dae575d8a45bb7f1cef658ca77,
+    - target: {fileID: 1442056598855054471, guid: e011543594454c94eb85a0dae54ad481,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6386351895750367189, guid: 884384dae575d8a45bb7f1cef658ca77,
+    - target: {fileID: 1442056598855054471, guid: e011543594454c94eb85a0dae54ad481,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 884384dae575d8a45bb7f1cef658ca77, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: e011543594454c94eb85a0dae54ad481, type: 3}
+--- !u!1001 &6721722831381892529
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 6721722832062226476, guid: ba11c37b730feb04b864796b86bc094d,
+        type: 3}
+      propertyPath: _board
+      value: 
+      objectReference: {fileID: 27524762}
+    - target: {fileID: 6721722832062226476, guid: ba11c37b730feb04b864796b86bc094d,
+        type: 3}
+      propertyPath: _scene
+      value: 
+      objectReference: {fileID: 7324049}
+    - target: {fileID: 6721722832062226477, guid: ba11c37b730feb04b864796b86bc094d,
+        type: 3}
+      propertyPath: m_Name
+      value: PlayerHandle
+      objectReference: {fileID: 0}
+    - target: {fileID: 6721722832062226478, guid: ba11c37b730feb04b864796b86bc094d,
+        type: 3}
+      propertyPath: sceneId
+      value: 3427843396
+      objectReference: {fileID: 0}
+    - target: {fileID: 6721722832062226479, guid: ba11c37b730feb04b864796b86bc094d,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 6721722832062226479, guid: ba11c37b730feb04b864796b86bc094d,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.34325892
+      objectReference: {fileID: 0}
+    - target: {fileID: 6721722832062226479, guid: ba11c37b730feb04b864796b86bc094d,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.6946057
+      objectReference: {fileID: 0}
+    - target: {fileID: 6721722832062226479, guid: ba11c37b730feb04b864796b86bc094d,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 2.3212934
+      objectReference: {fileID: 0}
+    - target: {fileID: 6721722832062226479, guid: ba11c37b730feb04b864796b86bc094d,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6721722832062226479, guid: ba11c37b730feb04b864796b86bc094d,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6721722832062226479, guid: ba11c37b730feb04b864796b86bc094d,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6721722832062226479, guid: ba11c37b730feb04b864796b86bc094d,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6721722832062226479, guid: ba11c37b730feb04b864796b86bc094d,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6721722832062226479, guid: ba11c37b730feb04b864796b86bc094d,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6721722832062226479, guid: ba11c37b730feb04b864796b86bc094d,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ba11c37b730feb04b864796b86bc094d, type: 3}
 --- !u!1001 &8706204833378392591
 PrefabInstance:
   m_ObjectHideFlags: 0

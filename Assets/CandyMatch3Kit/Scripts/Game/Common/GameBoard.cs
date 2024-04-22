@@ -2,6 +2,7 @@
 // This code can only be used under the standard Unity Asset Store End User License Agreement,
 // a copy of which is available at http://unity3d.com/company/legal/as_terms.
 
+using Mirror;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -30,10 +31,9 @@ namespace GameVanilla.Game.Common
         Vertical
     }
 
-    public class GameBoard : MonoBehaviour
+    public class GameBoard : NetworkBehaviour
     {
         [SerializeField] private int _level;
-        [SerializeField] private Server _server;
         [SerializeField] private SoundManager _sounds;
 
         #region trashProperty
@@ -60,15 +60,15 @@ namespace GameVanilla.Game.Common
         public int currentLimit;
 
         private List<GameObject> tiles;
+
+        public List<GameObject> Tiles => tiles;
+
         private List<GameObject> honeys;
         private List<GameObject> ices;
         private List<GameObject> syrups1;
         private List<GameObject> syrups2;
 
         private readonly List<Vector3> tilePositions = new List<Vector3>();
-
-        private bool drag;
-        private GameObject selectedTile;
 
         private List<Swap> possibleSwaps = new List<Swap>();
 
@@ -94,13 +94,17 @@ namespace GameVanilla.Game.Common
 
         private Coroutine countdownCoroutine;
 
-        private bool currentlyAwarding;
-        public bool CurrentlyAwarding
-        {
-            get { return currentlyAwarding; }
-        }
+        [SyncVar]
+        private bool currentlyAwarding = false;
+        [SyncVar]
+        private bool inputLocked = false;
+        [SyncVar]
+        private bool currentlySwapping = false;
 
-        private bool inputLocked;
+        public bool CurrentlyAwarding => currentlyAwarding;
+        public bool InputLocked => inputLocked;
+        public bool CurrentlySwapping => currentlySwapping;
+
 
         private readonly List<CollectableType> eligibleCollectables = new List<CollectableType>();
 
@@ -110,7 +114,6 @@ namespace GameVanilla.Game.Common
 
         private SwapDirection swapDirection;
 
-        private bool currentlySwapping;
 
         private readonly MatchDetector horizontalMatchDetector = new HorizontalMatchDetector();
         private readonly MatchDetector verticalMatchDetector = new VerticalMatchDetector();
@@ -127,6 +130,7 @@ namespace GameVanilla.Game.Common
 
         public int Width => level.width;
         public int Height => level.height;
+
 
         /// <summary>
         /// Unity's Awake method.
@@ -162,6 +166,8 @@ namespace GameVanilla.Game.Common
             var serializer = new fsSerializer();
             level = FileUtils.LoadJsonFile<Level>(serializer,
                 "Levels/" + _level);
+
+            SetLevvel(_level);
 
             boosterBar.SetData(level);
 
@@ -221,7 +227,7 @@ namespace GameVanilla.Game.Common
                 {
                     var levelTile = level.tiles[i + (j * level.width)];
                     var tile = CreateTileFromLevel(levelTile, i, j);
-                    _server.Spawn(tile);
+                    AddTile(tile);
                     tile.transform.parent = boardCenter;
                     var tileC = tile.GetComponent<Tile>();
                     if (tile != null)
@@ -283,7 +289,6 @@ namespace GameVanilla.Game.Common
                                 ? tilePool.lightBgTilePool.GetObject()
                                 : tilePool.darkBgTilePool.GetObject();
                         }
-                        _server.Spawn(bgTile);
                         bgTile.transform.position = newPos;
                     }
                 }
@@ -347,6 +352,45 @@ namespace GameVanilla.Game.Common
             possibleSwaps = DetectPossibleSwaps();
         }
 
+        [ClientRpc]
+        public void SetLevvel(int levelID)
+        {
+            var serializer = new fsSerializer();
+            level = FileUtils.LoadJsonFile<Level>(serializer,
+                 "Levels/" + levelID);
+            tiles = new List<GameObject>(level.width * level.height);
+        }
+
+        [ClientRpc]
+        public void AddTile(GameObject tile)
+        {
+            tiles.Add(tile);
+        }
+
+        [ClientRpc]
+        public void UpdateTile(GameObject tile, int position)
+        {
+            tiles[position] = tile;
+        }
+
+
+        [ClientRpc]
+        public void RemoveTile(GameObject tile)
+        {
+            tiles.Remove(tile);
+        }
+
+        [ClientRpc]
+        private void UpdateLevel(int index, ElementType type)
+        {
+            level.tiles[index].elementType = type;
+        }
+
+        public void SetPossibleSwaps()
+        {
+            possibleSwaps = DetectPossibleSwaps();
+        }
+
         /// <summary>
         /// Starts a new game.
         /// </summary>
@@ -400,85 +444,11 @@ namespace GameVanilla.Game.Common
             }
         }
 
-        public void HandleInput()
+
+
+        public void ServerInputBoard(Tile tile, Tile selected)
         {
-            if (inputLocked)
-            {
-                return;
-            }
-
-            if (currentlySwapping)
-            {
-                return;
-            }
-
-            if (currentlyAwarding)
-            {
-                return;
-            }
-
-            if (Input.GetMouseButtonDown(0))
-            {
-                drag = true;
-                var hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
-                if (hit.collider != null && hit.collider.gameObject.CompareTag("Tile"))
-                {
-                    var idx = tiles.FindIndex(x => x == hit.collider.gameObject);
-                    if (level.tiles[idx] != null && level.tiles[idx].elementType == ElementType.Ice)
-                    {
-                        return;
-                    }
-
-                    if (hit.collider.GetComponent<SpecialBlock>() != null)
-                    {
-                        return;
-                    }
-
-                    selectedTile = hit.collider.gameObject;
-                    selectedTile.GetComponent<Animator>().SetTrigger("Pressed");
-                }
-            }
-
-            if (Input.GetMouseButtonUp(0))
-            {
-                drag = false;
-                if (selectedTile != null && selectedTile.GetComponent<Animator>() != null && selectedTile.gameObject.activeSelf)
-                {
-                    selectedTile.GetComponent<Animator>().SetTrigger("Unpressed");
-                }
-            }
-
-            if (drag && selectedTile != null)
-            {
-                var hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
-                var tile = hit ? hit.collider.GetComponent<Tile>() : null;
-                if (!tile)
-                    return;
-                if (tile.gameObject != selectedTile)
-                {
-                    if (tile.GetComponent<SpecialBlock>() != null)
-                        return;
-                    if (selectedTile.GetComponent<Animator>() != null && selectedTile.gameObject.activeSelf)
-                    {
-                        selectedTile.GetComponent<Animator>().SetTrigger("Unpressed");
-                    }
-
-                    var idx = tiles.FindIndex(x => x == tile.gameObject);
-                    if (level.tiles[idx] != null && level.tiles[idx].elementType == ElementType.Ice)
-                        return;
-
-                    var idxSelected = tiles.FindIndex(x => x == selectedTile);
-                    var xSelected = idxSelected % level.width;
-                    var ySelected = idxSelected / level.width;
-                    var idxNew = tiles.FindIndex(x => x == tile.gameObject);
-                    var xNew = idxNew % level.width;
-                    var yNew = idxNew / level.width;
-                    if (Math.Abs(xSelected - xNew) > 1 || Math.Abs(ySelected - yNew) > 1)
-                        return;
-
-                    InputBoard(tile, selectedTile.GetComponent<Tile>());
-                }
-            }
+            InputBoard(tile, selected);
         }
 
         public void InputBoard(Tile tile, Tile selected)
@@ -576,8 +546,6 @@ namespace GameVanilla.Game.Common
                     lastOtherSelectedCandyColor = tile.gameObject.GetComponent<Candy>().color;
                 }
 
-                selectedTile = null;
-
                 possibleSwaps = DetectPossibleSwaps();
 
                 PerformMove();
@@ -609,7 +577,6 @@ namespace GameVanilla.Game.Common
                     });
                 }
 
-                selectedTile = null;
 
                 _sounds.PlaySound("Error");
             }
@@ -618,118 +585,8 @@ namespace GameVanilla.Game.Common
         /// <summary>
         /// Handles the player's input when the game is in booster mode.
         /// </summary>
-        public void HandleBoosterInput(BuyBoosterButton button)
-        {
-            if (Input.GetMouseButtonDown(0))
-            {
-                var hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
-                if (hit.collider != null && hit.collider.gameObject.CompareTag("Tile"))
-                {
-                    if (hit.collider.GetComponent<Unbreakable>() != null ||
-                        hit.collider.GetComponent<Collectable>() != null)
-                    {
-                        return;
-                    }
 
-                    var tile = hit.collider.GetComponent<Tile>();
-                    Booster booster = null;
-                    switch (button.boosterType)
-                    {
-                        case BoosterType.Lollipop:
-                            booster = new LollipopBooster();
-                            break;
 
-                        case BoosterType.Bomb:
-                            booster = new BombBooster();
-                            break;
-
-                        case BoosterType.ColorBomb:
-                            booster = new ColorBombBooster();
-                            break;
-                    }
-
-                    if (booster != null)
-                    {
-                        booster.Resolve(this, tile.gameObject);
-                        ConsumeBooster(button);
-                        ApplyGravity();
-                    }
-
-                    gameScene.DisableBoosterMode();
-
-                    selectedTile = hit.collider.gameObject;
-                }
-                else
-                {
-                    gameScene.DisableBoosterMode();
-                }
-            }
-        }
-
-        /// <summary>
-        /// Handles the player's input when the game is in booster mode and the booster used is the switch.
-        /// </summary>
-        public void HandleSwitchBoosterInput(BuyBoosterButton button)
-        {
-            if (Input.GetMouseButtonDown(0))
-            {
-                drag = true;
-                var hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
-                if (hit.collider != null && hit.collider.gameObject.CompareTag("Tile"))
-                {
-                    selectedTile = hit.collider.gameObject;
-                }
-                else
-                {
-                    gameScene.DisableBoosterMode();
-                    return;
-                }
-            }
-
-            if (Input.GetMouseButtonUp(0))
-            {
-                drag = false;
-            }
-
-            if (drag && selectedTile != null)
-            {
-                var hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
-                if (hit.collider != null && hit.collider.gameObject != selectedTile)
-                {
-                    var selectedTileCopy = selectedTile;
-                    selectedTile.GetComponent<SpriteRenderer>().sortingOrder = 1;
-                    LeanTween.move(selectedTile, hit.collider.gameObject.transform.position, 0.25f).setOnComplete(
-                        () =>
-                        {
-                            selectedTileCopy.GetComponent<SpriteRenderer>().sortingOrder = 0;
-                            gameScene.DisableBoosterMode();
-                            HandleMatches(true);
-                            ConsumeBooster(button);
-                        });
-                    LeanTween.move(hit.collider.gameObject, selectedTile.transform.position, 0.25f);
-
-                    var tileA = hit.collider.gameObject;
-                    var tileB = selectedTile;
-                    var idxA = tiles.FindIndex(x => x == tileA);
-                    var idxB = tiles.FindIndex(x => x == tileB);
-                    tiles[idxA] = tileB;
-                    tiles[idxB] = tileA;
-
-                    tileA.GetComponent<Tile>().x = idxB % level.width;
-                    tileA.GetComponent<Tile>().y = idxB / level.width;
-                    tileB.GetComponent<Tile>().x = idxA % level.width;
-                    tileB.GetComponent<Tile>().y = idxA / level.width;
-
-                    selectedTile = null;
-
-                    possibleSwaps = DetectPossibleSwaps();
-                }
-            }
-        }
-
-        /// <summary>
-        /// Performs a move.
-        /// </summary>
         private void PerformMove()
         {
             ClearSuggestedMatch();
@@ -919,7 +776,6 @@ namespace GameVanilla.Game.Common
             tile.GetComponent<Tile>().board = this;
             tile.GetComponent<Tile>().x = x;
             tile.GetComponent<Tile>().y = y;
-            _server.Spawn(tile);
             return tile;
         }
 
@@ -941,7 +797,7 @@ namespace GameVanilla.Game.Common
             tile.transform.position = tilePositions[tileIdx];
             tiles[tileIdx] = tile;
             CreateSpawnParticles(tile.transform.position);
-            _server.Spawn(tile);
+            UpdateTile(tile, tileIdx);
             return tile;
         }
 
@@ -963,7 +819,7 @@ namespace GameVanilla.Game.Common
             tile.transform.position = tilePositions[tileIdx];
             tiles[tileIdx] = tile;
             CreateSpawnParticles(tile.transform.position);
-            _server.Spawn(tile);
+            UpdateTile(tile, tileIdx);
             return tile;
         }
 
@@ -985,7 +841,7 @@ namespace GameVanilla.Game.Common
             tile.transform.position = tilePositions[tileIdx];
             tiles[tileIdx] = tile;
             CreateSpawnParticles(tile.transform.position);
-            _server.Spawn(tile);
+            UpdateTile(tile, tileIdx);
             return tile;
         }
 
@@ -1006,7 +862,7 @@ namespace GameVanilla.Game.Common
             tile.transform.position = tilePositions[tileIdx];
             tiles[tileIdx] = tile;
             CreateSpawnParticles(tile.transform.position);
-            _server.Spawn(tile);
+            UpdateTile(tile, tileIdx);
             return tile;
         }
 
@@ -1026,7 +882,7 @@ namespace GameVanilla.Game.Common
             tile.transform.position = tilePositions[tileIdx];
             tiles[tileIdx] = tile;
             CreateSpawnParticles(tile.transform.position);
-            _server.Spawn(tile);
+            UpdateTile(tile, tileIdx);
             return tile;
         }
 
@@ -1182,6 +1038,7 @@ namespace GameVanilla.Game.Common
             {
                 honeys[idx].GetComponent<PooledObject>().pool.ReturnObject(honeys[idx]);
                 level.tiles[idx].elementType = ElementType.None;
+                UpdateLevel(idx, level.tiles[idx].elementType);
                 honeys[idx] = null;
                 UpdateScore(gameConfig.GetElementScore(ElementType.Honey));
 
@@ -1196,6 +1053,7 @@ namespace GameVanilla.Game.Common
             {
                 syrups1[idx].GetComponent<PooledObject>().pool.ReturnObject(syrups1[idx]);
                 level.tiles[idx].elementType = ElementType.None;
+                UpdateLevel(idx, level.tiles[idx].elementType);
                 syrups1[idx] = null;
                 UpdateScore(gameConfig.GetElementScore(ElementType.Syrup1));
 
@@ -1214,6 +1072,7 @@ namespace GameVanilla.Game.Common
 
                 syrups2[idx].GetComponent<PooledObject>().pool.ReturnObject(syrups2[idx]);
                 level.tiles[idx].elementType = ElementType.Syrup1;
+                UpdateLevel(idx, level.tiles[idx].elementType);
                 syrups2[idx] = null;
                 syrups1[idx] = syrup;
 
@@ -1230,6 +1089,7 @@ namespace GameVanilla.Game.Common
             {
                 ices[idx].GetComponent<PooledObject>().pool.ReturnObject(ices[idx]);
                 level.tiles[idx].elementType = ElementType.None;
+                UpdateLevel(idx, level.tiles[idx].elementType);
                 ices[idx] = null;
                 UpdateScore(gameConfig.GetElementScore(ElementType.Ice));
 
@@ -1368,7 +1228,7 @@ namespace GameVanilla.Game.Common
         /// Detects all the possible tile swaps in the current level.
         /// </summary>
         /// <returns>A list containing all the possible tile swaps in the level.</returns>
-        private List<Swap> DetectPossibleSwaps()
+        public List<Swap> DetectPossibleSwaps()
         {
             var swaps = new List<Swap>();
 
@@ -1428,7 +1288,7 @@ namespace GameVanilla.Game.Common
         /// </summary>
         /// <param name="isPlayerMatch">True if the match was caused by a player and false otherwise.</param>
         /// <returns>True if there were any matches; false otherwise.</returns>
-        private bool HandleMatches(bool isPlayerMatch)
+        public bool HandleMatches(bool isPlayerMatch)
         {
             var matches = new List<Match>();
             var tShapedMatches = tShapedMatchDetector.DetectMatches(this);
@@ -1834,7 +1694,9 @@ namespace GameVanilla.Game.Common
                         if (tile != null)
                         {
                             var numTilesToFall = bottom - j;
-                            tiles[tileIndex + (numTilesToFall * level.width)] = tiles[tileIndex];
+                            var index = tileIndex + (numTilesToFall * level.width);
+                            tiles[index] = tiles[tileIndex];
+                            UpdateTile(tiles[tileIndex], index);
                             var tween = LeanTween.move(tile,
                                 tilePositions[tileIndex + level.width * numTilesToFall],
                                 0.5f);
@@ -1856,6 +1718,7 @@ namespace GameVanilla.Game.Common
                                 }
                             });
                             tiles[tileIndex] = null;
+                            UpdateTile(null, tileIndex);
                         }
                     }
                 }
@@ -1911,6 +1774,7 @@ namespace GameVanilla.Game.Common
                                 }
                             });
                             tiles[tileIndex] = tile;
+                            UpdateTile(tile, tileIndex);
                         }
                     }
                 }
@@ -2233,6 +2097,7 @@ namespace GameVanilla.Game.Common
 
                 var tile = tiles[randomIdx];
                 tiles[randomIdx] = null;
+                UpdateTile(null, randomIdx);
                 if (tile != null)
                 {
                     tile.GetComponent<PooledObject>().pool.ReturnObject(tile.gameObject);
@@ -2332,7 +2197,7 @@ namespace GameVanilla.Game.Common
         /// Consumes the specified booster.
         /// </summary>
         /// <param name="button">The used booster button.</param>
-        private void ConsumeBooster(BuyBoosterButton button)
+        public void ConsumeBooster(BuyBoosterButton button)
         {
             var playerPrefsKey = string.Format("num_boosters_{0}", (int)button.boosterType);
             var numBoosters = PlayerPrefs.GetInt(playerPrefsKey);

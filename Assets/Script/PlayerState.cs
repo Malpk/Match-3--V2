@@ -2,11 +2,14 @@ using UnityEngine.Events;
 using UnityEngine;
 using Mirror;
 using TMPro;
+using GameVanilla.Game.Common;
 
 public class PlayerState : NetworkBehaviour
 {
     [SerializeField] private int _score;
     [SerializeField] private string _name;
+
+    private GameBoard _board;
 
     public event System.Action OnEnter;
     public event System.Action OnExit;
@@ -23,6 +26,11 @@ public class PlayerState : NetworkBehaviour
         SetServerData(_name);
     }
 
+    public void SetBoard(GameBoard board)
+    {
+        _board = board;
+    }
+
     [Server]
     public void AddScore(int score)
     {
@@ -30,6 +38,11 @@ public class PlayerState : NetworkBehaviour
             _score += score;
     }
 
+    [Command]
+    public void Swipe(Tile select, Tile tile)
+    {
+        _board.InputBoard(tile, select);
+    }
 
     [Command]
     private void SetServerData(string nick)
@@ -43,9 +56,18 @@ public class PlayerState : NetworkBehaviour
         _name = nick;
     }
 
-    [ClientRpc]
+
     public void Enter()
     {
+        Debug.Log($"Enter {name}");
+        OnEnter?.Invoke();
+        EnterClient();
+    }
+
+    [ClientRpc]
+    private void EnterClient()
+    {
+        Debug.Log($"Enter {name}");
         OnEnter?.Invoke();
     }
 

@@ -10,10 +10,24 @@ public class MathcBot : MonoBehaviour
     [SerializeField] private List<List<Candy>> _temp = new List<List<Candy>>();
 
     private Candy[,] _map;
-    private List<int[,]> _temps = new List<int[,]>();
+    private PlayerState _player;
+
+    public void SetPlayer(PlayerState state)
+    {
+        Debug.Log("Set");
+        _player = state;
+        _player.OnEnter += Play;
+    }
+
+    public void DeletePlayer()
+    {
+        _player.OnEnter -= Play;
+        _player = null;
+    }
 
     public void Play()
     {
+        Debug.Log("Play");
         _tiles.Clear();
         StopAllCoroutines();
         StartCoroutine(Playing());

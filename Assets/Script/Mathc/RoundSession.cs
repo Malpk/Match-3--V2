@@ -9,7 +9,6 @@ public class RoundSession : MonoBehaviour
     [SerializeField] private int _roundCount;
     [SerializeField] private float _roundTime;
     [Header("Reference")]
-    [SerializeField] private PlayerState _bot;
     [SerializeField] private GameBoard _board;
     [SerializeField] private GameScene _scene;
     [SerializeField] private RoundSessionUI _sessionUI;
@@ -55,9 +54,16 @@ public class RoundSession : MonoBehaviour
     public void StartGame()
     {
         enabled = true;
-        _scene.BlcokInput(true);
         _isPlayer = 1 == Random.Range(0, 2);
         SwitchPlayer();
+    }
+
+    public void StopGame()
+    {
+        enabled = false;
+        _curretProgress = 0;
+        _count = 0;
+        _coundSwipe = 0;
     }
 
     private void OnSwipeStart()

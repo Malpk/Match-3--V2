@@ -6,6 +6,7 @@ using System.Collections.Generic;
 
 using UnityEngine;
 using UnityEngine.Assertions;
+using Mirror;
 
 namespace GameVanilla.Core
 {
@@ -22,8 +23,6 @@ namespace GameVanilla.Core
         public GameObject prefab;
         public int initialSize;
 
-        private readonly Stack<GameObject> instances = new Stack<GameObject>();
-
         /// <summary>
         /// Unity's Awake method.
         /// </summary>
@@ -32,27 +31,12 @@ namespace GameVanilla.Core
             Assert.IsNotNull(prefab);
         }
 
-        /// <summary>
-        /// Unity's Start method.
-        /// </summary>
-        private void Start()
-        {
-            for (var i = 0; i < initialSize; i++)
-            {
-                var obj = CreateInstance();
-                obj.SetActive(false);
-                instances.Push(obj);
-            }
-        }
 
-        /// <summary>
-        /// Returns a new object from the pool.
-        /// </summary>
-        /// <returns>A new object from the pool.</returns>
         public GameObject GetObject()
         {
-            var obj = instances.Count > 0 ? instances.Pop() : CreateInstance();
+            var obj = CreateInstance();
             obj.SetActive(true);
+            NetworkServer.Spawn(obj);
             return obj;
         }
 
@@ -67,10 +51,7 @@ namespace GameVanilla.Core
             Assert.IsTrue(pooledObject.pool == this);
 
             obj.SetActive(false);
-            if (!instances.Contains(obj))
-            {
-                instances.Push(obj);
-            }
+            NetworkServer.Destroy(obj);
         }
 
         /// <summary>

@@ -21,8 +21,7 @@ namespace GameVanilla.Game.Scenes
 	public class GameScene : BaseScene
 	{
 		public GameBoard gameBoard;
-
-		public Level level;
+        public Level level;
 
 		public FxPool fxPool;
 
@@ -32,12 +31,12 @@ namespace GameVanilla.Game.Scenes
 		[SerializeField]
 		private Text ingameBoosterText;
 
+        public bool BoosterMode { get; private set; }
+        public BuyBoosterButton CurrentBoosterButton { get; private set; }
+
 		private bool gameStarted;
 		private bool gameFinished;
 
-		private bool boosterMode;
-		private bool _blockInput;
-		private BuyBoosterButton currentBoosterButton;
 		private int ingameBoosterBgTweenId;
 
 		public event System.Action OnStartGame;
@@ -65,6 +64,11 @@ namespace GameVanilla.Game.Scenes
             OnStartGame?.Invoke();
         }
 
+        public void Stop()
+        {
+            enabled = false;
+        }
+
         /// <summary>
         /// Unity's Update method.
         /// </summary>
@@ -80,26 +84,7 @@ namespace GameVanilla.Game.Scenes
                 return;
             }
 
-			if (boosterMode)
-			{
-				if (currentBoosterButton.boosterType == BoosterType.Switch)
-				{
-					gameBoard.HandleSwitchBoosterInput(currentBoosterButton);
-				}
-				else
-				{
-					gameBoard.HandleBoosterInput(currentBoosterButton);
-				}
-			}
-			else if (!_blockInput)
-			{
-				gameBoard.HandleInput();
-			}
-		}
 
-		public void BlcokInput(bool mode)
-        {
-			_blockInput = mode;
 		}
 
 	    /// <summary>
@@ -206,8 +191,8 @@ namespace GameVanilla.Game.Scenes
 		/// <param name="button">The used booster button.</param>
 		public void EnableBoosterMode(BuyBoosterButton button)
 		{
-			boosterMode = true;
-			currentBoosterButton = button;
+			BoosterMode = true;
+			CurrentBoosterButton = button;
 			FadeInInGameBoosterOverlay();
 			gameBoard.OnBoosterModeEnabled();
 
@@ -236,7 +221,7 @@ namespace GameVanilla.Game.Scenes
 		/// </summary>
 		public void DisableBoosterMode()
 		{
-			boosterMode = false;
+			BoosterMode = false;
 			FadeOutInGameBoosterOverlay();
 			gameBoard.OnBoosterModeDisabled();
 		}
