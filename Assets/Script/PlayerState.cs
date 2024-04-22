@@ -1,11 +1,10 @@
-using UnityEngine.Events;
 using UnityEngine;
 using Mirror;
-using TMPro;
 using GameVanilla.Game.Common;
 
 public class PlayerState : NetworkBehaviour
 {
+    [SyncVar] [SerializeField] private bool _isWin;
     [SerializeField] private int _score;
     [SerializeField] private string _name;
 
@@ -17,6 +16,7 @@ public class PlayerState : NetworkBehaviour
     public event System.Action<float> OnRoundProgress;
 
     public string Name => _name;
+    public bool IsWin => _isWin;
     public int Score => _score;
 
 
