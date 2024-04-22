@@ -1,17 +1,18 @@
 using UnityEngine;
 using TMPro;
+using Mirror;
 
 public class WinMenu : MonoBehaviour
 {
     [SerializeField] private bool _showWinPanel;
     [Header("Reference")]
-    [SerializeField] private PlayerState _player;
-    [SerializeField] private PlayerState _enemy;
     [SerializeField] private TextMeshProUGUI _playerScore;
     [SerializeField] private TextMeshProUGUI _enemyScore;
     [SerializeField] private WinPanel _winPanel;
     [SerializeField] private CanvasGroup _prewiew;
     [SerializeField] private ResultPanel _result;
+
+    private PlayerState _player;
 
     private void OnValidate()
     {
@@ -22,7 +23,27 @@ public class WinMenu : MonoBehaviour
 
     private void Start()
     {
-        Show(_player, _enemy, new SessionResult(7, 15));
+        gameObject.SetActive(false);
+    }
+
+    private void OnDestroy()
+    {
+        if (_player)
+            _player.OnCompliteGame -= Show;
+    }
+
+    public void SetPlayer(PlayerState player)
+    {
+        if (player != _player)
+        {
+            if (_player)
+            {
+                _player.OnCompliteGame -= Show;
+                Debug.LogError("Игрок уже назанчен");
+            }
+            _player = player;
+            _player.OnCompliteGame += Show;
+        }
     }
 
     public void Show(PlayerState player, PlayerState enemy, SessionResult session)
@@ -36,4 +57,8 @@ public class WinMenu : MonoBehaviour
         gameObject.SetActive(true);
     }
 
+    public void Hide()
+    {
+        gameObject.SetActive(false);
+    }
 }

@@ -136,6 +136,8 @@ public class PlayerHandler : NetworkBehaviour
                 }
 
                 var idx = tiles.FindIndex(x => x == tile.gameObject);
+                if (idx < 0)
+                    return;
                 if (level.tiles[idx] != null && level.tiles[idx].elementType == ElementType.Ice)
                     return;
 

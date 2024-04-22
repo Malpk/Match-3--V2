@@ -14,7 +14,6 @@ public class MathcBot : MonoBehaviour
 
     public void SetPlayer(PlayerState state)
     {
-        Debug.Log("Set");
         _player = state;
         _player.OnEnter += Play;
     }
@@ -27,7 +26,7 @@ public class MathcBot : MonoBehaviour
 
     public void Play()
     {
-        Debug.Log("Play");
+        Debug.Log("Pay");
         _tiles.Clear();
         StopAllCoroutines();
         StartCoroutine(Playing());

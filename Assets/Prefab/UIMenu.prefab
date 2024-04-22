@@ -131,8 +131,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _showWinPanel: 1
-  _player: {fileID: 0}
-  _enemy: {fileID: 0}
   _playerScore: {fileID: 3148998242417548409}
   _enemyScore: {fileID: 443499905268086220}
   _winPanel: {fileID: 3191374157191100297}

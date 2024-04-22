@@ -474,6 +474,8 @@ namespace GameVanilla.Game.Common
                 var idxB = tiles.FindIndex(x => x == tileB);
                 tiles[idxA] = tileB;
                 tiles[idxB] = tileA;
+                UpdateTile(tileB, idxA);
+                UpdateTile(tileA, idxB);
 
                 tileA.GetComponent<Tile>().x = idxB % level.width;
                 tileA.GetComponent<Tile>().y = idxB / level.width;
@@ -515,6 +517,8 @@ namespace GameVanilla.Game.Common
                 var idxB = tiles.FindIndex(x => x == tileB);
                 tiles[idxA] = tileB;
                 tiles[idxB] = tileA;
+                UpdateTile(tileB, idxA);
+                UpdateTile(tileA, idxB);
 
                 if (tileA.GetComponent<Tile>().x != tileB.GetComponent<Tile>().x)
                 {
@@ -927,6 +931,7 @@ namespace GameVanilla.Game.Common
             if (x >= 0 && x < level.width && y >= 0 && y < level.height)
             {
                 tiles[x + (y * level.width)] = tile;
+                UpdateTile(tile, x + (y * level.width));
             }
         }
 
@@ -951,6 +956,7 @@ namespace GameVanilla.Game.Common
                     DestroySpecialBlocks(explodedTile, didAnySpecialCandyExplode);
                     explodedTile.GetComponent<PooledObject>().pool.ReturnObject(explodedTile);
                     tiles[idx] = null;
+                    UpdateTile(null , idx);
                 }
 
                 _sounds.PlaySound("CandyMatch");
@@ -985,7 +991,7 @@ namespace GameVanilla.Game.Common
                     
                     tile.GetComponent<PooledObject>().pool.ReturnObject(tile);
                     tiles[idx] = null;
-
+                    UpdateTile(null, idx);
                     var chocolates = tiles.FindAll(t => t != null && t.GetComponent<Chocolate>() != null);
 
                     _sounds.PlaySound("CandyMatch");
@@ -1147,6 +1153,7 @@ namespace GameVanilla.Game.Common
 
                     tile.GetComponent<PooledObject>().pool.ReturnObject(tile);
                     tiles[blockIdx] = null;
+                    UpdateTile(null, blockIdx);
                 }
 
                 if (tile.GetComponent<Chocolate>() != null)
@@ -1633,6 +1640,7 @@ namespace GameVanilla.Game.Common
                 {
                     collectablesToDestroy.Add(bottom);
                     tiles[tileIndex] = null;
+                    UpdateTile(null, tileIndex);
                 }
             }
 

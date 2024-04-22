@@ -8,6 +8,9 @@ public class RoundSession : MonoBehaviour
     [SerializeField] private int _coundSwipe;
     [SerializeField] private int _roundCount;
     [SerializeField] private float _roundTime;
+    [SerializeField] private Vector2Int _starsWin;
+    [SerializeField] private Vector2Int _starsLose;
+    [SerializeField] private Vector2Int _coinsWin;
     [Header("Reference")]
     [SerializeField] private GameBoard _board;
     [SerializeField] private GameScene _scene;
@@ -56,6 +59,7 @@ public class RoundSession : MonoBehaviour
         enabled = true;
         _isPlayer = 1 == Random.Range(0, 2);
         SwitchPlayer();
+        _curretState.Enter();
     }
 
     public void StopGame()
@@ -79,7 +83,10 @@ public class RoundSession : MonoBehaviour
         if (_curretCount >= _coundSwipe)
         {
             _curretCount = 0;
-            SwitchPlayer();
+            if (NextRound())
+                SwitchPlayer();
+            else
+                CompliteGame();
         }
         enabled = true;
     }
@@ -91,7 +98,10 @@ public class RoundSession : MonoBehaviour
         {
             _curretCount = 0;
             _curretProgress = 0;
-            SwitchPlayer();
+            if (NextRound())
+                SwitchPlayer();
+            else
+                CompliteGame();
         }
         _sessionUI.SetProgress(1f - _curretProgress);
     }
@@ -116,16 +126,38 @@ public class RoundSession : MonoBehaviour
         _curretState.Enter();
         _sessionUI.Switch(_curretState);
         _isPlayer = !_isPlayer;
+    }
+
+    private bool NextRound()
+    {
         _count++;
         if (_count >= 2)
         {
-            _count = 0;
             _countRound++;
-            _sessionUI.SetRound(_countRound);
-            if (_countRound >= _roundCount)
-                OnWin?.Invoke();
+                    _sessionUI.SetRound(_countRound);
+            _count = 0;
         }
+
+        return _countRound <= _roundCount;
     }
 
+
+    private void CompliteGame()
+    {
+        OnWin?.Invoke();
+        StopGame();
+        _player.SetWin(_player.Score > _enemy.Score);
+        _enemy.SetWin(_enemy.Score > _player.Score);
+        _player.CompliteGame(_enemy, GetSession(_player.IsWin));
+        _enemy.CompliteGame(_player, GetSession(_enemy.IsWin));
+    }
+
+    private SessionResult GetSession(bool win)
+    {
+        var coints = win ? Random.Range(_coinsWin.x, _coinsWin.y) : Random.Range(0, 3);
+        var stars = win ? Random.Range(_starsWin.x, _starsWin.y) :
+            Random.Range(_starsLose.x, _starsLose.y);
+        return new SessionResult(stars, coints);
+    }
 
 }

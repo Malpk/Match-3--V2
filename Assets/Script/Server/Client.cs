@@ -1,6 +1,5 @@
 using UnityEngine;
 using Mirror;
-using TMPro;
 
 public class Client : MonoBehaviour
 {
@@ -9,6 +8,7 @@ public class Client : MonoBehaviour
     [SerializeField] private PlayerPanel _enemy;
     [SerializeField] private Server _client;
     [SerializeField] private PlayerHandler _player;
+    [SerializeField] private WinMenu _menu;
 
 
     private void Awake()
@@ -23,6 +23,7 @@ public class Client : MonoBehaviour
             var player = NetworkClient.localPlayer.GetComponent<PlayerState>();
             player.SetNick(_name);
             _player.Play(player);
+            _menu.SetPlayer(player);
         }
         else
         {

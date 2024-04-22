@@ -5,7 +5,7 @@ using GameVanilla.Game.Common;
 public class PlayerState : NetworkBehaviour
 {
     [SyncVar] [SerializeField] private bool _isWin;
-    [SerializeField] private int _score;
+    [SyncVar] [SerializeField] private int _score;
     [SerializeField] private string _name;
 
     private GameBoard _board;
@@ -14,11 +14,16 @@ public class PlayerState : NetworkBehaviour
     public event System.Action OnExit;
     public event System.Action<int> OnSetRound;
     public event System.Action<float> OnRoundProgress;
+    public event System.Action<PlayerState, PlayerState, SessionResult> OnCompliteGame;
 
     public string Name => _name;
     public bool IsWin => _isWin;
     public int Score => _score;
 
+    public void SetWin(bool win)
+    {
+        _isWin = win;
+    }
 
     public void SetNick(string nick)
     {
@@ -75,4 +80,9 @@ public class PlayerState : NetworkBehaviour
         OnExit?.Invoke();
     }
 
+    [ClientRpc]
+    public void CompliteGame(PlayerState enemy, SessionResult result)
+    {
+        OnCompliteGame?.Invoke(this, enemy, result);
+    }
 }
