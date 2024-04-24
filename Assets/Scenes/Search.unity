@@ -152,7 +152,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1119f23cce3f4d34790e2f2948d28857, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _adress: http://127.0.0.1:5000
+  _isDebugMode: 0
+  _isServer: 0
+  _adressServera: 127.0.0.1:8080
 --- !u!4 &63422300
 Transform:
   m_ObjectHideFlags: 0
@@ -868,7 +870,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 11.606995, y: 0}
+  m_AnchoredPosition: {x: 11.606934, y: 0}
   m_SizeDelta: {x: 23.199951, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &637468978

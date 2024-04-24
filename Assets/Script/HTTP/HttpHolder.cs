@@ -1,74 +1,27 @@
 using UnityEngine;
-using System.Net;
 using System.Net.Http;
-using System.Collections;
-using UnityEngine.Networking;
 
 public class HttpHolder : MonoBehaviour
 {
+    [SerializeField] private bool _isDebugMode;
     [Header("Server")]
-    [SerializeField] private string _adress;
+    [SerializeField] private bool _isServer;
+    [SerializeField] private string _adressServera;
 
     private HttpClient _client = new HttpClient();
-    private HttpListener _lister = new HttpListener();
+
+    public event System.Action<string> OnGetMessange;
 
     private void Reset()
     {
-        _adress = "http://127.0.0.1:5000";
+        _adressServera = "127.0.0.1:5000";
     }
 
-    private void Awake()
+    public async void SendGetMessange(string adress, System.Action<string> action)
     {
-        _lister.Prefixes.Add("http://localhost/8080/");
-    }
-
-    private void OnEnable()
-    {
-        _lister.Start();
-    }
-
-
-    private void OnDisable()
-    {
-        _lister.Stop();
-    }
-
-    void Start()
-    {
-        // Запускаем запрос
-        StartCoroutine(GetHTML());
-    }
-
-    IEnumerator GetHTML()
-    {
-        // URL страницы, которую мы хотим запросить
-        string url = "http://example.com";
-
-        // Отправляем GET-запрос и ожидаем ответ
-        UnityWebRequest request = UnityWebRequest.Get(url);
-        yield return request.SendWebRequest();
-
-        // Проверяем, был ли запрос выполнен успешно
-        if (request.result != UnityWebRequest.Result.Success)
-        {
-            Debug.LogError("Error: " + request.error);
-        }
-        else
-        {
-            // Получаем HTML-контент ответа
-            string htmlContent = request.downloadHandler.text;
-            Debug.Log("HTML content: " + htmlContent);
-        }
-    }
-
-    private void OnDestroy()
-    {
-        _lister.Close();
-    }
-
-    public async void SendGetMessange(string messange, System.Action<string> action)
-    {
-        using HttpResponseMessage response = await _client.GetAsync($"{_adress}/{messange}");
+        if (_isDebugMode)
+            Debug.Log("http://" + $"{_adressServera}/{adress}");
+        using HttpResponseMessage response = await _client.GetAsync("http://" + $"{_adressServera}/{adress}");
         string content = await response.Content.ReadAsStringAsync();
         action(content);
     }

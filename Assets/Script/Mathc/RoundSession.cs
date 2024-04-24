@@ -1,7 +1,6 @@
 using UnityEngine;
 using GameVanilla.Game.Common;
 using GameVanilla.Game.Scenes;
-using Mirror;
 
 public class RoundSession : MonoBehaviour
 {
@@ -27,7 +26,7 @@ public class RoundSession : MonoBehaviour
     private PlayerState _curretState;
 
     public event System.Action<float> OnRound;
-    public event System.Action OnWin;
+    public event System.Action<string> OnWin;
 
     private void Awake()
     {
@@ -144,12 +143,14 @@ public class RoundSession : MonoBehaviour
 
     private void CompliteGame()
     {
-        OnWin?.Invoke();
         StopGame();
         _player.SetWin(_player.Score > _enemy.Score);
         _enemy.SetWin(_enemy.Score > _player.Score);
-        _player.CompliteGame(_enemy, GetSession(_player.IsWin));
-        _enemy.CompliteGame(_player, GetSession(_enemy.IsWin));
+        var resultP1 = GetSession(_player.IsWin);
+        var resultP2 = GetSession(_enemy.IsWin);
+        _player.CompliteGame(_enemy, resultP1);
+        _enemy.CompliteGame(_player, resultP2);
+        OnWin?.Invoke($"{JsonUtility.ToJson(resultP1)} ::: {JsonUtility.ToJson(resultP2)} ");
     }
 
     private SessionResult GetSession(bool win)

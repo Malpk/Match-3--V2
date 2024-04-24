@@ -47,7 +47,9 @@ MonoBehaviour:
   _coundSwipe: 1
   _roundCount: 3
   _roundTime: 20
-  _bot: {fileID: 0}
+  _starsWin: {x: 0, y: 0}
+  _starsLose: {x: 0, y: 0}
+  _coinsWin: {x: 0, y: 0}
   _board: {fileID: 0}
   _scene: {fileID: 0}
   _sessionUI: {fileID: 0}
@@ -61,7 +63,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8719481289753010924}
   - component: {fileID: 8719481289753010914}
-  - component: {fileID: 8719481289753010915}
   m_Layer: 0
   m_Name: Server
   m_TagString: Untagged
@@ -98,59 +99,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0bf0e5801904a34b92d323b9512ada4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _server: {fileID: 8719481289753010915}
-  _session: {fileID: 708457228}
---- !u!114 &8719481289753010915
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8719481289753010926}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 108ad488adc189b4682a0c648b782bd1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dontDestroyOnLoad: 1
-  runInBackground: 1
-  headlessStartMode: 0
-  editorAutoStart: 0
-  sendRate: 60
-  autoStartServerBuild: 0
-  autoConnectClientBuild: 0
-  offlineScene: Assets/Scenes/Server/ServerTest.unity
-  onlineScene: Assets/Scenes/Server/ServerTest.unity
-  transport: {fileID: 8719481290520642835}
-  networkAddress: localhost
-  maxConnections: 100
-  disconnectInactiveConnections: 0
-  disconnectInactiveTimeout: 60
-  authenticator: {fileID: 0}
-  playerPrefab: {fileID: 4270766740363541608, guid: 4e39f6e615d9ef344abd844e8ca41b36,
-    type: 3}
-  autoCreatePlayer: 1
-  playerSpawnMethod: 0
-  spawnPrefabs:
-  - {fileID: 5450815737333948019, guid: cf3c2efd19eca9041888c0acd087948c, type: 3}
-  - {fileID: 4722458647815537014, guid: 9138f40cbf7bbd349bd5bdfd21f03668, type: 3}
-  exceptionsDisconnect: 1
-  snapshotSettings:
-    bufferTimeMultiplier: 2
-    bufferLimit: 32
-    catchupNegativeThreshold: -1
-    catchupPositiveThreshold: 1
-    catchupSpeed: 0.019999999552965164
-    slowdownSpeed: 0.03999999910593033
-    driftEmaDuration: 1
-    dynamicAdjustment: 1
-    dynamicAdjustmentTolerance: 1
-    deliveryTimeEmaDuration: 2
-  evaluationMethod: 0
-  evaluationInterval: 3
-  timeInterpolationGui: 0
-  _botPrefab: {fileID: 4722458647815537015, guid: 9138f40cbf7bbd349bd5bdfd21f03668,
-    type: 3}
+  _bot: {fileID: 0}
+  _server: {fileID: 0}
+  _scene: {fileID: 0}
+  _board: {fileID: 0}
   _session: {fileID: 708457228}
 --- !u!1 &8719481290520642844
 GameObject:

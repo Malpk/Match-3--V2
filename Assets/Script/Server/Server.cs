@@ -1,14 +1,17 @@
 using Mirror;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class Server : NetworkManager
 {
+    [SerializeField] private HttpHolder _holder;
     [SerializeField] private PlayerState _botPrefab;
     [SerializeField] private RoundSession _session;
 
-    private PlayerState _bot;
+    private PlayerState _enemy;
+    private PlayerState _player;
 
-    private NetworkIdentity _player;
+    private List<NetworkIdentity> _list = new List<NetworkIdentity>();
 
     public event System.Action<PlayerState, PlayerState> OnAddPlayer;
     public event System.Action<PlayerState> OnDisconect;
@@ -18,18 +21,33 @@ public class Server : NetworkManager
     public override void OnServerAddPlayer(NetworkConnectionToClient conn)
     {
         var player = Instantiate(playerPrefab).GetComponent<PlayerState>();
-        _bot = Instantiate(_botPrefab).GetComponent<PlayerState>();
+        _list.Add(player.netIdentity);
         NetworkServer.AddPlayerForConnection(conn, player.gameObject);
-        NetworkServer.Spawn(_bot.gameObject);
-        _session.SetPlayer(player, _bot);
-        OnAddPlayer?.Invoke(player, _bot);
-        _player = player.GetComponent<NetworkIdentity>();
+        _holder.SendGetMessange($"get_setting/{networkAddress}", (mess) => {
+            var config = JsonUtility.FromJson<ServerConfigData>(mess);
+            if (config.Bot)
+            {
+                _enemy = Instantiate(_botPrefab).GetComponent<PlayerState>();
+                NetworkServer.Spawn(_enemy.gameObject);
+            }
+        });
+        if (_player)
+            _enemy = player;
+        else
+            _player = player;
+        if (_player != null && _enemy != null)
+            _session.SetPlayer(_player, _enemy);
+            OnAddPlayer?.Invoke(_player, _enemy);
     }
 
     public override void OnServerDisconnect(NetworkConnectionToClient conn)
     {
-        if (!conn.owned.Contains(_player))
-            OnDisconect?.Invoke(_player.GetComponent<PlayerState>());
+        var player = _list.Find(x => conn.owned.Contains(x));
+        if (player)
+        {
+            OnDisconect?.Invoke(player.GetComponent<PlayerState>());
+            _list.Remove(player);
+        }
         base.OnServerDisconnect(conn);
     }
 

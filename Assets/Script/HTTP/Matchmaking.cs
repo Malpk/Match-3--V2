@@ -1,8 +1,10 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Matchmaking : MonoBehaviour
 {
+    [SerializeField] private int _gameSceneID;
     [SerializeField] private int _rate;
     [SerializeField] private string _addPlayer;
     [SerializeField] private string _runMatchmaking;
@@ -34,7 +36,7 @@ public class Matchmaking : MonoBehaviour
     private void RunMatchmaking(string json)
     {
         Debug.Log(json);
-        _holder.SendGetMessange($"{_runMatchmaking}", EnterToServer);
+        _holder.SendGetMessange($"{_runMatchmaking}/{_auto.User.Login}", EnterToServer);
     }
 
     private void EnterToServer(string json)
@@ -42,6 +44,8 @@ public class Matchmaking : MonoBehaviour
         if (!IsRun)
         {
             Debug.Log(json);
+            PlayerPrefs.SetString(GameLoder.GAMECONFIG, json);
+            SceneManager.LoadScene(_gameSceneID);
             IsRun = true;
         }
     }

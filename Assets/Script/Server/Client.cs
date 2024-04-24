@@ -31,7 +31,7 @@ public class Client : MonoBehaviour
         }
     }
 
-    private void Start()
+    public void StartClient()
     {
         _client.StartClient();
     }

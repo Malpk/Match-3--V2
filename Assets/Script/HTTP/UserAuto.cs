@@ -60,7 +60,6 @@ public class UserAuto : MonoBehaviour
             _isReady = false;
             _applay.interactable = false;
            _login = login;
-            Debug.Log("Send");
             _holder.SendGetMessange($"{_adress}/{_login}", (string content) =>
             {
                 _isReady = true;

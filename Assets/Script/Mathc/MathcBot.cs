@@ -26,7 +26,6 @@ public class MathcBot : MonoBehaviour
 
     public void Play()
     {
-        Debug.Log("Pay");
         _tiles.Clear();
         StopAllCoroutines();
         StartCoroutine(Playing());
