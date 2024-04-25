@@ -40,27 +40,26 @@
 //		/// <param name="result">The result of showing the rewarded advertisement.</param>
 //		private void HandleShowResult(ShowResult result)
 //		{
-//			Debug.LogWarning("HandleShowResult");
-//			//switch (result)
-//			//{
-//			//	case ShowResult.Finished:
-//			//		var gameManager = PuzzleMatchManager.instance;
-//			//		var rewardCoins = gameManager.gameConfig.rewardedAdCoins;
-//   //         		gameManager.coinsSystem.BuyCoins(rewardCoins);
-//			//		var levelScene = GameObject.Find("LevelScene");
-//			//		if (levelScene != null)
-//			//		{
-//			//			levelScene.GetComponent<LevelScene>().OpenPopup<AlertPopup>("Popups/AlertPopup", popup =>
-//			//			{
-//   //             			popup.SetTitle("Reward");
-//   //             			popup.SetText(string.Format("You earned {0} coins!", rewardCoins));
-//   //         			}, false);
-//			//		}
-//			//		break;
+//			switch (result)
+//			{
+//				case ShowResult.Finished:
+//					var gameManager = PuzzleMatchManager.instance;
+//					var rewardCoins = gameManager.gameConfig.rewardedAdCoins;
+//            		gameManager.coinsSystem.BuyCoins(rewardCoins);
+//					var levelScene = GameObject.Find("LevelScene");
+//					if (levelScene != null)
+//					{
+//						levelScene.GetComponent<LevelScene>().OpenPopup<AlertPopup>("Popups/AlertPopup", popup =>
+//						{
+//                			popup.SetTitle("Reward");
+//                			popup.SetText(string.Format("You earned {0} coins!", rewardCoins));
+//            			}, false);
+//					}
+//					break;
 
-//			//	default:
-//			//		break;
-//			//}
+//				default:
+//					break;
+//			}
 //		}
 //		#endif
 //	}

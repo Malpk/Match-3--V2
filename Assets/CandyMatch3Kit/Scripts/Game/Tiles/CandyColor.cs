@@ -14,6 +14,7 @@ namespace GameVanilla.Game.Common
         Orange,
         Purple,
         Red,
-        Yellow
+        Yellow,
+        None
     }
 }

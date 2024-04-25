@@ -2,6 +2,7 @@
 // This code can only be used under the standard Unity Asset Store End User License Agreement,
 // a copy of which is available at http://unity3d.com/company/legal/as_terms.
 
+using Mirror;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,20 +19,26 @@ using GameVanilla.Game.UI;
 
 namespace GameVanilla.Game.Common
 {
-    /// <summary>
-    /// This class is responsible for managing the match-3 gameplay of the kit.
-    /// </summary>
-    public class GameBoard : MonoBehaviour
+    public class Swap
+    {
+        public GameObject tileA;
+        public GameObject tileB;
+    }
+
+    public enum SwapDirection
+    {
+        Horizontal,
+        Vertical
+    }
+
+    public class GameBoard : NetworkBehaviour
     {
         [SerializeField] private int _level;
-        [SerializeField] private Vector2 _cellSize;
+        [SerializeField] private SoundManager _sounds;
+
+        #region trashProperty
         [SerializeField]
         private GameScene gameScene;
-        [SerializeField]
-        private SoundManager _sounds;
-
-        [SerializeField]
-        private GameUi gameUi;
 
         [SerializeField]
         private BoosterBar boosterBar;
@@ -45,6 +52,7 @@ namespace GameVanilla.Game.Common
         [SerializeField]
         private Transform boardCenter;
 
+
         [HideInInspector]
         public Level level;
 
@@ -52,6 +60,9 @@ namespace GameVanilla.Game.Common
         public int currentLimit;
 
         private List<GameObject> tiles;
+
+        public List<GameObject> Tiles => tiles;
+
         private List<GameObject> honeys;
         private List<GameObject> ices;
         private List<GameObject> syrups1;
@@ -59,16 +70,16 @@ namespace GameVanilla.Game.Common
 
         private readonly List<Vector3> tilePositions = new List<Vector3>();
 
-        private bool drag;
-        private GameObject selectedTile;
-
         private List<Swap> possibleSwaps = new List<Swap>();
+
+        private float tileW;
+        private float tileH;
 
         private GameObject lastSelectedTile;
         private int lastSelectedTileX;
         private int lastSelectedTileY;
         private CandyColor lastSelectedCandyColor;
-
+        
         private GameObject lastOtherSelectedTile;
         private int lastOtherSelectedTileX;
         private int lastOtherSelectedTileY;
@@ -83,33 +94,26 @@ namespace GameVanilla.Game.Common
 
         private Coroutine countdownCoroutine;
 
-        private bool currentlyAwarding;
-        public bool CurrentlyAwarding
-        {
-            get { return currentlyAwarding; }
-        }
+        [SyncVar]
+        private bool currentlyAwarding = false;
+        [SyncVar]
+        private bool inputLocked = false;
+        [SyncVar]
+        private bool currentlySwapping = false;
 
-        private bool inputLocked;
+        public bool CurrentlyAwarding => currentlyAwarding;
+        public bool InputLocked => inputLocked;
+        public bool CurrentlySwapping => currentlySwapping;
+
 
         private readonly List<CollectableType> eligibleCollectables = new List<CollectableType>();
 
         private bool explodedChocolate;
 
-        private class Swap
-        {
-            public GameObject tileA;
-            public GameObject tileB;
-        }
-
-        private enum SwapDirection
-        {
-            Horizontal,
-            Vertical
-        }
+        #endregion
 
         private SwapDirection swapDirection;
 
-        private bool currentlySwapping;
 
         private readonly MatchDetector horizontalMatchDetector = new HorizontalMatchDetector();
         private readonly MatchDetector verticalMatchDetector = new VerticalMatchDetector();
@@ -118,11 +122,15 @@ namespace GameVanilla.Game.Common
 
         private int consecutiveCascades;
 
-        private Vector2 _start;
-        private MatchCell[,] _cells;
 
         public event Action<int> OnScore;
-        public event Action OnSwipe;
+        public event Action OnSwipeStart;
+        public event Action OnSwipeStop;
+
+
+        public int Width => level.width;
+        public int Height => level.height;
+
 
         /// <summary>
         /// Unity's Awake method.
@@ -130,21 +138,9 @@ namespace GameVanilla.Game.Common
         private void Awake()
         {
             Assert.IsNotNull(gameScene);
-            Assert.IsNotNull(gameUi);
             Assert.IsNotNull(boosterBar);
         }
 
-        /// <summary>
-        /// Unity's Start method.
-        /// </summary>
-
-        /// <summary>
-        /// Unity's OnDestroy method.
-        /// </summary>
-
-        /// <summary>
-        /// Loads the current level.
-        /// </summary>
         public void LoadLevel()
         {
             var serializer = new fsSerializer();
@@ -165,20 +161,24 @@ namespace GameVanilla.Game.Common
         /// <summary>
         /// Resets the current level data.
         /// </summary>
-        /// 
-
-        #region CreateLevel
         public void ResetLevelData()
         {
-            LoadLevelData();
+            var serializer = new fsSerializer();
+            level = FileUtils.LoadJsonFile<Level>(serializer,
+                "Levels/" + _level);
+
+            SetLevvel(_level);
+
+            boosterBar.SetData(level);
+
             if (suggestedMatchCoroutine != null)
             {
                 StopCoroutine(suggestedMatchCoroutine);
                 suggestedMatchCoroutine = null;
             }
+
             ClearSuggestedMatch();
 
-            _cells = new MatchCell[level.width, level.height];
             tiles = new List<GameObject>(level.width * level.height);
             honeys = new List<GameObject>(level.width * level.height);
             ices = new List<GameObject>(level.width * level.height);
@@ -198,39 +198,102 @@ namespace GameVanilla.Game.Common
                 }
             }
 
+            currentLimit = level.limit;
             currentlyAwarding = false;
+
             consecutiveCascades = 0;
+
             explodedChocolate = false;
 
-            tilePool.Reset();
-            fxPool.Reset();
+            foreach (var pool in tilePool.GetComponentsInChildren<ObjectPool>())
+            {
+                pool.Reset();
+            }
+
+            foreach (var pool in fxPool.GetComponentsInChildren<ObjectPool>())
+            {
+                pool.Reset();
+            }
+
             tilePositions.Clear();
             possibleSwaps.Clear();
+
+            const float horizontalSpacing = 0.0f;
+            const float verticalSpacing = 0.0f;
 
             for (var j = 0; j < level.height; j++)
             {
                 for (var i = 0; i < level.width; i++)
                 {
                     var levelTile = level.tiles[i + (j * level.width)];
-                    var tile = CreateTileFromLevel(levelTile, i, j).GetComponent<Tile>();
+                    var tile = CreateTileFromLevel(levelTile, i, j);
+                    AddTile(tile);
+                    tile.transform.parent = boardCenter;
+                    var tileC = tile.GetComponent<Tile>();
                     if (tile != null)
                     {
-                        tile.board = this;
-                        tile.SetPosition(i, j);
-                        tile.transform.position = GetPosition(i, j);
-                        if (tile.TryGetComponent(out Collectable collectable))
+                        var spriteRenderer = tile.GetComponent<SpriteRenderer>();
+                        tileW = spriteRenderer.bounds.size.x;
+                        tileH = spriteRenderer.bounds.size.y;
+                        tile.transform.position =
+                            new Vector2(i * (tileW + horizontalSpacing), -j * (tileH + verticalSpacing));
+
+                        var collectable = tile.GetComponent<Collectable>();
+                        if (collectable != null)
                         {
                             var cidx = eligibleCollectables.FindIndex(x => x == collectable.type);
                             if (cidx != -1)
                             {
                                 eligibleCollectables.RemoveAt(cidx);
                             }
+
                         }
                     }
-                    tiles.Add(tile.gameObject);
+
+                    tiles.Add(tile);
                 }
             }
-            CreateBackTile();
+
+            var totalWidth = (level.width - 1) * (tileW + horizontalSpacing);
+            var totalHeight = (level.height - 1) * (tileH + verticalSpacing);
+            for (var j = 0; j < level.height; j++)
+            {
+                for (var i = 0; i < level.width; i++)
+                {
+                    var tilePos = new Vector2(i * (tileW + horizontalSpacing), -j * (tileH + verticalSpacing));
+                    var newPos = tilePos;
+                    newPos.x -= totalWidth / 2;
+                    newPos.y += totalHeight / 2;
+                    newPos.y += boardCenter.position.y;
+                    var tile = tiles[i + (j * level.width)];
+                    if (tile != null)
+                    {
+                        tile.transform.position = newPos;
+                    }
+
+                    tilePositions.Add(newPos);
+
+                    var levelTile = level.tiles[i + (j * level.width)];
+                    if (!(levelTile is HoleTile))
+                    {
+                        GameObject bgTile;
+                        if (j % 2 == 0)
+                        {
+                            bgTile = i % 2 == 0
+                                ? tilePool.darkBgTilePool.GetObject()
+                                : tilePool.lightBgTilePool.GetObject();
+                        }
+                        else
+                        {
+                            bgTile = i % 2 == 0
+                                ? tilePool.lightBgTilePool.GetObject()
+                                : tilePool.darkBgTilePool.GetObject();
+                        }
+                        bgTile.transform.position = newPos;
+                    }
+                }
+            }
+
             for (var j = 0; j < level.height; j++)
             {
                 for (var i = 0; i < level.width; i++)
@@ -289,49 +352,44 @@ namespace GameVanilla.Game.Common
             possibleSwaps = DetectPossibleSwaps();
         }
 
-        private void CreateBackTile()
-        {
-            for (var j = 0; j < level.height; j++)
-            {
-                for (var i = 0; i < level.width; i++)
-                {
-                    var levelTile = level.tiles[i + (j * level.width)];
-                    if (!(levelTile is HoleTile))
-                    {
-                        var bgTile = tilePool.CreateBackTile(i, j).GetComponent<MatchCell>();
-                        bgTile.SetPosition(GetPosition(i, j), new Vector2Int(i, j));
-                        _cells[j, i] = bgTile;
-                    }
-                }
-            }
-        }
-
-        private void LoadLevelData()
+        [ClientRpc]
+        public void SetLevvel(int levelID)
         {
             var serializer = new fsSerializer();
             level = FileUtils.LoadJsonFile<Level>(serializer,
-                "Levels/" + _level);
-            _start = new Vector2((level.width - 1) * (_cellSize.x),
-                (level.height - 1) * (_cellSize.y));
-            _start /= 2;
-            boosterBar.SetData(level);
-            gameUi.SetLevel(level);
-            currentLimit = level.limit;
+                 "Levels/" + levelID);
+            tiles = new List<GameObject>(level.width * level.height);
         }
 
-        private Vector2 GetPosition(int x, int y)
+        [ClientRpc]
+        public void AddTile(GameObject tile)
         {
-            var newPos = new Vector2(x * _cellSize.x - _start.x,
-                        -y * _cellSize.y + _start.y);
-            return newPos + Vector2.up * boardCenter.position.y;
+            tiles.Add(tile);
         }
 
-        public Tile GetTileFormList(int x, int y)
+        [ClientRpc]
+        public void UpdateTile(GameObject tile, int position)
         {
-            return tiles[x + (y * level.width)].GetComponent<Tile>();
+            tiles[position] = tile;
         }
 
-        #endregion
+
+        [ClientRpc]
+        public void RemoveTile(GameObject tile)
+        {
+            tiles.Remove(tile);
+        }
+
+        [ClientRpc]
+        private void UpdateLevel(int index, ElementType type)
+        {
+            level.tiles[index].elementType = type;
+        }
+
+        public void SetPossibleSwaps()
+        {
+            possibleSwaps = DetectPossibleSwaps();
+        }
 
         /// <summary>
         /// Starts a new game.
@@ -365,12 +423,10 @@ namespace GameVanilla.Game.Common
             if (level.limitType == LimitType.Moves)
             {
                 currentLimit = gameConfig.numExtraMoves;
-                gameUi.SetLimit(currentLimit);
             }
             else if (level.limitType == LimitType.Time)
             {
                 currentLimit = gameConfig.numExtraTime;
-                gameUi.SetLimit(currentLimit);
                 countdownCoroutine = StartCoroutine(StartCountdown());
             }
         }
@@ -384,362 +440,157 @@ namespace GameVanilla.Game.Common
             while (currentLimit > 0)
             {
                 --currentLimit;
-                UpdateLimitText();
                 yield return new WaitForSeconds(1.0f);
             }
-
-            gameScene.CheckEndGame();
         }
 
-        /// <summary>
-        /// Updates the limit text.
-        /// </summary>
-        private void UpdateLimitText()
+
+
+        public void ServerInputBoard(Tile tile, Tile selected)
         {
-            if (level.limitType == LimitType.Moves)
-            {
-                gameUi.SetLimit(currentLimit);
-            }
-            else if (level.limitType == LimitType.Time)
-            {
-                var timeSpan = TimeSpan.FromSeconds(currentLimit);
-                gameUi.SetLimit(string.Format("{0:D2}:{1:D2}", timeSpan.Minutes, timeSpan.Seconds));
-            }
+            InputBoard(tile, selected);
         }
 
-        /// <summary>
-        /// Handles the player's input.
-        /// </summary>
-        public void HandleInput()
+        public void InputBoard(Tile tile, Tile selected)
         {
-            if (inputLocked)
+            var combo = comboDetector.GetCombo(tile, selected);
+            if (combo != null)
             {
-                return;
-            }
+                var selectedTileCopy = selected;
+                selected.GetComponent<SpriteRenderer>().sortingOrder = 1;
+                currentlySwapping = true;
+                LeanTween.move(selected.gameObject, tile.transform.position, 0.25f).setOnComplete(
+                    () =>
+                    {
+                        currentlySwapping = false;
+                        selectedTileCopy.GetComponent<SpriteRenderer>().sortingOrder = 0;
+                        combo.Resolve(this, tiles, fxPool);
+                    });
+                LeanTween.move(tile.gameObject, selected.transform.position, 0.25f);
 
-            if (currentlySwapping)
-            {
-                return;
-            }
+                var tileA = tile.gameObject;
+                var tileB = selected.gameObject;
+                var idxA = tiles.FindIndex(x => x == tileA);
+                var idxB = tiles.FindIndex(x => x == tileB);
+                tiles[idxA] = tileB;
+                tiles[idxB] = tileA;
+                UpdateTile(tileB, idxA);
+                UpdateTile(tileA, idxB);
 
-            if (currentlyAwarding)
-            {
-                return;
-            }
+                tileA.GetComponent<Tile>().x = idxB % level.width;
+                tileA.GetComponent<Tile>().y = idxB / level.width;
+                tileB.GetComponent<Tile>().x = idxA % level.width;
+                tileB.GetComponent<Tile>().y = idxA / level.width;
 
-            if (Input.GetMouseButtonDown(0))
+                lastSelectedTile = selected.gameObject;
+                lastSelectedTileX = idxA % level.width;
+                lastSelectedTileY = idxA / level.width;
+
+                lastOtherSelectedTile = tile.gameObject;
+                lastOtherSelectedTileX = idxB % level.width;
+                lastOtherSelectedTileY = idxB / level.width;
+
+                selected = null;
+
+                PerformMove();
+            }
+            else if (possibleSwaps.Find(x => x.tileA == tile.gameObject && x.tileB == selected.gameObject) !=
+                     null ||
+                     possibleSwaps.Find(x => x.tileB == tile.gameObject && x.tileA == selected.gameObject) !=
+                     null)
             {
-                drag = true;
-                var hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
-                if (hit.collider != null && hit.collider.gameObject.CompareTag("Tile"))
+                var selectedTileCopy = selected.gameObject;
+                selected.GetComponent<SpriteRenderer>().sortingOrder = 1;
+                currentlySwapping = true;
+                LeanTween.move(selected.gameObject, tile.transform.position, 0.25f).setOnComplete(
+                    () =>
+                    {
+                        currentlySwapping = false;
+                        selectedTileCopy.GetComponent<SpriteRenderer>().sortingOrder = 0;
+                        HandleMatches(true);
+                    });
+                LeanTween.move(tile.gameObject, selected.transform.position, 0.25f);
+
+                var tileA = tile.gameObject;
+                var tileB = selected.gameObject;
+                var idxA = tiles.FindIndex(x => x == tileA);
+                var idxB = tiles.FindIndex(x => x == tileB);
+                tiles[idxA] = tileB;
+                tiles[idxB] = tileA;
+                UpdateTile(tileB, idxA);
+                UpdateTile(tileA, idxB);
+
+                if (tileA.GetComponent<Tile>().x != tileB.GetComponent<Tile>().x)
                 {
-                    var idx = tiles.FindIndex(x => x == hit.collider.gameObject);
-                    if (level.tiles[idx] != null && level.tiles[idx].elementType == ElementType.Ice)
-                    {
-                        return;
-                    }
-
-                    if (hit.collider.GetComponent<SpecialBlock>() != null)
-                    {
-                        return;
-                    }
-
-                    selectedTile = hit.collider.gameObject;
-                    selectedTile.GetComponent<Animator>().SetTrigger("Pressed");
+                    swapDirection = SwapDirection.Horizontal;
                 }
-            }
-
-            if (Input.GetMouseButtonUp(0))
-            {
-                drag = false;
-                if (selectedTile != null && selectedTile.GetComponent<Animator>() != null && selectedTile.gameObject.activeSelf)
+                else
                 {
-                    selectedTile.GetComponent<Animator>().SetTrigger("Unpressed");
+                    swapDirection = SwapDirection.Vertical;
                 }
-            }
 
-            if (drag && selectedTile != null)
-            {
-                var hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
-                if (hit.collider != null && hit.collider.gameObject != selectedTile)
+                tileA.GetComponent<Tile>().x = idxB % level.width;
+                tileA.GetComponent<Tile>().y = idxB / level.width;
+                tileB.GetComponent<Tile>().x = idxA % level.width;
+                tileB.GetComponent<Tile>().y = idxA / level.width;
+
+                lastSelectedTile = selected.gameObject;
+                lastSelectedTileX = idxA % level.width;
+                lastSelectedTileY = idxA / level.width;
+                if (selectedTileCopy.GetComponent<Candy>() != null)
                 {
-                    if (hit.collider.GetComponent<SpecialBlock>() != null)
-                    {
-                        return;
-                    }
-
-                    if (selectedTile.GetComponent<Animator>() != null && selectedTile.gameObject.activeSelf)
-                    {
-                        selectedTile.GetComponent<Animator>().SetTrigger("Unpressed");
-                    }
-
-                    var idx = tiles.FindIndex(x => x == hit.collider.gameObject);
-                    if (level.tiles[idx] != null && level.tiles[idx].elementType == ElementType.Ice)
-                    {
-                        return;
-                    }
-
-                    var idxSelected = tiles.FindIndex(x => x == selectedTile);
-                    var xSelected = idxSelected % level.width;
-                    var ySelected = idxSelected / level.width;
-                    var idxNew = tiles.FindIndex(x => x == hit.collider.gameObject);
-                    var xNew = idxNew % level.width;
-                    var yNew = idxNew / level.width;
-                    if (Math.Abs(xSelected - xNew) > 1 || Math.Abs(ySelected - yNew) > 1)
-                    {
-                        return;
-                    }
-
-                    var combo = comboDetector.GetCombo(hit.collider.gameObject.GetComponent<Tile>(),
-                        selectedTile.GetComponent<Tile>());
-                    if (combo != null)
-                    {
-                        var selectedTileCopy = selectedTile;
-                        selectedTile.GetComponent<SpriteRenderer>().sortingOrder = 1;
-                        currentlySwapping = true;
-                        LeanTween.move(selectedTile, hit.collider.gameObject.transform.position, 0.25f).setOnComplete(
-                            () =>
-                            {
-                                currentlySwapping = false;
-                                selectedTileCopy.GetComponent<SpriteRenderer>().sortingOrder = 0;
-                                combo.Resolve(this, tiles, fxPool);
-                            });
-                        LeanTween.move(hit.collider.gameObject, selectedTile.transform.position, 0.25f);
-
-                        var tileA = hit.collider.gameObject;
-                        var tileB = selectedTile;
-                        var idxA = tiles.FindIndex(x => x == tileA);
-                        var idxB = tiles.FindIndex(x => x == tileB);
-                        tiles[idxA] = tileB;
-                        tiles[idxB] = tileA;
-
-                        tileA.GetComponent<Tile>().x = idxB % level.width;
-                        tileA.GetComponent<Tile>().y = idxB / level.width;
-                        tileB.GetComponent<Tile>().x = idxA % level.width;
-                        tileB.GetComponent<Tile>().y = idxA / level.width;
-
-                        lastSelectedTile = selectedTile;
-                        lastSelectedTileX = idxA % level.width;
-                        lastSelectedTileY = idxA / level.width;
-                        
-                        lastOtherSelectedTile = hit.collider.gameObject;
-                        lastOtherSelectedTileX = idxB % level.width;
-                        lastOtherSelectedTileY = idxB / level.width;
-
-                        selectedTile = null;
-
-                        PerformMove();
-                    }
-                    else if (possibleSwaps.Find(x => x.tileA == hit.collider.gameObject && x.tileB == selectedTile) !=
-                             null ||
-                             possibleSwaps.Find(x => x.tileB == hit.collider.gameObject && x.tileA == selectedTile) !=
-                             null)
-                    {
-                        var selectedTileCopy = selectedTile;
-                        selectedTile.GetComponent<SpriteRenderer>().sortingOrder = 1;
-                        currentlySwapping = true;
-                        LeanTween.move(selectedTile, hit.collider.gameObject.transform.position, 0.25f).setOnComplete(
-                            () =>
-                            {
-                                currentlySwapping = false;
-                                selectedTileCopy.GetComponent<SpriteRenderer>().sortingOrder = 0;
-                                HandleMatches(true);
-                            });
-                        LeanTween.move(hit.collider.gameObject, selectedTile.transform.position, 0.25f);
-
-                        var tileA = hit.collider.gameObject;
-                        var tileB = selectedTile;
-                        var idxA = tiles.FindIndex(x => x == tileA);
-                        var idxB = tiles.FindIndex(x => x == tileB);
-                        tiles[idxA] = tileB;
-                        tiles[idxB] = tileA;
-
-                        if (tileA.GetComponent<Tile>().x != tileB.GetComponent<Tile>().x)
-                        {
-                            swapDirection = SwapDirection.Horizontal;
-                        }
-                        else
-                        {
-                            swapDirection = SwapDirection.Vertical;
-                        }
-
-                        tileA.GetComponent<Tile>().x = idxB % level.width;
-                        tileA.GetComponent<Tile>().y = idxB / level.width;
-                        tileB.GetComponent<Tile>().x = idxA % level.width;
-                        tileB.GetComponent<Tile>().y = idxA / level.width;
-
-                        lastSelectedTile = selectedTile;
-                        lastSelectedTileX = idxA % level.width;
-                        lastSelectedTileY = idxA / level.width;
-                        if (selectedTileCopy.GetComponent<Candy>() != null)
-                        {
-                            lastSelectedCandyColor = selectedTile.GetComponent<Candy>().color;
-                        }
-                        
-                        lastOtherSelectedTile = hit.collider.gameObject;
-                        lastOtherSelectedTileX = idxB % level.width;
-                        lastOtherSelectedTileY = idxB / level.width;
-                        if (hit.collider.gameObject.GetComponent<Candy>() != null)
-                        {
-                            lastOtherSelectedCandyColor = hit.collider.gameObject.GetComponent<Candy>().color;
-                        }
-
-                        selectedTile = null;
-
-                        possibleSwaps = DetectPossibleSwaps();
-
-                        PerformMove();
-                    }
-                    else
-                    {
-                        var selectedTileCopy = selectedTile;
-                        var hitTileCopy = hit.collider.gameObject;
-                        selectedTile.GetComponent<SpriteRenderer>().sortingOrder = 1;
-
-                        var selectedTilePos = selectedTile.transform.position;
-                        var hitTilePos = hit.collider.gameObject.transform.position;
-
-                        var tileA = hit.collider.gameObject;
-                        var tileB = selectedTile;
-                        if (!(tileA.GetComponent<Tile>().x != tileB.GetComponent<Tile>().x &&
-                              tileA.GetComponent<Tile>().y != tileB.GetComponent<Tile>().y))
-                        {
-                            currentlySwapping = true;
-                            LeanTween.move(selectedTile, hitTilePos, 0.2f);
-                            LeanTween.move(hit.collider.gameObject, selectedTilePos, 0.2f).setOnComplete(() =>
-                            {
-                                LeanTween.move(selectedTileCopy, selectedTilePos, 0.2f).setOnComplete(() =>
-                                {
-                                    currentlySwapping = false;
-                                    selectedTileCopy.GetComponent<SpriteRenderer>().sortingOrder = 0;
-                                });
-                                LeanTween.move(hitTileCopy, hitTilePos, 0.2f);
-                            });
-                        }
-
-                        selectedTile = null;
-
-                        _sounds.PlaySound("Error");
-                    }
+                    lastSelectedCandyColor = selected.GetComponent<Candy>().color;
                 }
+
+                lastOtherSelectedTile = tile.gameObject;
+                lastOtherSelectedTileX = idxB % level.width;
+                lastOtherSelectedTileY = idxB / level.width;
+                if (tile.gameObject.GetComponent<Candy>() != null)
+                {
+                    lastOtherSelectedCandyColor = tile.gameObject.GetComponent<Candy>().color;
+                }
+
+                possibleSwaps = DetectPossibleSwaps();
+
+                PerformMove();
+            }
+            else
+            {
+                var selectedTileCopy = selected;
+                var hitTileCopy = tile.gameObject;
+                selected.GetComponent<SpriteRenderer>().sortingOrder = 1;
+
+                var selectedTilePos = selected.transform.position;
+                var hitTilePos = tile.transform.position;
+
+                var tileA = tile.gameObject;
+                var tileB = selected;
+                if (!(tileA.GetComponent<Tile>().x != tileB.GetComponent<Tile>().x &&
+                      tileA.GetComponent<Tile>().y != tileB.GetComponent<Tile>().y))
+                {
+                    currentlySwapping = true;
+                    LeanTween.move(selected.gameObject, hitTilePos, 0.2f);
+                    LeanTween.move(tile.gameObject, selectedTilePos, 0.2f).setOnComplete(() =>
+                    {
+                        LeanTween.move(selectedTileCopy.gameObject, selectedTilePos, 0.2f).setOnComplete(() =>
+                        {
+                            currentlySwapping = false;
+                            selectedTileCopy.GetComponent<SpriteRenderer>().sortingOrder = 0;
+                        });
+                        LeanTween.move(hitTileCopy, hitTilePos, 0.2f);
+                    });
+                }
+
+
+                _sounds.PlaySound("Error");
             }
         }
 
         /// <summary>
         /// Handles the player's input when the game is in booster mode.
         /// </summary>
-        public void HandleBoosterInput(BuyBoosterButton button)
-        {
-            if (Input.GetMouseButtonDown(0))
-            {
-                var hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
-                if (hit.collider != null && hit.collider.gameObject.CompareTag("Tile"))
-                {
-                    if (hit.collider.GetComponent<Unbreakable>() != null ||
-                        hit.collider.GetComponent<Collectable>() != null)
-                    {
-                        return;
-                    }
 
-                    var tile = hit.collider.GetComponent<Tile>();
-                    Booster booster = null;
-                    switch (button.boosterType)
-                    {
-                        case BoosterType.Lollipop:
-                            booster = new LollipopBooster();
-                            break;
 
-                        case BoosterType.Bomb:
-                            booster = new BombBooster();
-                            break;
-
-                        case BoosterType.ColorBomb:
-                            booster = new ColorBombBooster();
-                            break;
-                    }
-
-                    if (booster != null)
-                    {
-                        booster.Resolve(this, tile.gameObject);
-                        ConsumeBooster(button);
-                        ApplyGravity();
-                    }
-
-                    gameScene.DisableBoosterMode();
-
-                    selectedTile = hit.collider.gameObject;
-                }
-                else
-                {
-                    gameScene.DisableBoosterMode();
-                }
-            }
-        }
-
-        /// <summary>
-        /// Handles the player's input when the game is in booster mode and the booster used is the switch.
-        /// </summary>
-        public void HandleSwitchBoosterInput(BuyBoosterButton button)
-        {
-            if (Input.GetMouseButtonDown(0))
-            {
-                drag = true;
-                var hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
-                if (hit.collider != null && hit.collider.gameObject.CompareTag("Tile"))
-                {
-                    selectedTile = hit.collider.gameObject;
-                }
-                else
-                {
-                    gameScene.DisableBoosterMode();
-                    return;
-                }
-            }
-
-            if (Input.GetMouseButtonUp(0))
-            {
-                drag = false;
-            }
-
-            if (drag && selectedTile != null)
-            {
-                var hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
-                if (hit.collider != null && hit.collider.gameObject != selectedTile)
-                {
-                    var selectedTileCopy = selectedTile;
-                    selectedTile.GetComponent<SpriteRenderer>().sortingOrder = 1;
-                    LeanTween.move(selectedTile, hit.collider.gameObject.transform.position, 0.25f).setOnComplete(
-                        () =>
-                        {
-                            selectedTileCopy.GetComponent<SpriteRenderer>().sortingOrder = 0;
-                            gameScene.DisableBoosterMode();
-                            HandleMatches(true);
-                            ConsumeBooster(button);
-                        });
-                    LeanTween.move(hit.collider.gameObject, selectedTile.transform.position, 0.25f);
-
-                    var tileA = hit.collider.gameObject;
-                    var tileB = selectedTile;
-                    var idxA = tiles.FindIndex(x => x == tileA);
-                    var idxB = tiles.FindIndex(x => x == tileB);
-                    tiles[idxA] = tileB;
-                    tiles[idxB] = tileA;
-
-                    tileA.GetComponent<Tile>().x = idxB % level.width;
-                    tileA.GetComponent<Tile>().y = idxB / level.width;
-                    tileB.GetComponent<Tile>().x = idxA % level.width;
-                    tileB.GetComponent<Tile>().y = idxA / level.width;
-
-                    selectedTile = null;
-
-                    possibleSwaps = DetectPossibleSwaps();
-                }
-            }
-        }
-
-        /// <summary>
-        /// Performs a move.
-        /// </summary>
         private void PerformMove()
         {
             ClearSuggestedMatch();
@@ -751,8 +602,6 @@ namespace GameVanilla.Game.Common
                 {
                     currentLimit = 0;
                 }
-
-                gameUi.SetLimit(currentLimit);
             }
         }
 
@@ -797,18 +646,77 @@ namespace GameVanilla.Game.Common
         /// <param name="x">The x-coordinate of the tile.</param>
         /// <param name="y">The y-coordinate of the tile.</param>
         /// <returns>The new tile created from the specified level data.</returns>
-        /// 
         private GameObject CreateTileFromLevel(LevelTile levelTile, int x, int y)
         {
-            if (levelTile is CandyTile candyTile)
+            if (levelTile is CandyTile)
             {
+                var candyTile = (CandyTile) levelTile;
                 if (candyTile.type == CandyType.RandomCandy)
+                {
                     return CreateTile(x, y, false);
+                }
+                else
+                {
+                    var tile = tilePool.GetCandyPool((CandyColor) ((int) candyTile.type)).GetObject();
+                    tile.GetComponent<Tile>().board = this;
+                    tile.GetComponent<Tile>().x = x;
+                    tile.GetComponent<Tile>().y = y;
+                    return tile;
+                }
             }
-            else if (levelTile.TryGetTile(tilePool, out GameObject tile))
+
+            if (levelTile is SpecialCandyTile)
             {
+                GameObject tile;
+
+                var specialCandyTile = (SpecialCandyTile) levelTile;
+                var specialCandyType = (int) specialCandyTile.type;
+                if (specialCandyType >= 0 &&
+                    specialCandyType <= (int) SpecialCandyType.YellowCandyHorizontalStriped)
+                {
+                    tile = tilePool.GetStripedCandyPool(StripeDirection.Horizontal, (CandyColor) (specialCandyType % 6))
+                        .GetObject();
+                }
+                else if (specialCandyType <= (int) SpecialCandyType.YellowCandyVerticalStriped)
+                {
+                    tile = tilePool.GetStripedCandyPool(StripeDirection.Vertical, (CandyColor) (specialCandyType % 6))
+                        .GetObject();
+                }
+                else if (specialCandyType <= (int) SpecialCandyType.YellowCandyWrapped)
+                {
+                    tile = tilePool.GetWrappedCandyPool((CandyColor) (specialCandyType % 6)).GetObject();
+                }
+                else
+                {
+                    tile = tilePool.colorBombCandyPool.GetObject();
+                }
+
+                tile.GetComponent<Tile>().board = this;
+                tile.GetComponent<Tile>().x = x;
+                tile.GetComponent<Tile>().y = y;
                 return tile;
             }
+
+            if (levelTile is SpecialBlockTile)
+            {
+                var specialBlockTile = (SpecialBlockTile) levelTile;
+                var block = tilePool.GetSpecialBlockPool(specialBlockTile.type).GetObject();
+                block.GetComponent<Tile>().board = this;
+                block.GetComponent<Tile>().x = x;
+                block.GetComponent<Tile>().y = y;
+                return block;
+            }
+
+            if (levelTile is CollectableTile)
+            {
+                var collectableTile = (CollectableTile) levelTile;
+                var tile = tilePool.GetCollectablePool(collectableTile.type).GetObject();
+                tile.GetComponent<Tile>().board = this;
+                tile.GetComponent<Tile>().x = x;
+                tile.GetComponent<Tile>().y = y;
+                return tile;
+            }
+
             return null;
         }
 
@@ -886,12 +794,14 @@ namespace GameVanilla.Game.Common
         {
             var tileIdx = x + (y * level.width);
             var tile = tilePool.GetStripedCandyPool(StripeDirection.Horizontal, color).GetObject();
+            tile.transform.parent = boardCenter;
             tile.GetComponent<Tile>().board = this;
             tile.GetComponent<Tile>().x = x;
             tile.GetComponent<Tile>().y = y;
             tile.transform.position = tilePositions[tileIdx];
             tiles[tileIdx] = tile;
             CreateSpawnParticles(tile.transform.position);
+            UpdateTile(tile, tileIdx);
             return tile;
         }
 
@@ -906,12 +816,14 @@ namespace GameVanilla.Game.Common
         {
             var tileIdx = x + (y * level.width);
             var tile = tilePool.GetStripedCandyPool(StripeDirection.Vertical, color).GetObject();
+            tile.transform.parent = boardCenter;
             tile.GetComponent<Tile>().board = this;
             tile.GetComponent<Tile>().x = x;
             tile.GetComponent<Tile>().y = y;
             tile.transform.position = tilePositions[tileIdx];
             tiles[tileIdx] = tile;
             CreateSpawnParticles(tile.transform.position);
+            UpdateTile(tile, tileIdx);
             return tile;
         }
 
@@ -926,12 +838,14 @@ namespace GameVanilla.Game.Common
         {
             var tileIdx = x + (y * level.width);
             var tile = tilePool.GetWrappedCandyPool(color).GetObject();
+            tile.transform.parent = boardCenter;
             tile.GetComponent<Tile>().board = this;
             tile.GetComponent<Tile>().x = x;
             tile.GetComponent<Tile>().y = y;
             tile.transform.position = tilePositions[tileIdx];
             tiles[tileIdx] = tile;
             CreateSpawnParticles(tile.transform.position);
+            UpdateTile(tile, tileIdx);
             return tile;
         }
 
@@ -945,12 +859,14 @@ namespace GameVanilla.Game.Common
         {
             var tileIdx = x + (y * level.width);
             var tile = tilePool.colorBombCandyPool.GetObject();
+            tile.transform.parent = boardCenter;
             tile.GetComponent<Tile>().board = this;
             tile.GetComponent<Tile>().x = x;
             tile.GetComponent<Tile>().y = y;
             tile.transform.position = tilePositions[tileIdx];
             tiles[tileIdx] = tile;
             CreateSpawnParticles(tile.transform.position);
+            UpdateTile(tile, tileIdx);
             return tile;
         }
 
@@ -970,6 +886,7 @@ namespace GameVanilla.Game.Common
             tile.transform.position = tilePositions[tileIdx];
             tiles[tileIdx] = tile;
             CreateSpawnParticles(tile.transform.position);
+            UpdateTile(tile, tileIdx);
             return tile;
         }
 
@@ -1014,6 +931,7 @@ namespace GameVanilla.Game.Common
             if (x >= 0 && x < level.width && y >= 0 && y < level.height)
             {
                 tiles[x + (y * level.width)] = tile;
+                UpdateTile(tile, x + (y * level.width));
             }
         }
 
@@ -1033,17 +951,16 @@ namespace GameVanilla.Game.Common
                 if (idx != -1)
                 {
                     explodedTile.GetComponent<Tile>().ShowExplosionFx(fxPool);
-                    Debug.LogWarning("Score");
-                    //score += gameConfig.GetTileScore(explodedTile.GetComponent<Tile>());
+                    score += gameConfig.GetTileScore(explodedTile.GetComponent<Tile>());
                     DestroyElements(explodedTile);
                     DestroySpecialBlocks(explodedTile, didAnySpecialCandyExplode);
                     explodedTile.GetComponent<PooledObject>().pool.ReturnObject(explodedTile);
                     tiles[idx] = null;
+                    UpdateTile(null , idx);
                 }
 
                 _sounds.PlaySound("CandyMatch");
             }
-
             UpdateScore(score);
         }
 
@@ -1074,7 +991,7 @@ namespace GameVanilla.Game.Common
                     
                     tile.GetComponent<PooledObject>().pool.ReturnObject(tile);
                     tiles[idx] = null;
-
+                    UpdateTile(null, idx);
                     var chocolates = tiles.FindAll(t => t != null && t.GetComponent<Chocolate>() != null);
 
                     _sounds.PlaySound("CandyMatch");
@@ -1127,6 +1044,7 @@ namespace GameVanilla.Game.Common
             {
                 honeys[idx].GetComponent<PooledObject>().pool.ReturnObject(honeys[idx]);
                 level.tiles[idx].elementType = ElementType.None;
+                UpdateLevel(idx, level.tiles[idx].elementType);
                 honeys[idx] = null;
                 UpdateScore(gameConfig.GetElementScore(ElementType.Honey));
 
@@ -1141,6 +1059,7 @@ namespace GameVanilla.Game.Common
             {
                 syrups1[idx].GetComponent<PooledObject>().pool.ReturnObject(syrups1[idx]);
                 level.tiles[idx].elementType = ElementType.None;
+                UpdateLevel(idx, level.tiles[idx].elementType);
                 syrups1[idx] = null;
                 UpdateScore(gameConfig.GetElementScore(ElementType.Syrup1));
 
@@ -1159,6 +1078,7 @@ namespace GameVanilla.Game.Common
 
                 syrups2[idx].GetComponent<PooledObject>().pool.ReturnObject(syrups2[idx]);
                 level.tiles[idx].elementType = ElementType.Syrup1;
+                UpdateLevel(idx, level.tiles[idx].elementType);
                 syrups2[idx] = null;
                 syrups1[idx] = syrup;
 
@@ -1175,6 +1095,7 @@ namespace GameVanilla.Game.Common
             {
                 ices[idx].GetComponent<PooledObject>().pool.ReturnObject(ices[idx]);
                 level.tiles[idx].elementType = ElementType.None;
+                UpdateLevel(idx, level.tiles[idx].elementType);
                 ices[idx] = null;
                 UpdateScore(gameConfig.GetElementScore(ElementType.Ice));
 
@@ -1232,6 +1153,7 @@ namespace GameVanilla.Game.Common
 
                     tile.GetComponent<PooledObject>().pool.ReturnObject(tile);
                     tiles[blockIdx] = null;
+                    UpdateTile(null, blockIdx);
                 }
 
                 if (tile.GetComponent<Chocolate>() != null)
@@ -1313,7 +1235,7 @@ namespace GameVanilla.Game.Common
         /// Detects all the possible tile swaps in the current level.
         /// </summary>
         /// <returns>A list containing all the possible tile swaps in the level.</returns>
-        private List<Swap> DetectPossibleSwaps()
+        public List<Swap> DetectPossibleSwaps()
         {
             var swaps = new List<Swap>();
 
@@ -1373,7 +1295,7 @@ namespace GameVanilla.Game.Common
         /// </summary>
         /// <param name="isPlayerMatch">True if the match was caused by a player and false otherwise.</param>
         /// <returns>True if there were any matches; false otherwise.</returns>
-        private bool HandleMatches(bool isPlayerMatch)
+        public bool HandleMatches(bool isPlayerMatch)
         {
             var matches = new List<Match>();
             var tShapedMatches = tShapedMatchDetector.DetectMatches(this);
@@ -1652,17 +1574,13 @@ namespace GameVanilla.Game.Common
                 StopCoroutine(suggestedMatchCoroutine);
                 suggestedMatchCoroutine = null;
             }
-
             inputLocked = true;
+            OnSwipeStart?.Invoke();
             yield return new WaitForSeconds(delay);
             ApplyGravityInternal();
             possibleSwaps = DetectPossibleSwaps();
             yield return new WaitForSeconds(1.0f);
-            if (currentlyAwarding)
-            {
-                gameScene.CheckEndGame();
-            }
-            else
+            if (!currentlyAwarding)
             {
                 if (!HandleMatches(false))
                 {
@@ -1673,9 +1591,9 @@ namespace GameVanilla.Game.Common
                     }
                     ExpandChocolate();
                     inputLocked = false;
-                    OnSwipe?.Invoke();
                     explodedChocolate = false;
                     suggestedMatchCoroutine = StartCoroutine(HighlightRandomMatchAsync());
+                    OnSwipeStop?.Invoke();
                 }
             }
 
@@ -1683,7 +1601,6 @@ namespace GameVanilla.Game.Common
             {
                 ApplyGravity();
             }
-            gameScene.CheckEndGame();
         }
 
         /// <summary>
@@ -1723,6 +1640,7 @@ namespace GameVanilla.Game.Common
                 {
                     collectablesToDestroy.Add(bottom);
                     tiles[tileIndex] = null;
+                    UpdateTile(null, tileIndex);
                 }
             }
 
@@ -1740,7 +1658,6 @@ namespace GameVanilla.Game.Common
                     tile.Explode();
                     tile.GetComponent<PooledObject>().pool.ReturnObject(tile.gameObject);
                 }
-
                 return true;
             }
 
@@ -1785,7 +1702,9 @@ namespace GameVanilla.Game.Common
                         if (tile != null)
                         {
                             var numTilesToFall = bottom - j;
-                            tiles[tileIndex + (numTilesToFall * level.width)] = tiles[tileIndex];
+                            var index = tileIndex + (numTilesToFall * level.width);
+                            tiles[index] = tiles[tileIndex];
+                            UpdateTile(tiles[tileIndex], index);
                             var tween = LeanTween.move(tile,
                                 tilePositions[tileIndex + level.width * numTilesToFall],
                                 0.5f);
@@ -1807,6 +1726,7 @@ namespace GameVanilla.Game.Common
                                 }
                             });
                             tiles[tileIndex] = null;
+                            UpdateTile(null, tileIndex);
                         }
                     }
                 }
@@ -1847,7 +1767,7 @@ namespace GameVanilla.Game.Common
                             var sourcePos = tilePositions[i];
                             var targetPos = tilePositions[tileIndex];
                             var pos = sourcePos;
-                            pos.y = tilePositions[i].y + (numEmpties * (_cellSize.y));
+                            pos.y = tilePositions[i].y + (numEmpties * (tileH));
                             --numEmpties;
                             tile.transform.position = pos;
                             var tween = LeanTween.move(tile,
@@ -1862,6 +1782,7 @@ namespace GameVanilla.Game.Common
                                 }
                             });
                             tiles[tileIndex] = tile;
+                            UpdateTile(tile, tileIndex);
                         }
                     }
                 }
@@ -2184,6 +2105,7 @@ namespace GameVanilla.Game.Common
 
                 var tile = tiles[randomIdx];
                 tiles[randomIdx] = null;
+                UpdateTile(null, randomIdx);
                 if (tile != null)
                 {
                     tile.GetComponent<PooledObject>().pool.ReturnObject(tile.gameObject);
@@ -2210,7 +2132,6 @@ namespace GameVanilla.Game.Common
                 _sounds.PlaySound("BoosterAward");
 
                 currentLimit -= 1;
-                UpdateLimitText();
                 yield return new WaitForSeconds(GameplayConstants.TimeBetweenRewardedCandiesCreation);
             }
 
@@ -2223,8 +2144,6 @@ namespace GameVanilla.Game.Common
                     yield return new WaitForSeconds(GameplayConstants.TimeBetweenRewardedCandiesExplosion);
                 }
             }
-
-            gameScene.OpenWinPopup();
         }
 
         /// <summary>
@@ -2286,7 +2205,7 @@ namespace GameVanilla.Game.Common
         /// Consumes the specified booster.
         /// </summary>
         /// <param name="button">The used booster button.</param>
-        private void ConsumeBooster(BuyBoosterButton button)
+        public void ConsumeBooster(BuyBoosterButton button)
         {
             var playerPrefsKey = string.Format("num_boosters_{0}", (int)button.boosterType);
             var numBoosters = PlayerPrefs.GetInt(playerPrefsKey);

@@ -15,6 +15,7 @@ namespace GameVanilla.Game.Common
     {
         public SpecialBlockType type;
 
+        public override BotTileMarker Marker => BotTileMarker.SpecialBlock;
         /// <summary>
         /// Returns a list containing all the tiles destroyed when this tile explodes.
         /// </summary>

@@ -21,10 +21,7 @@ namespace GameVanilla.Game.Scenes
 	public class GameScene : BaseScene
 	{
 		public GameBoard gameBoard;
-
-		public GameUi gameUi;
-
-		public Level level;
+        public Level level;
 
 		public FxPool fxPool;
 
@@ -34,12 +31,15 @@ namespace GameVanilla.Game.Scenes
 		[SerializeField]
 		private Text ingameBoosterText;
 
+        public bool BoosterMode { get; private set; }
+        public BuyBoosterButton CurrentBoosterButton { get; private set; }
+
 		private bool gameStarted;
 		private bool gameFinished;
 
-		private bool boosterMode;
-		private BuyBoosterButton currentBoosterButton;
 		private int ingameBoosterBgTweenId;
+
+		public event System.Action OnStartGame;
 
 	    /// <summary>
 	    /// Unity's Awake method.
@@ -47,26 +47,32 @@ namespace GameVanilla.Game.Scenes
 		private void Awake()
 		{
 			Assert.IsNotNull(gameBoard);
-			Assert.IsNotNull(gameUi);
 			Assert.IsNotNull(fxPool);
 			Assert.IsNotNull(ingameBoosterPanel);
 			Assert.IsNotNull(ingameBoosterText);
 		}
 
-	    /// <summary>
-	    /// Unity's Start method.
-	    /// </summary>
-		private void Start()
-		{
-			gameBoard.LoadLevel();
-			level = gameBoard.level;
-            OpenPopup<LevelGoalsPopup>("Popups/LevelGoalsPopup", popup => popup.SetGoals(level.goals));
-		}
+        /// <summary>
+        /// Unity's Start method.
+        /// </summary>
+        public void Play()
+        {
+			enabled = true;
+            gameBoard.LoadLevel();
+            level = gameBoard.level;
+            //OpenPopup<LevelGoalsPopup>("Popups/LevelGoalsPopup", popup => popup.SetGoals(level.goals));
+            OnStartGame?.Invoke();
+        }
 
-	    /// <summary>
-	    /// Unity's Update method.
-	    /// </summary>
-		private void Update()
+        public void Stop()
+        {
+            enabled = false;
+        }
+
+        /// <summary>
+        /// Unity's Update method.
+        /// </summary>
+        private void Update()
 		{
 			if (!gameStarted || gameFinished)
 			{
@@ -78,21 +84,7 @@ namespace GameVanilla.Game.Scenes
                 return;
             }
 
-			if (boosterMode)
-			{
-				if (currentBoosterButton.boosterType == BoosterType.Switch)
-				{
-					gameBoard.HandleSwitchBoosterInput(currentBoosterButton);
-				}
-				else
-				{
-					gameBoard.HandleBoosterInput(currentBoosterButton);
-				}
-			}
-			else
-			{
-				gameBoard.HandleInput();
-			}
+
 		}
 
 	    /// <summary>
@@ -134,83 +126,6 @@ namespace GameVanilla.Game.Scenes
             gameBoard.Continue();
         }
 
-        /// <summary>
-        /// Checks if the game has finished.
-        /// </summary>
-        public void CheckEndGame()
-        {
-            //if (gameFinished)
-            //{
-            //    return;
-            //}
-
-            //var goalsComplete = true;
-            //foreach (var goal in level.goals)
-            //{
-            //    if (!goal.IsComplete(gameBoard.gameState))
-            //    {
-            //        goalsComplete = false;
-            //        break;
-            //    }
-            //}
-
-            //if (gameBoard.currentLimit == 0)
-            //{
-            //    EndGame();
-            //}
-
-            //if (goalsComplete)
-            //{
-            //    EndGame();
-
-            //    var nextLevel = PlayerPrefs.GetInt("next_level");
-            //    if (nextLevel == 0)
-            //    {
-            //        nextLevel = 1;
-            //    }
-            //    if (level.id == nextLevel)
-            //    {
-            //        PlayerPrefs.SetInt("next_level", level.id + 1);
-            //        PuzzleMatchManager.instance.unlockedNextLevel = true;
-            //    }
-            //    else
-            //    {
-            //        PuzzleMatchManager.instance.unlockedNextLevel = false;
-            //    }
-
-            //    if (level.limitType == LimitType.Moves && level.awardSpecialCandies && gameBoard.currentLimit > 0)
-            //    {
-            //        gameBoard.AwardSpecialCandies();
-            //    }
-            //    else
-            //    {
-            //        StartCoroutine(OpenWinPopupAsync());
-            //    }
-            //}
-            //else
-            //{
-            //    if (gameFinished)
-            //    {
-            //        StartCoroutine(OpenNoMovesOrTimePopupAsync());
-            //    }
-            //}
-        }
-
-        /// <summary>
-        /// Opens the win popup.
-        /// </summary>
-        public void OpenWinPopup()
-        {
-            OpenPopup<WinPopup>("Popups/WinPopup", popup =>
-            {
-                var levelStars = PlayerPrefs.GetInt("level_stars_" + level.id);
-                popup.SetLevel(level.id);
-
-                var levelScore = PlayerPrefs.GetInt("level_score_" + level.id);
-
-                popup.SetGoals(gameUi.goalGroup);
-            });
-        }
 
         /// <summary>
         /// Opens the lose popup.
@@ -221,7 +136,6 @@ namespace GameVanilla.Game.Scenes
             OpenPopup<LosePopup>("Popups/LosePopup", popup =>
             {
                 popup.SetLevel(level.id);
-                popup.SetGoals(gameUi.goalGroup);
             });
         }
 
@@ -249,20 +163,6 @@ namespace GameVanilla.Game.Scenes
             }
         }
 
-        /// <summary>
-        /// Opens the win popup.
-        /// </summary>
-        /// <returns>The coroutine.</returns>
-        private IEnumerator OpenWinPopupAsync()
-        {
-            yield return new WaitForSeconds(GameplayConstants.EndGamePopupDelay);
-            OpenWinPopup();
-        }
-
-        /// <summary>
-        /// Opens the popup for buying additional moves or time.
-        /// </summary>
-        /// <returns>The coroutine.</returns>
         private IEnumerator OpenNoMovesOrTimePopupAsync()
         {
             yield return new WaitForSeconds(GameplayConstants.EndGamePopupDelay);
@@ -291,8 +191,8 @@ namespace GameVanilla.Game.Scenes
 		/// <param name="button">The used booster button.</param>
 		public void EnableBoosterMode(BuyBoosterButton button)
 		{
-			boosterMode = true;
-			currentBoosterButton = button;
+			BoosterMode = true;
+			CurrentBoosterButton = button;
 			FadeInInGameBoosterOverlay();
 			gameBoard.OnBoosterModeEnabled();
 
@@ -321,7 +221,7 @@ namespace GameVanilla.Game.Scenes
 		/// </summary>
 		public void DisableBoosterMode()
 		{
-			boosterMode = false;
+			BoosterMode = false;
 			FadeOutInGameBoosterOverlay();
 			gameBoard.OnBoosterModeDisabled();
 		}

@@ -31,7 +31,6 @@ namespace GameVanilla.Core
                 instance = this;
                 DontDestroyOnLoad(gameObject);
             }
-
             soundPool = GetComponent<ObjectPool>();
         }
 

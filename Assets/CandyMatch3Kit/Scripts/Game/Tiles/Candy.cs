@@ -17,6 +17,8 @@ namespace GameVanilla.Game.Common
     {
         public CandyColor color;
 
+        public override BotTileMarker Marker => BotTileMarker.Candy;
+
         /// <summary>
         /// Returns a list containing all the tiles destroyed when this tile explodes.
         /// </summary>

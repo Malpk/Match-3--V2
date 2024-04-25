@@ -5,19 +5,19 @@
 using System.Collections.Generic;
 
 using UnityEngine;
+using Mirror;
 
 namespace GameVanilla.Game.Common
 {
-	/// <summary>
-	/// The base class used for the tiles in the game.
-	/// </summary>
-	public abstract class Tile : MonoBehaviour
+	public abstract class Tile : NetworkBehaviour
 	{
 		[HideInInspector] public GameBoard board;
 		[HideInInspector] public int x;
 		[HideInInspector] public int y;
 
 		public bool destructable;
+
+		public abstract BotTileMarker Marker { get; }
 
 		public abstract List<GameObject> Explode();
 		public abstract void ShowExplosionFx(FxPool pool);
