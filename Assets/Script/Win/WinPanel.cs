@@ -19,14 +19,14 @@ public class WinPanel : MonoBehaviour
         _canvas.blocksRaycasts = alpha >= 1f;
     }
 
-    public void Show(PlayerState player, PlayerState enemy)
+    public void Show(SessionResult player)
     {
         _canvas.alpha = 0;
         _result.alpha = 0;
         _player.Hide();
         _enemy.Hide();
-        _player.SetPlayer(player);
-        _enemy.SetPlayer(enemy);
+        _player.SetMode(player.Win);
+        _enemy.SetMode(!player.Win);
         _canvas.LeanAlpha(1, 0.2f).setOnComplete(() =>
         {
             if (_corotine != null)

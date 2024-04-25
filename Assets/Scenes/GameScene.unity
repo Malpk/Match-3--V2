@@ -299,6 +299,7 @@ MonoBehaviour:
   _botPrefab: {fileID: 4722458647815537015, guid: 9138f40cbf7bbd349bd5bdfd21f03668,
     type: 3}
   _session: {fileID: 126594400}
+  _hud: {fileID: 0}
 --- !u!1 &12945307
 GameObject:
   m_ObjectHideFlags: 0
@@ -758,6 +759,10 @@ PrefabInstance:
       propertyPath: _scene
       value: 
       objectReference: {fileID: 7324049}
+    - target: {fileID: 708457228, guid: 558f0112e700d054a8587a6dcffdc6de, type: 3}
+      propertyPath: _winMenu
+      value: 
+      objectReference: {fileID: 1836156288}
     - target: {fileID: 708457228, guid: 558f0112e700d054a8587a6dcffdc6de, type: 3}
       propertyPath: _sessionUI
       value: 
@@ -2291,6 +2296,11 @@ PrefabInstance:
     - target: {fileID: 1867655420170066583, guid: 6676c4057c4755449bcb4abbfa7df3b8,
         type: 3}
       propertyPath: _player
+      value: 
+      objectReference: {fileID: 949300637}
+    - target: {fileID: 1867655420170066583, guid: 6676c4057c4755449bcb4abbfa7df3b8,
+        type: 3}
+      propertyPath: _controller
       value: 
       objectReference: {fileID: 949300637}
     - target: {fileID: 1867655420170066583, guid: 6676c4057c4755449bcb4abbfa7df3b8,

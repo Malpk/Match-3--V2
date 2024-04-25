@@ -7,6 +7,7 @@ public class Server : NetworkManager
     [SerializeField] private HttpHolder _holder;
     [SerializeField] private PlayerState _botPrefab;
     [SerializeField] private RoundSession _session;
+    [SerializeField] private RoundSessionUI _hud;
 
     private List<string> _adresses = new List<string>();
     private PlayerState _enemy;
@@ -59,7 +60,6 @@ public class Server : NetworkManager
             {
                 IsBot = config.Bot;
                 _enemy = Instantiate(_botPrefab).GetComponent<PlayerState>();
-                _enemy.SetLogin("Противник");
                 NetworkServer.Spawn(_enemy.gameObject);
             }
             if (_player)

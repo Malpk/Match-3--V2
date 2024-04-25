@@ -27,12 +27,6 @@ public class MachServer : MonoBehaviour
         _session.OnWin -= ComliteSession;
     }
 
-    private void OnDisconect(PlayerState obj)
-    {
-        _session.StopGame();
-        _scene.Play();
-    }
-
     private void OnAddPlayer(PlayerState player, PlayerState enemy)
     {
         if (_server.numPlayers > 0)

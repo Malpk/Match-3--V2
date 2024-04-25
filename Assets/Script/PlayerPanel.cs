@@ -9,7 +9,7 @@ public class PlayerPanel : NetworkBehaviour
     [SerializeField] private TextMeshProUGUI _score;
 
     [ClientRpc]
-    public void Bind(string name)
+    public void SetLogin(string name)
     {
         _name.SetText(name);
     }

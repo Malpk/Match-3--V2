@@ -3,13 +3,10 @@ using Mirror;
 
 public class Client : MonoBehaviour
 {
-    [SerializeField] private string _name;
-    [SerializeField] private PlayerPanel _playerPanel;
-    [SerializeField] private PlayerPanel _enemy;
     [SerializeField] private Server _client;
-    [SerializeField] private PlayerHandler _player;
-    [SerializeField] private WinMenu _menu;
+    [SerializeField] private PlayerHandler _controller;
 
+    private PlayerState _player;
 
     private void Awake()
     {
@@ -18,12 +15,11 @@ public class Client : MonoBehaviour
 
     private void OnConnectCahnge(ConnectionQuality arg1, ConnectionQuality arg2)
     {
-        if (NetworkClient.localPlayer)
+        if (NetworkClient.localPlayer && !_player)
         {
-            var player = NetworkClient.localPlayer.GetComponent<PlayerState>();
-            player.SetLogin(_name);
-            _player.Play(player);
-            _menu.SetPlayer(player);
+            _player = NetworkClient.localPlayer.GetComponent<PlayerState>();
+            _player.SetLogin(PlayerPrefs.GetString(UserAuto.USERKEY));
+            _controller.Play(_player);
         }
     }
 

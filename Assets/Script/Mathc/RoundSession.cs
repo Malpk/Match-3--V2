@@ -14,6 +14,7 @@ public class RoundSession : MonoBehaviour
     [Header("Reference")]
     [SerializeField] private GameBoard _board;
     [SerializeField] private GameScene _scene;
+    [SerializeField] private WinMenu _winMenu;
     [SerializeField] private RoundSessionUI _sessionUI;
 
     private PlayerSesion _player;
@@ -50,6 +51,10 @@ public class RoundSession : MonoBehaviour
         _player = new PlayerSesion(player);
         _enemy = new PlayerSesion(enemy);
         _curretState = _player;
+        _sessionUI.Player.SetScore(0);
+        _sessionUI.Enemy.SetScore(0);
+        UpdateScore(_player, _enemy);
+        UpdateScore(_enemy, _player);
     }
 
     public void Reconect(PlayerState player)
@@ -128,6 +133,18 @@ public class RoundSession : MonoBehaviour
         {
             _sessionUI.Enemy.SetScore(_curretState.Score);
         }
+        UpdateScore(_player, _enemy);
+        UpdateScore(_enemy, _player);
+    }
+
+    private void UpdateScore(PlayerSesion player, PlayerSesion enemy)
+    {
+        if (player.Player)
+        {
+            if(player.Player.isClient)
+                _winMenu.UpdateScore(player.Player.netIdentity.connectionToClient,
+                    player.Score, enemy.Score);
+        }
     }
 
     private bool Next()
@@ -168,21 +185,33 @@ public class RoundSession : MonoBehaviour
     {
         StopGame();
         var playerWin = _player.Score > _enemy.Score;
-        var resultP1 = SetPlayerResult(_player.Player, playerWin);
-        var resultP2 = SetPlayerResult(_enemy.Player,!playerWin);
-        OnWin?.Invoke($"{JsonUtility.ToJson(resultP1)} ::: {JsonUtility.ToJson(resultP2)} ");
+        SaveResult(_player, _enemy, playerWin);
+        SaveResult(_enemy, _player, !playerWin);
     }
 
-    private SessionResult SetPlayerResult(PlayerState player, bool win)
+    private void SaveResult(PlayerSesion player, PlayerSesion enemy, bool win)
     {
-        if (player)
+        var result = GetPlayerResult(player, enemy.Login, win);
+        Debug.Log(JsonUtility.ToJson(result));
+        if (player.Player)
+            _winMenu.Show(player.Player.netIdentity.connectionToClient, JsonUtility.ToJson(result));
+        OnWin?.Invoke($"save_result/{result.Player}/{result.Stars}/{result.Coins}");
+    }
+
+    private SessionResult GetPlayerResult(PlayerSesion session, string enemy, bool win)
+    {
+        if (session.Player)
         {
-            player.SetWin(win);
             var result = GetSession(win);
-            player.CompliteGame(player, result);
+            result.Player = session.Login;
+            result.Score = session.Score;
+            result.Enemy = enemy;
+            result.Win = win;
             return result;
         }
-        return GetSession(false);
+        var result1 = GetSession(false);
+        result1.Player = session.Login;
+        return result1;
     }
 
     private SessionResult GetSession(bool win)

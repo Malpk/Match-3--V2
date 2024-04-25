@@ -12,7 +12,7 @@ public class CharacterPanel : MonoBehaviour
     [SerializeField] private RectTransform _holder;
 
     private Coroutine _corotine;
-    private PlayerState _player;
+    private SessionResult _player;
 
     public bool IsShow { get; private set; } = false;
 
@@ -27,14 +27,7 @@ public class CharacterPanel : MonoBehaviour
         SetMode(_isWin);
     }
 
-    public void SetPlayer(PlayerState player)
-    {
-        _player = player;
-        _isWin = player.IsWin;
-        SetMode(player.IsWin);
-    }
-
-    private void SetMode(bool win)
+    public void SetMode(bool win)
     {
         if(_loseShadow)
             _loseShadow.gameObject.SetActive(!win);

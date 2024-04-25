@@ -1,6 +1,7 @@
 public class PlayerSesion
 {
     public int Score;
+    public string Login;
     public string Adress;
     public PlayerState Player;
 
@@ -9,7 +10,6 @@ public class PlayerSesion
         Score = 0;
         Player = player;
         Adress = Player.Adress;
-        Player.SetScore(0);
     }
 
     public void Reconect(PlayerState player)
@@ -24,12 +24,11 @@ public class PlayerSesion
 
     public void Exit()
     {
-        Player.Exit();
+        Player.ExitClient();
     }
 
     public void AddScore(int score)
     {
         Score += score;
-        Player?.SetScore(score);
     }
 }

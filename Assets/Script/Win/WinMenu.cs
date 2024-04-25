@@ -1,7 +1,8 @@
 using UnityEngine;
 using TMPro;
+using Mirror;
 
-public class WinMenu : MonoBehaviour
+public class WinMenu : NetworkBehaviour
 {
     [SerializeField] private bool _showWinPanel;
     [Header("Reference")]
@@ -11,11 +12,10 @@ public class WinMenu : MonoBehaviour
     [SerializeField] private CanvasGroup _prewiew;
     [SerializeField] private ResultPanel _result;
 
-    private PlayerState _player;
-
-    private void OnValidate()
+    protected override void OnValidate()
     {
-        if(_prewiew)
+        base.OnValidate();
+        if (_prewiew)
             _prewiew.alpha = _showWinPanel ? 0 : 1;
         _winPanel?.SetMode(_showWinPanel ? 1 : 0);
     }
@@ -25,35 +25,23 @@ public class WinMenu : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    private void OnDestroy()
+    [TargetRpc]
+    public void Show(NetworkConnectionToClient client, string json)
     {
-        if (_player)
-            _player.OnCompliteGame -= Show;
-    }
-
-    public void SetPlayer(PlayerState player)
-    {
-        if (player != _player)
-        {
-            if (_player)
-            {
-                _player.OnCompliteGame -= Show;
-                Debug.LogError("Игрок уже назанчен");
-            }
-            _player = player;
-            _player.OnCompliteGame += Show;
-        }
-    }
-
-    public void Show(PlayerState player, PlayerState enemy, SessionResult session)
-    {
-        _result.SetResult(session);
+        Debug.Log(json);
+        var player = JsonUtility.FromJson<SessionResult>(json);
+        _result.SetResult(player);
         _prewiew.alpha = 0;
-        _prewiew.LeanAlpha(1, 1.5f).setOnComplete(() => _winPanel.Show(player, enemy));
+        _prewiew.LeanAlpha(1, 1.5f).setOnComplete(() => _winPanel.Show(player));
         _winPanel.SetMode(0);
-        _playerScore.SetText(player.Score.ToString());
-        _enemyScore.SetText(enemy.Score.ToString());
         gameObject.SetActive(true);
+    }
+
+    [TargetRpc]
+    public void UpdateScore(NetworkConnectionToClient client, int player, int enemy)
+    {
+        _playerScore.SetText(player.ToString());
+        _playerScore.SetText(enemy.ToString());
     }
 
     public void Hide()

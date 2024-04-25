@@ -130,6 +130,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67b14b7d0c117ee46a6af6d8a49515eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
   _showWinPanel: 1
   _playerScore: {fileID: 3148998242417548409}
   _enemyScore: {fileID: 443499905268086220}

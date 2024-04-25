@@ -4,7 +4,8 @@ using UnityEngine.Events;
 
 public class UserAuto : MonoBehaviour
 {
-    [SerializeField] private string _saveKey;
+    public const string USERKEY = "userAuto"; 
+  
     [Header("Server")]
     [SerializeField] private string _adress;
     [SerializeField] private string _login;
@@ -43,13 +44,13 @@ public class UserAuto : MonoBehaviour
 
     private void Registrate()
     {
-        if (!PlayerPrefs.HasKey(_saveKey))
+        if (!PlayerPrefs.HasKey(USERKEY))
         {
             Replace(_login);
         }
         else
         {
-            User = JsonUtility.FromJson<UserData>(PlayerPrefs.GetString(_saveKey));
+            User = JsonUtility.FromJson<UserData>(PlayerPrefs.GetString(USERKEY));
         }
     }
 
@@ -64,9 +65,8 @@ public class UserAuto : MonoBehaviour
             {
                 _isReady = true;
                 _applay.interactable = _newLogin != login;
-                PlayerPrefs.SetString(_saveKey, content);
+                PlayerPrefs.SetString(USERKEY, content);
                 User = JsonUtility.FromJson<UserData>(content);
-                Debug.Log("Get");
             });
         }
     }
