@@ -25,10 +25,6 @@ public class Client : MonoBehaviour
             _player.Play(player);
             _menu.SetPlayer(player);
         }
-        else
-        {
-            _playerPanel.Bind(null);
-        }
     }
 
     public void StartClient()

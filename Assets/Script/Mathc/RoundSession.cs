@@ -54,7 +54,7 @@ public class RoundSession : MonoBehaviour
 
     public void Reconect(PlayerState player)
     {
-        if (_player.Adress == player.Adress)
+        if (_player.Adress == player.Adress && !_player.Player)
         {
             _player.Reconect(player);
         }
@@ -62,6 +62,9 @@ public class RoundSession : MonoBehaviour
         {
             _enemy.Reconect(player);
         }
+        _sessionUI.Switch(_curretState.Player);
+        _sessionUI.Player.SetScore(_player.Score);
+        _sessionUI.Enemy.SetScore(_enemy.Score);
     }
 
     public void StartGame()

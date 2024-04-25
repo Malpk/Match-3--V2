@@ -8,7 +8,7 @@ public class Server : NetworkManager
     [SerializeField] private PlayerState _botPrefab;
     [SerializeField] private RoundSession _session;
 
-    private string[] _adresses;
+    private List<string> _adresses = new List<string>();
     private PlayerState _enemy;
     private PlayerState _player;
 
@@ -54,7 +54,7 @@ public class Server : NetworkManager
         var player = AddPlayer(conn);
         _holder.SendGetMessange($"get_setting/{networkAddress}", (mess) => {
             var config = JsonUtility.FromJson<ServerConfigData>(mess);
-            _adresses = config.Players;
+            _adresses.Add(player.Adress);
             if (config.Bot)
             {
                 IsBot = config.Bot;
@@ -81,6 +81,7 @@ public class Server : NetworkManager
 
     private void Reconnect(NetworkConnectionToClient conn)
     {
+        Debug.Log($"Reconect {conn} : {CheakAdress(conn.address)}");
         if (CheakAdress(conn.address))
         {
             var player = AddPlayer(conn);
@@ -104,7 +105,6 @@ public class Server : NetworkManager
     {
         var player = _list.Find(x => conn.owned.Contains(x.netIdentity));
         _list.Remove(player);
-        Debug.Log(player.name);
         base.OnServerDisconnect(conn);
     }
 

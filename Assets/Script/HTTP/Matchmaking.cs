@@ -41,6 +41,7 @@ public class Matchmaking : MonoBehaviour
             {
                 _holder.SendGetMessange($"reconect/{session.Adress}", (mess) =>
                 {
+                    Debug.Log(mess);
                     _reconnectData = JsonUtility.FromJson<ServerData>(mess);
                     _reconnect.interactable = _reconnectData != null;
                 });
@@ -70,7 +71,6 @@ public class Matchmaking : MonoBehaviour
     {
         if (!IsRun)
         {
-            Debug.Log(json);
             PlayerPrefs.SetString(GameLoder.GAMECONFIG, json);
             SceneManager.LoadScene(_gameSceneID);
             IsRun = true;

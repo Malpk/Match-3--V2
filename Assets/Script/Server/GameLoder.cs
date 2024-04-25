@@ -1,5 +1,6 @@
 using UnityEngine;
 using kcp2k;
+using System.Collections;
 
 public class GameLoder : MonoBehaviour
 {
@@ -22,6 +23,7 @@ public class GameLoder : MonoBehaviour
 
     private void OnDestroy()
     {
+        Debug.Log(JsonUtility.ToJson(_serverData));
         PlayerPrefs.SetString(SESSION, JsonUtility.ToJson(_serverData));
         _server.OnDisconect -= OnDisconect;
     }
