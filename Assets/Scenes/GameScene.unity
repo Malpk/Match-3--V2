@@ -295,7 +295,7 @@ MonoBehaviour:
   evaluationMethod: 0
   evaluationInterval: 3
   timeInterpolationGui: 0
-  _holder: {fileID: 0}
+  _holder: {fileID: 2073123398}
   _botPrefab: {fileID: 4722458647815537015, guid: 9138f40cbf7bbd349bd5bdfd21f03668,
     type: 3}
   _session: {fileID: 126594400}
@@ -3085,7 +3085,7 @@ GameObject:
   - component: {fileID: 1990585057}
   - component: {fileID: 1990585058}
   m_Layer: 0
-  m_Name: Game
+  m_Name: GameLoader
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

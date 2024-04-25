@@ -2,5 +2,5 @@
 public class ServerData
 {
     public string Adress;
-    public int Port;
+    public ushort Port;
 }

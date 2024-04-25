@@ -13,10 +13,20 @@ public class Server : NetworkManager
 
     private List<NetworkIdentity> _list = new List<NetworkIdentity>();
 
-    public event System.Action<PlayerState, PlayerState> OnAddPlayer;
+    public event System.Action<PlayerState, PlayerState> OnStart;
     public event System.Action<PlayerState> OnDisconect;
 
     public bool IsBot { get; private set; } = true;
+
+    private void Update()
+    {
+        if (_player != null && _enemy != null)
+        {
+            _session.SetPlayer(_player, _enemy);
+            OnStart?.Invoke(_player, _enemy);
+            enabled = false;
+        }
+    }
 
     public override void OnServerAddPlayer(NetworkConnectionToClient conn)
     {
@@ -27,17 +37,15 @@ public class Server : NetworkManager
             var config = JsonUtility.FromJson<ServerConfigData>(mess);
             if (config.Bot)
             {
+                IsBot = config.Bot;
                 _enemy = Instantiate(_botPrefab).GetComponent<PlayerState>();
                 NetworkServer.Spawn(_enemy.gameObject);
             }
+            if (_player)
+                _enemy = player;
+            else
+                _player = player;
         });
-        if (_player)
-            _enemy = player;
-        else
-            _player = player;
-        if (_player != null && _enemy != null)
-            _session.SetPlayer(_player, _enemy);
-            OnAddPlayer?.Invoke(_player, _enemy);
     }
 
     public override void OnServerDisconnect(NetworkConnectionToClient conn)

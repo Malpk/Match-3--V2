@@ -17,14 +17,14 @@ public class MachServer : MonoBehaviour
 
     private void Awake()
     {
-        _server.OnAddPlayer += OnAddPlayer;
+        _server.OnStart += OnAddPlayer;
         _server.OnDisconect += OnDisconect;
         _session.OnWin += ComliteSession;
     }
 
     private void OnDestroy()
     {
-        _server.OnAddPlayer -= OnAddPlayer;
+        _server.OnStart -= OnAddPlayer;
         _server.OnDisconect -= OnDisconect;
         _session.OnWin -= ComliteSession;
     }
@@ -61,7 +61,15 @@ public class MachServer : MonoBehaviour
         {
             _isStart = true;
             _server.StartServer();
-            _holder.SendGetMessange($"add_server/{_server.networkAddress}/{_transport.port}", (mess) => Debug.Log(mess));
+            _holder.SendGetMessange($"add_server/{_server.networkAddress}/{_transport.port}", (mess) => {
+                Debug.Log(mess);
+                var data = JsonUtility.FromJson<ServerData>(mess);
+                if (data != null)
+                {
+                    _server.networkAddress = data.Adress;
+                    _transport.port = data.Port;
+                }
+            });
         }
     }
 
