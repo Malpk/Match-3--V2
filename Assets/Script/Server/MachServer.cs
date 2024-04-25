@@ -18,14 +18,12 @@ public class MachServer : MonoBehaviour
     private void Awake()
     {
         _server.OnStart += OnAddPlayer;
-        _server.OnDisconect += OnDisconect;
         _session.OnWin += ComliteSession;
     }
 
     private void OnDestroy()
     {
         _server.OnStart -= OnAddPlayer;
-        _server.OnDisconect -= OnDisconect;
         _session.OnWin -= ComliteSession;
     }
 

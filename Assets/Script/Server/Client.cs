@@ -21,7 +21,7 @@ public class Client : MonoBehaviour
         if (NetworkClient.localPlayer)
         {
             var player = NetworkClient.localPlayer.GetComponent<PlayerState>();
-            player.SetNick(_name);
+            player.SetLogin(_name);
             _player.Play(player);
             _menu.SetPlayer(player);
         }

@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 7324049}
   - component: {fileID: 7324051}
   m_Layer: 0
-  m_Name: GameScene
+  m_Name: Network
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3122,10 +3122,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isServer: 0
-  _network: {fileID: 7324051}
+  _server: {fileID: 7324051}
   _transport: {fileID: 824988566}
-  _client: {fileID: 1576755140}
-  _server: {fileID: 2073123399}
+  _clientController: {fileID: 1576755140}
+  _serverController: {fileID: 2073123399}
 --- !u!1001 &2039331558
 PrefabInstance:
   m_ObjectHideFlags: 0

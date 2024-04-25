@@ -10,8 +10,11 @@ public class Matchmaking : MonoBehaviour
     [SerializeField] private string _runMatchmaking;
     [Header("Reference")]
     [SerializeField] private Button _start;
+    [SerializeField] private Button _reconnect;
     [SerializeField] private UserAuto _auto;
     [SerializeField] private HttpHolder _holder;
+
+    private ServerData _reconnectData;
 
     public bool IsRun { get; private set; } = false;
 
@@ -25,6 +28,25 @@ public class Matchmaking : MonoBehaviour
     private void Awake()
     {
         _start.onClick.AddListener(PlayMatchmaking);
+        _reconnect.onClick.AddListener(Reconect);
+        _reconnect.interactable = false;
+    }
+
+    private void Start()
+    {
+        if (PlayerPrefs.HasKey(GameLoder.SESSION))
+        {
+            var session = JsonUtility.FromJson<ServerData>(PlayerPrefs.GetString(GameLoder.SESSION));
+            if (session != null)
+            {
+                _holder.SendGetMessange($"reconect/{session.Adress}", (mess) =>
+                {
+                    _reconnectData = JsonUtility.FromJson<ServerData>(mess);
+                    _reconnect.interactable = _reconnectData != null;
+                });
+            }
+            PlayerPrefs.DeleteKey(GameLoder.SESSION);
+        }
     }
 
     public void PlayMatchmaking()
@@ -37,6 +59,11 @@ public class Matchmaking : MonoBehaviour
     {
         Debug.Log(json);
         _holder.SendGetMessange($"{_runMatchmaking}/{_auto.User.Login}", EnterToServer);
+    }
+
+    private void Reconect()
+    {
+        EnterToServer(JsonUtility.ToJson(_reconnectData));
     }
 
     private void EnterToServer(string json)

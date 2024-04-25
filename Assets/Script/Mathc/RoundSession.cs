@@ -2,6 +2,7 @@ using UnityEngine;
 using GameVanilla.Game.Common;
 using GameVanilla.Game.Scenes;
 
+
 public class RoundSession : MonoBehaviour
 {
     [SerializeField] private int _coundSwipe;
@@ -15,18 +16,20 @@ public class RoundSession : MonoBehaviour
     [SerializeField] private GameScene _scene;
     [SerializeField] private RoundSessionUI _sessionUI;
 
-    private PlayerState _player;
-    private PlayerState _enemy;
+    private PlayerSesion _player;
+    private PlayerSesion _enemy;
 
     private int _count;
     private int _curretCount;
     private int _countRound;
     private bool _isPlayer;
     private float _curretProgress = 0f;
-    private PlayerState _curretState;
+    private PlayerSesion _curretState;
 
     public event System.Action<float> OnRound;
     public event System.Action<string> OnWin;
+
+    public bool IsComplite => enabled;
 
     private void Awake()
     {
@@ -44,14 +47,22 @@ public class RoundSession : MonoBehaviour
 
     public void SetPlayer(PlayerState player, PlayerState enemy)
     {
-        _player = player;
-        _enemy = enemy;
-        _sessionUI.Player.Bind(_player.Name);
-        _sessionUI.Enemy.Bind(_enemy.Name);
-        _sessionUI.Player.SetScore(_player.Score);
-        _sessionUI.Enemy.SetScore(_enemy.Score);
+        _player = new PlayerSesion(player);
+        _enemy = new PlayerSesion(enemy);
+        _curretState = _player;
     }
 
+    public void Reconect(PlayerState player)
+    {
+        if (_player.Adress == player.Adress)
+        {
+            _player.Reconect(player);
+        }
+        else if (_enemy.Adress == player.Adress)
+        {
+            _enemy.Reconect(player);
+        }
+    }
 
     public void StartGame()
     {
@@ -97,9 +108,7 @@ public class RoundSession : MonoBehaviour
         {
             _curretCount = 0;
             _curretProgress = 0;
-            if (NextRound())
-                SwitchPlayer();
-            else
+            if(!Next())
                 CompliteGame();
         }
         _sessionUI.SetProgress(1f - _curretProgress);
@@ -118,13 +127,25 @@ public class RoundSession : MonoBehaviour
         }
     }
 
-    private void SwitchPlayer()
+    private bool Next()
     {
-        _curretState?.Exit();
-        _curretState = _isPlayer ? _player : _enemy;
-        _curretState.Enter();
-        _sessionUI.Switch(_curretState);
-        _isPlayer = !_isPlayer;
+        if (NextRound())
+           return SwitchPlayer();
+        return false;
+    }
+
+    private bool SwitchPlayer()
+    {
+        if (_curretState.Player)
+        {
+            _curretState.Exit();
+            _curretState = _isPlayer ? _player : _enemy;
+            _curretState.Enter();
+            _sessionUI.Switch(_curretState.Player);
+            _isPlayer = !_isPlayer;
+            return true;
+        }
+        return false;
     }
 
     private bool NextRound()
@@ -133,10 +154,9 @@ public class RoundSession : MonoBehaviour
         if (_count >= 2)
         {
             _countRound++;
-                    _sessionUI.SetRound(_countRound);
+            _sessionUI.SetRound(_countRound);
             _count = 0;
         }
-
         return _countRound <= _roundCount;
     }
 
@@ -144,13 +164,22 @@ public class RoundSession : MonoBehaviour
     private void CompliteGame()
     {
         StopGame();
-        _player.SetWin(_player.Score > _enemy.Score);
-        _enemy.SetWin(_enemy.Score > _player.Score);
-        var resultP1 = GetSession(_player.IsWin);
-        var resultP2 = GetSession(_enemy.IsWin);
-        _player.CompliteGame(_enemy, resultP1);
-        _enemy.CompliteGame(_player, resultP2);
+        var playerWin = _player.Score > _enemy.Score;
+        var resultP1 = SetPlayerResult(_player.Player, playerWin);
+        var resultP2 = SetPlayerResult(_enemy.Player,!playerWin);
         OnWin?.Invoke($"{JsonUtility.ToJson(resultP1)} ::: {JsonUtility.ToJson(resultP2)} ");
+    }
+
+    private SessionResult SetPlayerResult(PlayerState player, bool win)
+    {
+        if (player)
+        {
+            player.SetWin(win);
+            var result = GetSession(win);
+            player.CompliteGame(player, result);
+            return result;
+        }
+        return GetSession(false);
     }
 
     private SessionResult GetSession(bool win)

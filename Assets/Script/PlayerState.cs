@@ -4,9 +4,8 @@ using GameVanilla.Game.Common;
 
 public class PlayerState : NetworkBehaviour
 {
-    [SyncVar] [SerializeField] private bool _isWin;
-    [SyncVar] [SerializeField] private int _score;
-    [SerializeField] private string _name;
+    [SerializeField] private bool _isWin;
+    [SyncVar][SerializeField] private string _login;
 
     private GameBoard _board;
 
@@ -16,19 +15,35 @@ public class PlayerState : NetworkBehaviour
     public event System.Action<float> OnRoundProgress;
     public event System.Action<PlayerState, PlayerState, SessionResult> OnCompliteGame;
 
-    public string Name => _name;
+    public string Adress { get; private set; }
+
+    public int Score { get; private set; }
     public bool IsWin => _isWin;
-    public int Score => _score;
+    public bool Disconect { get; private set; }
+
+    public event System.Action<string> OnLogin;
 
     public void SetWin(bool win)
     {
         _isWin = win;
+        SetClientWin(win);
     }
 
-    public void SetNick(string nick)
+    [ClientRpc]
+    private void SetClientWin(bool win)
     {
-        _name = nick;
-        SetServerData(_name);
+        _isWin = win;
+    }
+
+    [Server]
+    public void SetAdress(string adress)
+    {
+        Adress = adress;
+    }
+
+    public void SetLogin(string nick)
+    {
+        _login = nick;
     }
 
     public void SetBoard(GameBoard board)
@@ -36,11 +51,10 @@ public class PlayerState : NetworkBehaviour
         _board = board;
     }
 
-    [Server]
-    public void AddScore(int score)
+    [ClientRpc]
+    public void SetScore(int score)
     {
-        if(isServer)
-            _score += score;
+        Score = score;
     }
 
     [Command]
@@ -50,15 +64,9 @@ public class PlayerState : NetworkBehaviour
     }
 
     [Command]
-    private void SetServerData(string nick)
-    {
-        _name = nick;
-    }
-
-    [Command]
     public void SwipeBoard(string nick)
     {
-        _name = nick;
+        _login = nick;
     }
 
 
@@ -84,5 +92,10 @@ public class PlayerState : NetworkBehaviour
     public void CompliteGame(PlayerState enemy, SessionResult result)
     {
         OnCompliteGame?.Invoke(this, enemy, result);
+    }
+
+    public void SetConnectStatus(bool disconect)
+    {
+        Disconect = disconect;
     }
 }

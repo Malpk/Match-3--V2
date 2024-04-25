@@ -1,18 +1,36 @@
 using UnityEngine;
-using Mirror;
 using kcp2k;
 
 public class GameLoder : MonoBehaviour
 {
     public const string GAMECONFIG = "gameConfig";
+    public const string SESSION = "session";
 
     [SerializeField] private bool _isServer;
     [Header("Reference")]
-    [SerializeField] private NetworkManager _network;
+    [SerializeField] private Server _server;
     [SerializeField] private KcpTransport _transport;
-    [SerializeField] private Client _client;
-    [SerializeField] private MachServer _server;
+    [SerializeField] private Client _clientController;
+    [SerializeField] private MachServer _serverController;
 
+    private ServerData _serverData;
+
+    private void Awake()
+    {
+        _server.OnDisconect += OnDisconect;
+    }
+
+    private void OnDestroy()
+    {
+        Debug.Log("SESSION");
+        PlayerPrefs.SetString(SESSION, JsonUtility.ToJson(_serverData));
+        _server.OnDisconect -= OnDisconect;
+    }
+
+    private void OnDisconect()
+    {
+        PlayerPrefs.SetString(SESSION, JsonUtility.ToJson(_serverData));
+    }
 
     private void Start()
     {
@@ -20,24 +38,25 @@ public class GameLoder : MonoBehaviour
         {
             if (PlayerPrefs.GetString(GAMECONFIG) != null)
             {
-                var server = JsonUtility.FromJson<ServerData>(PlayerPrefs.GetString(GAMECONFIG));
-                Debug.Log(server != null);
-                _transport.Port = (ushort)server.Port;
-                _network.networkAddress = server.Adress;
-                _client.StartClient();
-                _server.gameObject.SetActive(false);
+                _serverData = JsonUtility.FromJson<ServerData>(PlayerPrefs.GetString(GAMECONFIG));
+                _transport.Port = _serverData.Port;
+                _server.networkAddress = _serverData.Adress;
+                _clientController.StartClient();
+                _serverController.gameObject.SetActive(false);
             }
             PlayerPrefs.DeleteKey(GAMECONFIG);
         }
         else
         {
-            _server.StartServer();
-            _client.gameObject.SetActive(false);
+            _serverController.StartServer();
+            _clientController.gameObject.SetActive(false);
         }
     }
 
     private void OnApplicationQuit()
     {
         PlayerPrefs.DeleteKey(GAMECONFIG);
+        Debug.Log("SESSION");
+        PlayerPrefs.SetString(SESSION, JsonUtility.ToJson(_serverData));
     }
 }
