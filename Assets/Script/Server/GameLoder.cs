@@ -22,7 +22,6 @@ public class GameLoder : MonoBehaviour
 
     private void OnDestroy()
     {
-        Debug.Log("SESSION");
         PlayerPrefs.SetString(SESSION, JsonUtility.ToJson(_serverData));
         _server.OnDisconect -= OnDisconect;
     }
@@ -53,10 +52,4 @@ public class GameLoder : MonoBehaviour
         }
     }
 
-    private void OnApplicationQuit()
-    {
-        PlayerPrefs.DeleteKey(GAMECONFIG);
-        Debug.Log("SESSION");
-        PlayerPrefs.SetString(SESSION, JsonUtility.ToJson(_serverData));
-    }
 }
