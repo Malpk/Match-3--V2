@@ -192,7 +192,6 @@ public class RoundSession : MonoBehaviour
     private void SaveResult(PlayerSesion player, PlayerSesion enemy, bool win)
     {
         var result = GetPlayerResult(player, enemy.Login, win);
-        Debug.Log(JsonUtility.ToJson(result));
         if (player.Player)
             _winMenu.Show(player.Player.netIdentity.connectionToClient, JsonUtility.ToJson(result));
         OnWin?.Invoke($"save_result/{result.Player}/{result.Stars}/{result.Coins}");

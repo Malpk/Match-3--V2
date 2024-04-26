@@ -1,5 +1,6 @@
 using Mirror;
 using GameVanilla.Game.Common;
+using UnityEngine;
 
 public class PlayerState : NetworkBehaviour
 {
@@ -9,9 +10,10 @@ public class PlayerState : NetworkBehaviour
     public event System.Action OnExit;
     public event System.Action<int> OnSetRound;
     public event System.Action<float> OnRoundProgress;
-    public event System.Action<string> OnSetLogin;
+    public event System.Action OnSetLogin;
 
     public string Adress { get; private set; }
+    public string Login { get; private set; }
 
     [Server]
     public void SetAdress(string adress)
@@ -20,9 +22,15 @@ public class PlayerState : NetworkBehaviour
     }
 
     [Command]
+    public void SetLoginCommand(string login)
+    {
+        Login = login;
+        OnSetLogin?.Invoke();
+    }
+
     public void SetLogin(string login)
     {
-        OnSetLogin?.Invoke(login);
+        Login = login;
     }
 
     [Command]

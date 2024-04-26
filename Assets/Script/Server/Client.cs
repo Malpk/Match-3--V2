@@ -18,7 +18,8 @@ public class Client : MonoBehaviour
         if (NetworkClient.localPlayer && !_player)
         {
             _player = NetworkClient.localPlayer.GetComponent<PlayerState>();
-            _player.SetLogin(PlayerPrefs.GetString(UserAuto.USERKEY));
+            var user =JsonUtility.FromJson<UserData>(PlayerPrefs.GetString(UserAuto.USERKEY));
+            _player.SetLoginCommand(user.Login);
             _controller.Play(_player);
         }
     }

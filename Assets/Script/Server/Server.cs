@@ -60,14 +60,37 @@ public class Server : NetworkManager
             {
                 IsBot = config.Bot;
                 _enemy = Instantiate(_botPrefab).GetComponent<PlayerState>();
+                _enemy.SetLogin("Противник");
+                UpdateLoginClient(_player, _enemy);
                 NetworkServer.Spawn(_enemy.gameObject);
             }
-            if (_player)
-                _enemy = player;
-            else
-                _player = player;
         });
+        if (_player)
+        {
+            _enemy = player;
+            _enemy.OnSetLogin += UpdateLogin;
+        }
+        else
+        {
+            _player = player;
+            _player.OnSetLogin += UpdateLogin;
+        }
         return true;
+    }
+
+    private void UpdateLogin()
+    {
+        if(_player)
+            UpdateLoginClient(_player, _enemy);
+        //if (_enemy && !IsBot)
+        //    UpdateLoginClient(_enemy, _player);
+    }
+
+    private void UpdateLoginClient(PlayerState player, PlayerState enemy)
+    {
+        _hud.Player.SetLogin(player.netIdentity.connectionToClient, player.Login);
+        if(enemy)
+            _hud.Enemy.SetLogin(player.netIdentity.connectionToClient, enemy.Login);
     }
 
     private PlayerState AddPlayer(NetworkConnectionToClient conn)

@@ -8,8 +8,8 @@ public class PlayerPanel : NetworkBehaviour
     [SerializeField] private TextMeshProUGUI _name;
     [SerializeField] private TextMeshProUGUI _score;
 
-    [ClientRpc]
-    public void SetLogin(string name)
+    [TargetRpc]
+    public void SetLogin(NetworkConnectionToClient client, string name)
     {
         _name.SetText(name);
     }

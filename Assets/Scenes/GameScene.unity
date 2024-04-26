@@ -299,7 +299,7 @@ MonoBehaviour:
   _botPrefab: {fileID: 4722458647815537015, guid: 9138f40cbf7bbd349bd5bdfd21f03668,
     type: 3}
   _session: {fileID: 126594400}
-  _hud: {fileID: 0}
+  _hud: {fileID: 915834867}
 --- !u!1 &12945307
 GameObject:
   m_ObjectHideFlags: 0

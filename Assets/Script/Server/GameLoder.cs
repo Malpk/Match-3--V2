@@ -43,14 +43,12 @@ public class GameLoder : MonoBehaviour
                 _transport.Port = _serverData.Port;
                 _server.networkAddress = _serverData.Adress;
                 _clientController.StartClient();
-                _serverController.gameObject.SetActive(false);
             }
             PlayerPrefs.DeleteKey(GAMECONFIG);
         }
         else
         {
             _serverController.StartServer();
-            _clientController.gameObject.SetActive(false);
         }
     }
 
