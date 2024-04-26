@@ -30,7 +30,7 @@ public class RoundSession : MonoBehaviour
     public event System.Action<float> OnRound;
     public event System.Action<string> OnWin;
 
-    public bool IsComplite => !enabled;
+    public bool IsComplite {get; private set;}
 
     private void Awake()
     {
@@ -74,6 +74,7 @@ public class RoundSession : MonoBehaviour
 
     public void StartGame()
     {
+        IsComplite = false;
         enabled = true;
         _isPlayer = 1 == Random.Range(0, 2);
         SwitchPlayer();
@@ -86,6 +87,7 @@ public class RoundSession : MonoBehaviour
         _curretProgress = 0;
         _count = 0;
         _coundSwipe = 0;
+        IsComplite = true;
     }
 
     private void OnSwipeStart()
@@ -141,7 +143,6 @@ public class RoundSession : MonoBehaviour
     {
         if (player.Player && !player.IsBot)
         {
-            Debug.Log("upadet score");
             _winMenu.UpdateScore(player.Player.netIdentity.connectionToClient,
                 player.Score, enemy.Score);
         }
@@ -180,6 +181,7 @@ public class RoundSession : MonoBehaviour
         return _countRound <= _roundCount;
     }
 
+    #region Complite
 
     private void CompliteGame()
     {
@@ -223,5 +225,5 @@ public class RoundSession : MonoBehaviour
             Random.Range(_starsLose.x, _starsLose.y);
         return new SessionResult(stars, coints);
     }
-
+    #endregion
 }

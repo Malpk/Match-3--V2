@@ -114,7 +114,6 @@ namespace GameVanilla.Game.Scenes
 		    gameFinished = false;
 		    gameBoard.ResetLevelData();
 			level = gameBoard.level;
-            OpenPopup<LevelGoalsPopup>("Popups/LevelGoalsPopup", popup => popup.SetGoals(level.goals));
 		}
 
         /// <summary>

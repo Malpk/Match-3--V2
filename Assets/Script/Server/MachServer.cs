@@ -19,19 +19,19 @@ public class MachServer : MonoBehaviour
 
     private void Awake()
     {
-        _server.OnStart += OnAddPlayer;
+        _server.OnStart += OnStartGame;
         _server.OnDisconect += OnDisconect;
         _session.OnWin += OnSave;
     }
 
     private void OnDestroy()
     {
-        _server.OnStart -= OnAddPlayer;
+        _server.OnStart -= OnStartGame;
         _server.OnDisconect -= OnDisconect;
         _session.OnWin -= OnSave;
     }
 
-    private void OnAddPlayer(PlayerState player, PlayerState enemy)
+    private void OnStartGame(PlayerState player, PlayerState enemy)
     {
         if (_server.numPlayers > 0)
         {
@@ -61,7 +61,6 @@ public class MachServer : MonoBehaviour
 
     private IEnumerator Complite()
     {
-        Debug.Log(_session.IsComplite);
         yield return new WaitWhile(() => !_session.IsComplite);
         _holder.SendGetMessange($"complite/{_server.networkAddress}", (mess) =>
         {

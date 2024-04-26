@@ -59,7 +59,7 @@ namespace GameVanilla.Game.Common
         [HideInInspector]
         public int currentLimit;
 
-        private List<GameObject> tiles;
+        private List<GameObject> tiles = new List<GameObject>();
 
         public List<GameObject> Tiles => tiles;
 
@@ -178,6 +178,12 @@ namespace GameVanilla.Game.Common
             }
 
             ClearSuggestedMatch();
+
+            while (tiles.Count > 0)
+            {
+                Destroy(tiles[0]);
+                tiles.RemoveAt(0);
+            }
 
             tiles = new List<GameObject>(level.width * level.height);
             honeys = new List<GameObject>(level.width * level.height);
