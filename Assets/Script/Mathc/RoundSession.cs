@@ -30,7 +30,7 @@ public class RoundSession : MonoBehaviour
     public event System.Action<float> OnRound;
     public event System.Action<string> OnWin;
 
-    public bool IsComplite => enabled;
+    public bool IsComplite => !enabled;
 
     private void Awake()
     {
@@ -46,10 +46,10 @@ public class RoundSession : MonoBehaviour
         _board.OnSwipeStart -= OnSwipeStart;
     }
 
-    public void SetPlayer(PlayerState player, PlayerState enemy)
+    public void SetPlayer(PlayerState player, PlayerState enemy, bool bot)
     {
         _player = new PlayerSesion(player);
-        _enemy = new PlayerSesion(enemy);
+        _enemy = new PlayerSesion(enemy, bot);
         _curretState = _player;
         _sessionUI.Player.SetScore(0);
         _sessionUI.Enemy.SetScore(0);
@@ -139,11 +139,11 @@ public class RoundSession : MonoBehaviour
 
     private void UpdateScore(PlayerSesion player, PlayerSesion enemy)
     {
-        if (player.Player)
+        if (player.Player && !player.IsBot)
         {
-            if(player.Player.isClient)
-                _winMenu.UpdateScore(player.Player.netIdentity.connectionToClient,
-                    player.Score, enemy.Score);
+            Debug.Log("upadet score");
+            _winMenu.UpdateScore(player.Player.netIdentity.connectionToClient,
+                player.Score, enemy.Score);
         }
     }
 
@@ -184,17 +184,20 @@ public class RoundSession : MonoBehaviour
     private void CompliteGame()
     {
         StopGame();
-        var playerWin = _player.Score > _enemy.Score;
-        SaveResult(_player, _enemy, playerWin);
-        SaveResult(_enemy, _player, !playerWin);
+        SaveResult(_player, _enemy);
+        if(!_enemy.IsBot)
+            SaveResult(_enemy, _player);
     }
 
-    private void SaveResult(PlayerSesion player, PlayerSesion enemy, bool win)
+    private void SaveResult(PlayerSesion player, PlayerSesion enemy)
     {
+        var win = player.Player ? player.Score > enemy.Score : false;
         var result = GetPlayerResult(player, enemy.Login, win);
         if (player.Player)
+        {
             _winMenu.Show(player.Player.netIdentity.connectionToClient, JsonUtility.ToJson(result));
-        OnWin?.Invoke($"save_result/{result.Player}/{result.Stars}/{result.Coins}");
+        }
+        OnWin?.Invoke($"{player.Adress}/{result.Stars}/{result.Coins}");
     }
 
     private SessionResult GetPlayerResult(PlayerSesion session, string enemy, bool win)

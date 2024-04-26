@@ -11,10 +11,10 @@ public class RoundSessionUI : NetworkBehaviour
     [SerializeField] private Animator[] _animators;
     [SerializeField] private PlayerPanel _panelPlayer;
     [SerializeField] private PlayerPanel _panelEnemy;
+    [SerializeField] private GameObject _loadMenu;
 
     public PlayerPanel Player => _panelPlayer;
     public PlayerPanel Enemy => _panelEnemy;
-
 
     public void SetRound(int round)
     {
@@ -23,6 +23,17 @@ public class RoundSessionUI : NetworkBehaviour
             _animators[i].SetBool("active", i < round);
         }
         CliestSetRound(round);
+    }
+
+    public void ShowLoad()
+    {
+        _loadMenu.SetActive(true);
+    }
+
+    [ClientRpc]
+    public void HideLoad()
+    {
+        _loadMenu.SetActive(false);
     }
 
     [ClientRpc]

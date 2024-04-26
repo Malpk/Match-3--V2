@@ -1598,6 +1598,7 @@ MonoBehaviour:
   - {fileID: 1827646315359745258}
   _panelPlayer: {fileID: 8706204834494413947}
   _panelEnemy: {fileID: 8706204834832698473}
+  _loadMenu: {fileID: 0}
 --- !u!114 &8706204833152523771
 MonoBehaviour:
   m_ObjectHideFlags: 0

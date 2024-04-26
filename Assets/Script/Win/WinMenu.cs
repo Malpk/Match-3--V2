@@ -41,7 +41,7 @@ public class WinMenu : NetworkBehaviour
     public void UpdateScore(NetworkConnectionToClient client, int player, int enemy)
     {
         _playerScore.SetText(player.ToString());
-        _playerScore.SetText(enemy.ToString());
+        _enemyScore.SetText(enemy.ToString());
     }
 
     public void Hide()

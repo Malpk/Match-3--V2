@@ -27,9 +27,10 @@ public class Server : NetworkManager
         base.Update();
         if (_player != null && _enemy != null)
         {
-            _session.SetPlayer(_player, _enemy);
+            _session.SetPlayer(_player, _enemy, IsBot);
             _session.OnWin += OnWin;
             OnStart?.Invoke(_player, _enemy);
+            _hud.HideLoad();
             enabled = false;
         }
     }
@@ -47,7 +48,6 @@ public class Server : NetworkManager
         if (!AddNewPlayer(conn))
             Reconnect(conn);
     }
-
     private bool AddNewPlayer(NetworkConnectionToClient conn)
     {
         if (!IsReady)
@@ -68,6 +68,7 @@ public class Server : NetworkManager
         if (_player)
         {
             _enemy = player;
+            IsBot = false;
             _enemy.OnSetLogin += UpdateLogin;
         }
         else
@@ -129,6 +130,7 @@ public class Server : NetworkManager
         var player = _list.Find(x => conn.owned.Contains(x.netIdentity));
         _list.Remove(player);
         base.OnServerDisconnect(conn);
+        OnDisconect?.Invoke();
     }
 
 

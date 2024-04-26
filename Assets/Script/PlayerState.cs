@@ -43,7 +43,15 @@ public class PlayerState : NetworkBehaviour
     public void Enter()
     {
         OnEnter?.Invoke();
-        EnterClient();
+        try
+        {
+            EnterClient();
+        }
+        catch
+        {
+            Debug.Log("player disconnect");
+        }
+
     }
 
 

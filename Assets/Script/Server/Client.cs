@@ -4,6 +4,7 @@ using Mirror;
 public class Client : MonoBehaviour
 {
     [SerializeField] private Server _client;
+    [SerializeField] private RoundSessionUI _ui;
     [SerializeField] private PlayerHandler _controller;
 
     private PlayerState _player;
@@ -27,6 +28,7 @@ public class Client : MonoBehaviour
     public void StartClient()
     {
         _client.StartClient();
+        _ui.ShowLoad();
     }
 
 }

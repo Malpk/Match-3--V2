@@ -2,6 +2,7 @@ using UnityEngine;
 using GameVanilla.Game.Scenes;
 using GameVanilla.Game.Common;
 using kcp2k;
+using System.Collections;
 
 public class MachServer : MonoBehaviour
 {
@@ -14,17 +15,20 @@ public class MachServer : MonoBehaviour
     [SerializeField] private KcpTransport _transport;
 
     private bool _isStart = false;
+    private Coroutine _complite;
 
     private void Awake()
     {
         _server.OnStart += OnAddPlayer;
-        _session.OnWin += ComliteSession;
+        _server.OnDisconect += OnDisconect;
+        _session.OnWin += OnSave;
     }
 
     private void OnDestroy()
     {
         _server.OnStart -= OnAddPlayer;
-        _session.OnWin -= ComliteSession;
+        _server.OnDisconect -= OnDisconect;
+        _session.OnWin -= OnSave;
     }
 
     private void OnAddPlayer(PlayerState player, PlayerState enemy)
@@ -40,11 +44,30 @@ public class MachServer : MonoBehaviour
         }
     }
 
-    public void ComliteSession(string json)
+    public void OnSave(string progress)
     {
-        _holder.SendGetMessange($"complite/{_server.networkAddress}/{json}", (mess) => {
+        _holder.SendGetMessange($"save_result/{progress}", (mess) => {
             Debug.Log(mess);
         });
+    }
+    private void OnDisconect()
+    {
+        if (_server.numPlayers == 0)
+        {
+            if(_complite == null)
+                _complite = StartCoroutine(Complite());
+        }
+    }
+
+    private IEnumerator Complite()
+    {
+        Debug.Log(_session.IsComplite);
+        yield return new WaitWhile(() => !_session.IsComplite);
+        _holder.SendGetMessange($"complite/{_server.networkAddress}", (mess) =>
+        {
+            Debug.Log(mess);
+        });
+        _complite = null;
     }
 
     public void StartServer()
