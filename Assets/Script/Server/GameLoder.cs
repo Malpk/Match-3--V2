@@ -38,24 +38,21 @@ public class GameLoder : MonoBehaviour
 
     private void Start()
     {
-        if (PlayerPrefs.HasKey(GAMECONFIG))
+        if (PlayerPrefs.HasKey(GAMECONFIG) && !_isServer)
         {
             var data = PlayerPrefs.GetString(GAMECONFIG);
+            Debug.Log(data);
             try
             {
-                if (data != null && data != "")
-                {
-                    _serverData = JsonUtility.FromJson<ServerData>(data);
-                    _transport.Port = _serverData.Port;
-                    _server.networkAddress = _serverData.Adress;
-                    _clientController.StartClient();
-                }
+                _serverData = JsonUtility.FromJson<ServerData>(data);
+                _transport.Port = _serverData.Port;
+                _server.networkAddress = _serverData.Adress;
+                _clientController.StartClient();
             }
             catch 
             {
                 Debug.Log(data);
             }
-            PlayerPrefs.DeleteKey(GAMECONFIG);
         }
         else
         {

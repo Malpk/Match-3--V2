@@ -376,7 +376,9 @@ namespace GameVanilla.Game.Common
         [ClientRpc]
         public void UpdateTile(GameObject tile, int position)
         {
-            tiles[position] = tile;
+            if(tiles != null )
+                if(tiles.Count > position)
+                    tiles[position] = tile;
         }
 
 

@@ -44,6 +44,7 @@ public class Client : MonoBehaviour
     public void StartClient()
     {
         IsStart = true;
+        Debug.Log("start");
         _client.StartClient();
         _ui.ShowLoad();
     }

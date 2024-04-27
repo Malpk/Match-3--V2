@@ -5,8 +5,8 @@ using TMPro;
 
 public class UserAuto : MonoBehaviour
 {
-    public const string USERKEY = "userAuto"; 
-  
+    public const string USERKEY = "userAusto";
+
     [Header("Server")]
     [SerializeField] private string _adress;
     [SerializeField] private string _login;

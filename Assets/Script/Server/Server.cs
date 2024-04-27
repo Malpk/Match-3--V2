@@ -22,19 +22,22 @@ public class Server : NetworkManager
     public event System.Action OnDisconect;
 
     public bool IsBot { get; private set; } = true;
-    public bool IsReady => enabled;
+    public bool IsReady { get; private set; } = true;
 
 
     public override void Update()
     {
         base.Update();
-        if (_player != null && _enemy != null)
+        if (IsReady)
         {
-            _session.SetPlayer(_player, _enemy, IsBot);
-            _session.OnWin += OnWin;
-            OnStart?.Invoke(_player, _enemy);
-            _hud.HideLoad();
-            enabled = false;
+            if (_player != null && _enemy != null)
+            {
+                _session.SetPlayer(_player, _enemy, IsBot);
+                _session.OnWin += OnWin;
+                OnStart?.Invoke(_player, _enemy);
+                _hud.HideLoad();
+                IsReady = false;
+            }
         }
     }
 
@@ -42,7 +45,7 @@ public class Server : NetworkManager
     {
         _player = null;
         _enemy = null;
-        enabled = true;
+        IsReady = true;
         _session.OnWin -= OnWin;
     }
 
@@ -55,8 +58,10 @@ public class Server : NetworkManager
     {
         if (!IsReady)
             return false;
+        Debug.Log("player");
         var player = AddPlayer(conn);
         _holder.SendGetMessange($"get_setting/{networkAddress}", (mess) => {
+            Debug.Log(mess);
             var config = JsonUtility.FromJson<ServerConfigData>(mess);
             _adresses.Add(player.Adress);
             if (config.Bot)
@@ -88,8 +93,8 @@ public class Server : NetworkManager
     {
         if(_player)
             UpdateLoginClient(_player, _enemy);
-        //if (_enemy && !IsBot)
-        //    UpdateLoginClient(_enemy, _player);
+        if (_enemy && !IsBot)
+            UpdateLoginClient(_enemy, _player);
     }
 
     private void UpdateLoginClient(PlayerState player, PlayerState enemy)

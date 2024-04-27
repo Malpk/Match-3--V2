@@ -57,8 +57,11 @@ public class Matchmaking : MonoBehaviour
 
     public void PlayMatchmaking()
     {
-        if(!IsRun)
+        if (!IsRun)
+        {
+            IsRun = true;
             _holder.SendGetMessange($"{_addPlayer}/{_auto.User.Login}/{_rate}", RunMatchmaking);
+        }
     }
 
     private void RunMatchmaking(string json)
@@ -74,11 +77,8 @@ public class Matchmaking : MonoBehaviour
 
     private void EnterToServer(string json)
     {
-        if (!IsRun)
-        {
-            PlayerPrefs.SetString(GameLoder.GAMECONFIG, json);
-            SceneManager.LoadScene(_gameSceneID);
-            IsRun = true;
-        }
+        PlayerPrefs.SetString(GameLoder.GAMECONFIG, json);
+        SceneManager.LoadScene(_gameSceneID);
+        IsRun = false;
     }
 }
