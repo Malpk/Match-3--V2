@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
+using TMPro;
 
 public class UserAuto : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class UserAuto : MonoBehaviour
     [SerializeField] private string _login;
     [Header("Reference")]
     [SerializeField] private Button _applay;
+    [SerializeField] private TMP_InputField _input;
     [SerializeField] private HttpHolder _holder;
     [Header("Events")]
     [SerializeField] private UnityEvent<string> _onLoadLogin;
@@ -32,8 +34,8 @@ public class UserAuto : MonoBehaviour
     private void Start()
     {
         _onLoadLogin?.Invoke(_login);
-        SetLogin(_login);
         Registrate();
+        _input.text = User != null ? User.Login : _login;
     }
 
     public void SetLogin(string login)

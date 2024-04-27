@@ -51,8 +51,6 @@ public class RoundSession : MonoBehaviour
         _player = new PlayerSesion(player);
         _enemy = new PlayerSesion(enemy, bot);
         _curretState = _player;
-        _sessionUI.Player.SetScore(0);
-        _sessionUI.Enemy.SetScore(0);
         UpdateScore(_player, _enemy);
         UpdateScore(_enemy, _player);
     }
@@ -74,6 +72,7 @@ public class RoundSession : MonoBehaviour
 
     public void StartGame()
     {
+        _countRound = 0;
         IsComplite = false;
         enabled = true;
         _isPlayer = 1 == Random.Range(0, 2);
@@ -90,6 +89,41 @@ public class RoundSession : MonoBehaviour
         IsComplite = true;
     }
 
+
+    private void Update()
+    {
+        _curretProgress += Time.deltaTime / _roundTime;
+        if (_curretProgress >= 1f)
+        {
+            _curretCount = 0;
+            _curretProgress = 0;
+            if(!Next())
+                CompliteGame();
+        }
+        _sessionUI.SetProgress(1f - _curretProgress);
+    }
+
+    #region Score
+    private void AddScore(int score)
+    {
+        _curretState.AddScore(score);
+        UpdateScore(_player, _enemy);
+        UpdateScore(_enemy, _player);
+    }
+
+    private void UpdateScore(PlayerSesion player, PlayerSesion enemy)
+    {
+        if (player.Player && !player.IsBot)
+        {
+            _winMenu.UpdateScore(player.Player.netIdentity.connectionToClient,
+                player.Score, enemy.Score);
+            _sessionUI.UpdateScore(player.Player.netIdentity.connectionToClient, player.Score, enemy.Score);
+        }
+    }
+
+    #endregion
+
+    #region Round
     private void OnSwipeStart()
     {
         enabled = false;
@@ -108,44 +142,7 @@ public class RoundSession : MonoBehaviour
             else
                 CompliteGame();
         }
-        enabled = true;
-    }
-
-    private void Update()
-    {
-        _curretProgress += Time.deltaTime / _roundTime;
-        if (_curretProgress >= 1f)
-        {
-            _curretCount = 0;
-            _curretProgress = 0;
-            if(!Next())
-                CompliteGame();
-        }
-        _sessionUI.SetProgress(1f - _curretProgress);
-    }
-
-    private void AddScore(int score)
-    {
-        _curretState.AddScore(score);
-        if (_curretState == _player)
-        {
-            _sessionUI.Player.SetScore(_curretState.Score);
-        }
-        else
-        {
-            _sessionUI.Enemy.SetScore(_curretState.Score);
-        }
-        UpdateScore(_player, _enemy);
-        UpdateScore(_enemy, _player);
-    }
-
-    private void UpdateScore(PlayerSesion player, PlayerSesion enemy)
-    {
-        if (player.Player && !player.IsBot)
-        {
-            _winMenu.UpdateScore(player.Player.netIdentity.connectionToClient,
-                player.Score, enemy.Score);
-        }
+        enabled = !IsComplite;
     }
 
     private bool Next()
@@ -180,7 +177,7 @@ public class RoundSession : MonoBehaviour
         }
         return _countRound <= _roundCount;
     }
-
+    #endregion
     #region Complite
 
     private void CompliteGame()

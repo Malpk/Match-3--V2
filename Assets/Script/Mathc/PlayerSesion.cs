@@ -15,7 +15,21 @@ public class PlayerSesion
         Score = 0;
         IsBot = bot;
         Player = player;
+        Login = player.Login;
         Adress = Player.Adress;
+        Player.OnSetLogin += OnSetLogin;
+        Player.OnDisconnect += PlayerDisconnect;
+    }
+
+    ~PlayerSesion()
+    {
+        if (Player)
+            PlayerDisconnect();
+    }
+
+    private void OnSetLogin()
+    {
+        Login = Player.Login;
     }
 
     public void Reconect(PlayerState player)
@@ -25,6 +39,12 @@ public class PlayerSesion
             Enter();
         else
             Exit();
+    }
+
+    public void PlayerDisconnect()
+    {
+        Player.OnDisconnect -= PlayerDisconnect;
+        Player.OnSetLogin -= OnSetLogin;
     }
 
     public void Enter()

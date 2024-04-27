@@ -205,6 +205,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2943721867314023563, guid: f5d1591242912fa4daf776ab3a5e8e16,
         type: 3}
+      propertyPath: _input
+      value: 
+      objectReference: {fileID: 1366632094}
+    - target: {fileID: 2943721867314023563, guid: f5d1591242912fa4daf776ab3a5e8e16,
+        type: 3}
       propertyPath: _adress
       value: reg
       objectReference: {fileID: 0}
@@ -617,6 +622,11 @@ PrefabInstance:
       propertyPath: _reconnect
       value: 
       objectReference: {fileID: 1004060485}
+    - target: {fileID: 3809646881135853457, guid: f3af9261f58bc1e40bd7224a579c106d,
+        type: 3}
+      propertyPath: _gameSceneID
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3809646881135853457, guid: f3af9261f58bc1e40bd7224a579c106d,
         type: 3}
       propertyPath: _runMatchmaking

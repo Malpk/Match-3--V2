@@ -45,7 +45,12 @@ public class RoundSessionUI : NetworkBehaviour
         }
     }
 
-
+    [TargetRpc]
+    public void UpdateScore(NetworkConnectionToClient client, int player, int enemy)
+    {
+        _panelPlayer.SetScore(player);
+        _panelEnemy.SetScore(enemy);
+    }
 
     [ClientRpc]
     public void Switch(PlayerState player)

@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using TMPro;
 
 public class CharacterPanel : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class CharacterPanel : MonoBehaviour
     [Header("Reference")]
     [SerializeField] private Image _loseShadow;
     [SerializeField] private GameObject _winLable;
+    [SerializeField] private TextMeshProUGUI _login;
     [SerializeField] private RectTransform _holder;
 
     private Coroutine _corotine;
@@ -24,17 +26,19 @@ public class CharacterPanel : MonoBehaviour
 
     private void OnValidate()
     {
-        SetMode(_isWin);
+        SetResult("name" ,_isWin);
     }
 
-    public void SetMode(bool win)
+
+    public void SetResult(string login, bool win)
     {
-        if(_loseShadow)
+        _login?.SetText(login);
+        if (_loseShadow)
             _loseShadow.gameObject.SetActive(!win);
         _winLable?.SetActive(win);
     }
 
-    public void Show(float moveDelte)
+    public void ShowReesult(float moveDelte)
     {
         if (_corotine != null)
             StopCoroutine(_corotine);

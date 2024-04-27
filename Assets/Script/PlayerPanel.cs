@@ -14,7 +14,6 @@ public class PlayerPanel : NetworkBehaviour
         _name.SetText(name);
     }
 
-    [ClientRpc]
     public void SetScore(int score)
     {
         _score.SetText(score.ToString());

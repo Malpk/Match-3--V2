@@ -56,6 +56,7 @@ MonoBehaviour:
   _hideOffset: 600
   _loseShadow: {fileID: 8190221416612666844}
   _winLable: {fileID: 3827506395040265388}
+  _login: {fileID: 0}
   _holder: {fileID: 4092132535667727728}
 --- !u!1 &1392328476731073920
 GameObject:

@@ -19,14 +19,11 @@ public class WinPanel : MonoBehaviour
         _canvas.blocksRaycasts = alpha >= 1f;
     }
 
-    public void Show(SessionResult player)
+    public void Show(SessionResult session)
     {
-        _canvas.alpha = 0;
-        _result.alpha = 0;
-        _player.Hide();
-        _enemy.Hide();
-        _player.SetMode(player.Win);
-        _enemy.SetMode(!player.Win);
+        Drop();
+        _player.SetResult(session.Player, session.Win);
+        _enemy.SetResult(session.Enemy, !session.Win);
         _canvas.LeanAlpha(1, 0.2f).setOnComplete(() =>
         {
             if (_corotine != null)
@@ -36,10 +33,18 @@ public class WinPanel : MonoBehaviour
         });
     }
 
+    private void Drop()
+    {
+        _canvas.alpha = 0;
+        _result.alpha = 0;
+        _player.Hide();
+        _enemy.Hide();
+    }
+
     private IEnumerator MoveTOPanel(float delte)
     {
-        _player.Show(delte);
-        _enemy.Show(delte);
+        _player.ShowReesult(delte);
+        _enemy.ShowReesult(delte);
         yield return new WaitWhile(() => !_player.IsShow || !_enemy.IsShow);
         _button.SetActive(true);
         _corotine = null;

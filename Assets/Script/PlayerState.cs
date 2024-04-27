@@ -11,6 +11,8 @@ public class PlayerState : NetworkBehaviour
     public event System.Action<int> OnSetRound;
     public event System.Action<float> OnRoundProgress;
     public event System.Action OnSetLogin;
+    public event System.Action OnDisconnect;
+
 
     public string Adress { get; private set; }
     public string Login { get; private set; }
@@ -54,6 +56,10 @@ public class PlayerState : NetworkBehaviour
 
     }
 
+    public void Disconnect()
+    {
+        OnDisconnect?.Invoke();
+    }
 
     public void SetBoard(GameBoard board)
     {

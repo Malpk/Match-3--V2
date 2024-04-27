@@ -129,6 +129,7 @@ public class Server : NetworkManager
     {
         var player = _list.Find(x => conn.owned.Contains(x.netIdentity));
         _list.Remove(player);
+        player.Disconnect();
         base.OnServerDisconnect(conn);
         OnDisconect?.Invoke();
     }
