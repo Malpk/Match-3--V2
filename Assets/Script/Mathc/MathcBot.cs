@@ -56,13 +56,52 @@ public class MathcBot : MonoBehaviour
         if (list.Count > 0)
         {
             var swape = list[Random.Range(0, list.Count)];
-            _tileHolder.InputBoard(swape.Tile, swape.Select);
+            _tileHolder.Swipe(swape.Tile, swape.Select);
             Debug.Log($"candy {swape.Select.color} => {swape.Tile.color} = {swape.CountTemp}");
-            
+
         }
-        
+        else if (!BackForceHorizontal())
+        {
+            BackForceVertical();
+        }
         yield return null;
     }
+
+
+    private bool BackForceHorizontal()
+    {
+        for (int y = 0; y < _map.GetLength(0); y++)
+        {
+            for (int x = 0; x < _map.GetLength(1) - 1; x++)
+            {
+                if (_tileHolder.TrySwipe(_map[y, x + 1], _map[y, x]))
+                {
+                    _tileHolder.Swipe(_map[y, x + 1], _map[y, x]);
+                    Debug.Log("BackForce");
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private bool BackForceVertical()
+    {
+        for (int x = 0; x < _map.GetLength(0); x++)
+        {
+            for (int y = 0; y < _map.GetLength(1) - 1; y++)
+            {
+                if (_tileHolder.TrySwipe(_map[y + 1, x], _map[y, x]))
+                {
+                    _tileHolder.Swipe(_map[y + 1, x], _map[y, x]);
+                    Debug.Log("BackForce");
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
 
     #region searchTemp
     private List<BotSwapeItem> SearchHorizontal(Candy candy, int size)

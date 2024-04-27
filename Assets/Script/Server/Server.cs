@@ -18,6 +18,7 @@ public class Server : NetworkManager
     private List<PlayerState> _list = new List<PlayerState>();
 
     public event System.Action<PlayerState, PlayerState> OnStart;
+    public event System.Action OnPlayerConnect;
     public event System.Action OnDisconect;
 
     public bool IsBot { get; private set; } = true;
@@ -136,6 +137,12 @@ public class Server : NetworkManager
         player.Disconnect();
         base.OnServerDisconnect(conn);
         OnDisconect?.Invoke();
+    }
+
+    public override void OnClientConnect()
+    {
+        base.OnClientConnect();
+        OnPlayerConnect?.Invoke();
     }
 
 

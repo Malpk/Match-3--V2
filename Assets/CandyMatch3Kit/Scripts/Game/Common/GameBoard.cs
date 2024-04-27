@@ -454,10 +454,26 @@ namespace GameVanilla.Game.Common
 
         public void ServerInputBoard(Tile tile, Tile selected)
         {
-            InputBoard(tile, selected);
+            Swipe(tile, selected);
         }
 
-        public void InputBoard(Tile tile, Tile selected)
+        public bool TrySwipe(Tile tile, Tile selected)
+        {
+            if (comboDetector.GetCombo(tile, selected) != null)
+            {
+                return true;
+            }
+            else if (possibleSwaps.Find(x => x.tileA == tile.gameObject && x.tileB == selected.gameObject) !=
+                       null ||
+                       possibleSwaps.Find(x => x.tileB == tile.gameObject && x.tileA == selected.gameObject) !=
+                       null)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public void Swipe(Tile tile, Tile selected)
         {
             var combo = comboDetector.GetCombo(tile, selected);
             if (combo != null)

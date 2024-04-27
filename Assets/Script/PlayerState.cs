@@ -38,7 +38,7 @@ public class PlayerState : NetworkBehaviour
     [Command]
     public void Swipe(Tile select, Tile tile)
     {
-        _board.InputBoard(tile, select);
+        _board.Swipe(tile, select);
     }
 
 
