@@ -24,18 +24,14 @@ public class UserAuto : MonoBehaviour
 
     private void Awake()
     {
+        _applay.interactable = false;
         _applay.onClick.AddListener(() =>
         {
             Replace(_newLogin);
             _applay.interactable = false;
         });
-    }
-
-    private void Start()
-    {
+        Auto();
         _onLoadLogin?.Invoke(_login);
-        Registrate();
-        _input.text = User != null ? User.Login : _login;
     }
 
     public void SetLogin(string login)
@@ -44,7 +40,7 @@ public class UserAuto : MonoBehaviour
         _applay.interactable = _login != _newLogin && _isReady;
     }
 
-    private void Registrate()
+    private void Auto()
     {
         if (!PlayerPrefs.HasKey(USERKEY))
         {
@@ -53,6 +49,10 @@ public class UserAuto : MonoBehaviour
         else
         {
             User = JsonUtility.FromJson<UserData>(PlayerPrefs.GetString(USERKEY));
+            _login = User != null ? User.Login : _login;
+            _newLogin = _login;
+            _input.text = _newLogin;
+
         }
     }
 

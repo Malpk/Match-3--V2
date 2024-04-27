@@ -187,7 +187,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 108ad488adc189b4682a0c648b782bd1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dontDestroyOnLoad: 1
+  dontDestroyOnLoad: 0
   runInBackground: 1
   headlessStartMode: 0
   editorAutoStart: 0
@@ -3851,7 +3851,7 @@ PrefabInstance:
     - target: {fileID: 1442056598855054471, guid: e011543594454c94eb85a0dae54ad481,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.47
       objectReference: {fileID: 0}
     - target: {fileID: 1442056598855054471, guid: e011543594454c94eb85a0dae54ad481,
         type: 3}
@@ -3977,7 +3977,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6721722832062226478, guid: ba11c37b730feb04b864796b86bc094d, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: ba11c37b730feb04b864796b86bc094d, type: 3}
 --- !u!1001 &8706204833378392591
 PrefabInstance:
@@ -4029,7 +4030,7 @@ PrefabInstance:
     - target: {fileID: 3351689868991478911, guid: 43d75a299fd638846a7e2e51c4a530be,
         type: 3}
       propertyPath: m_Alpha
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4109545942926772397, guid: 43d75a299fd638846a7e2e51c4a530be,
         type: 3}
@@ -4094,12 +4095,12 @@ PrefabInstance:
     - target: {fileID: 4858124931476665878, guid: 43d75a299fd638846a7e2e51c4a530be,
         type: 3}
       propertyPath: m_Alpha
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4858124931476665878, guid: 43d75a299fd638846a7e2e51c4a530be,
         type: 3}
       propertyPath: m_BlocksRaycasts
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4895041119119713451, guid: 43d75a299fd638846a7e2e51c4a530be,
         type: 3}
@@ -4148,8 +4149,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8287678590932091884, guid: 43d75a299fd638846a7e2e51c4a530be,
         type: 3}
+      propertyPath: _mainMenuID
+      value: Search
+      objectReference: {fileID: 0}
+    - target: {fileID: 8287678590932091884, guid: 43d75a299fd638846a7e2e51c4a530be,
+        type: 3}
       propertyPath: _showWinPanel
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8625073615420418537, guid: 43d75a299fd638846a7e2e51c4a530be,
         type: 3}

@@ -1,9 +1,11 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using TMPro;
 using Mirror;
 
 public class WinMenu : NetworkBehaviour
 {
+    [SerializeField] private string _mainMenuID;
     [SerializeField] private bool _showWinPanel;
     [Header("Reference")]
     [SerializeField] private TextMeshProUGUI _playerScore;
@@ -11,6 +13,11 @@ public class WinMenu : NetworkBehaviour
     [SerializeField] private WinPanel _winPanel;
     [SerializeField] private CanvasGroup _prewiew;
     [SerializeField] private ResultPanel _result;
+
+    private void Reset()
+    {
+        _mainMenuID = "MainMenu";
+    }
 
     protected override void OnValidate()
     {
@@ -25,10 +32,14 @@ public class WinMenu : NetworkBehaviour
         gameObject.SetActive(false);
     }
 
+    public void LoadMainMenu()
+    {
+        SceneManager.LoadScene(_mainMenuID);
+    }
+
     [TargetRpc]
     public void Show(NetworkConnectionToClient client, string json)
     {
-        Debug.Log(json);
         var player = JsonUtility.FromJson<SessionResult>(json);
         _result.SetResult(player);
         _prewiew.alpha = 0;

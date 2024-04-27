@@ -14,8 +14,9 @@ public class MachServer : MonoBehaviour
     [SerializeField] private HttpHolder _holder;
     [SerializeField] private KcpTransport _transport;
 
-    private bool _isStart = false;
     private Coroutine _complite;
+    public bool IsStart { get; private set; } = false;
+
 
     private void Awake()
     {
@@ -71,9 +72,9 @@ public class MachServer : MonoBehaviour
 
     public void StartServer()
     {
-        if (!_isStart)
+        if (!IsStart)
         {
-            _isStart = true;
+            IsStart = true;
             _server.StartServer();
             _holder.SendGetMessange($"add_server/{_server.networkAddress}/{_transport.port}", (mess) => {
                 Debug.Log(mess);
@@ -87,10 +88,17 @@ public class MachServer : MonoBehaviour
         }
     }
 
-    private void OnApplicationQuit()
+    public void StopServer()
     {
-        if(_isStart)
-            _holder.SendGetMessange($"remove_server/{_server.networkAddress}", (mess) => Debug.Log(mess));
+        if (IsStart)
+        {
+            _holder.SendGetMessange($"remove_server/{_server.networkAddress}", (mess) => 
+            {
+                Debug.Log(mess);
+                _server.StopServer();
+            });
+        }
     }
+
 
 }

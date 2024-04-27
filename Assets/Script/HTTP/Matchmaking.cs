@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class Matchmaking : MonoBehaviour
 {
-    [SerializeField] private int _gameSceneID;
+    [SerializeField] private string _gameSceneID;
     [SerializeField] private int _rate;
     [SerializeField] private string _addPlayer;
     [SerializeField] private string _runMatchmaking;
@@ -23,6 +23,7 @@ public class Matchmaking : MonoBehaviour
         _rate = 100;
         _addPlayer = "join_queue";
         _runMatchmaking = "matchaking";
+        _gameSceneID = "GameScene";
     }
 
     private void Awake()
@@ -36,15 +37,19 @@ public class Matchmaking : MonoBehaviour
     {
         if (PlayerPrefs.HasKey(GameLoder.SESSION))
         {
-            var session = JsonUtility.FromJson<ServerData>(PlayerPrefs.GetString(GameLoder.SESSION));
-            if (session != null)
+            try
             {
-                _holder.SendGetMessange($"reconect/{session.Adress}", (mess) =>
+                var session = JsonUtility.FromJson<ServerData>(PlayerPrefs.GetString(GameLoder.SESSION));
+                _holder.SendGetMessange($"reconect/{session.Adress}/{_auto.User.Login}", (mess) =>
                 {
                     Debug.Log(mess);
                     _reconnectData = JsonUtility.FromJson<ServerData>(mess);
                     _reconnect.interactable = _reconnectData != null;
                 });
+            }
+            catch
+            {
+                Debug.Log("Sessia is not found");
             }
             PlayerPrefs.DeleteKey(GameLoder.SESSION);
         }

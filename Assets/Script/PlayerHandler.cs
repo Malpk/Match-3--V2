@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using Mirror;
 
 
-public class PlayerHandler : NetworkBehaviour
+public class PlayerHandler : MonoBehaviour
 {
     [SerializeField] private GameBoard _board;
     [SerializeField] private GameScene _scene;
@@ -31,6 +31,7 @@ public class PlayerHandler : NetworkBehaviour
 
     public void Play(PlayerState player)
     {
+        Debug.Log(player);
         if (_player)
         {
             _player.OnEnter -= OnEnter;

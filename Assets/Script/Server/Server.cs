@@ -12,6 +12,8 @@ public class Server : NetworkManager
     private List<string> _adresses = new List<string>();
     private PlayerState _enemy;
     private PlayerState _player;
+    private PlayerState _botPool;
+
 
     private List<PlayerState> _list = new List<PlayerState>();
 
@@ -59,7 +61,9 @@ public class Server : NetworkManager
             if (config.Bot)
             {
                 IsBot = config.Bot;
-                _enemy = Instantiate(_botPrefab).GetComponent<PlayerState>();
+                if(!_botPool)
+                    _botPool = Instantiate(_botPrefab).GetComponent<PlayerState>();
+                _enemy = _botPool;
                 _enemy.SetLogin("Противник");
                 UpdateLoginClient(_player, _enemy);
                 NetworkServer.Spawn(_enemy.gameObject);

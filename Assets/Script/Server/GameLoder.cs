@@ -23,9 +23,12 @@ public class GameLoder : MonoBehaviour
 
     private void OnDestroy()
     {
-        Debug.Log(JsonUtility.ToJson(_serverData));
         PlayerPrefs.SetString(SESSION, JsonUtility.ToJson(_serverData));
         _server.OnDisconect -= OnDisconect;
+        if (_clientController.IsStart)
+            _clientController.StopClient();
+        if (_serverController.IsStart)
+            _serverController.StopServer();
     }
 
     private void OnDisconect()

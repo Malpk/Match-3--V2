@@ -30,6 +30,7 @@ public class WinPanel : MonoBehaviour
                 StopCoroutine(_corotine);
             _corotine = StartCoroutine(MoveTOPanel(_moveDelte));
             _result.LeanAlpha(1, 0.5f);
+            _canvas.blocksRaycasts = true;
         });
     }
 
