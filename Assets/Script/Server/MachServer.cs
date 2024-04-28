@@ -3,6 +3,7 @@ using GameVanilla.Game.Scenes;
 using GameVanilla.Game.Common;
 using kcp2k;
 using System.Collections;
+using Mirror;
 
 public class MachServer : MonoBehaviour
 {
@@ -12,7 +13,7 @@ public class MachServer : MonoBehaviour
     [SerializeField] private GameBoard _board;
     [SerializeField] private RoundSession _session;
     [SerializeField] private HttpHolder _holder;
-    [SerializeField] private KcpTransport _transport;
+    [SerializeField] private TelepathyTransport _transport;
 
     private Coroutine _complite;
     public bool IsStart { get; private set; } = false;

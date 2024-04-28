@@ -1,6 +1,7 @@
 using UnityEngine;
 using kcp2k;
 using System.Collections;
+using Mirror;
 
 public class GameLoder : MonoBehaviour
 {
@@ -10,7 +11,7 @@ public class GameLoder : MonoBehaviour
     [SerializeField] private bool _isServer;
     [Header("Reference")]
     [SerializeField] private Server _server;
-    [SerializeField] private KcpTransport _transport;
+    [SerializeField] private TelepathyTransport _transport;
     [SerializeField] private Client _clientController;
     [SerializeField] private MachServer _serverController;
 
