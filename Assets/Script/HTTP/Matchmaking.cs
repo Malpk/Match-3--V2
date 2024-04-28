@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class Matchmaking : MonoBehaviour
 {
@@ -13,13 +14,16 @@ public class Matchmaking : MonoBehaviour
     [SerializeField] private Button _reconnect;
     [SerializeField] private UserAuto _auto;
     [SerializeField] private HttpHolder _holder;
+    [SerializeField] private TextMeshProUGUI _timer;
 
+    private float progress = 0f;
     private ServerData _reconnectData;
 
     public bool IsRun { get; private set; } = false;
 
     private void Reset()
     {
+        enabled = false;
         _rate = 100;
         _addPlayer = "join_queue";
         _runMatchmaking = "matchaking";
@@ -31,6 +35,7 @@ public class Matchmaking : MonoBehaviour
         _start.onClick.AddListener(PlayMatchmaking);
         _reconnect.onClick.AddListener(Reconect);
         _reconnect.interactable = false;
+        _timer.gameObject.SetActive(false);
     }
 
     private void Start()
@@ -55,18 +60,39 @@ public class Matchmaking : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        progress += Time.deltaTime;
+        var time = (int)progress;
+        _timer.SetText($"{GetFormat(time / 60)}:{GetFormat(time % 60)}");
+    }
+
+    private string GetFormat(int value)
+    {
+        var text = value.ToString();
+        while (text.Length < 2)
+        {
+            text = "0" + text;
+        }
+        return text;
+    }
+
     public void PlayMatchmaking()
     {
         if (!IsRun)
         {
             IsRun = true;
+            _timer.SetText("0:00");
+            progress = 0;
+            _timer.gameObject.SetActive(true);
+            enabled = true;
             _holder.SendGetMessange($"{_addPlayer}/{_auto.User.Login}/{_rate}", RunMatchmaking);
         }
     }
 
     private void RunMatchmaking(string json)
     {
-        Debug.Log(json);
+        Debug.Log("run matchmaking");
         _holder.SendGetMessange($"{_runMatchmaking}/{_auto.User.Login}", EnterToServer);
     }
 
@@ -77,8 +103,21 @@ public class Matchmaking : MonoBehaviour
 
     private void EnterToServer(string json)
     {
-        PlayerPrefs.SetString(GameLoder.GAMECONFIG, json);
-        SceneManager.LoadScene(_gameSceneID);
+        try
+        {
+            var data = JsonUtility.FromJson<ServerData>(json);
+            if (data.Adress != _runMatchmaking)
+            {
+                PlayerPrefs.SetString(GameLoder.GAMECONFIG, json);
+                SceneManager.LoadScene(_gameSceneID);
+            }
+        }
+        catch 
+        {
+            Debug.Log(json);
+        }
         IsRun = false;
+        enabled = false;
+        _timer.gameObject.SetActive(false);
     }
 }
