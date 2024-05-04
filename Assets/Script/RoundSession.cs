@@ -88,6 +88,7 @@ public class RoundSession : MonoBehaviour
 
     private void SwitchPlayer()
     {
+        _curretState?.Exit();
         _uiPanel.Switch(_isPlayer);
         _curretState = _isPlayer ? _player : _enemy;
         _uiPanel.Switch(_isPlayer);

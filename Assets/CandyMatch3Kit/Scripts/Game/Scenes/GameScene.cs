@@ -32,6 +32,8 @@ namespace GameVanilla.Game.Scenes
 		[SerializeField]
 		private Text ingameBoosterText;
 
+		private bool _blockInput;
+
 		private bool gameStarted;
 		private bool gameFinished;
 
@@ -58,7 +60,7 @@ namespace GameVanilla.Game.Scenes
 			gameBoard.LoadLevel();
 
 			level = gameBoard.level;
-            OpenPopup<LevelGoalsPopup>("Popups/LevelGoalsPopup", popup => popup.SetGoals(level.goals));
+			StartGame();
 		}
 
 	    /// <summary>
@@ -75,22 +77,31 @@ namespace GameVanilla.Game.Scenes
             {
                 return;
             }
-
-			if (boosterMode)
+			
+			if (!_blockInput)
 			{
-				if (currentBoosterButton.boosterType == BoosterType.Switch)
+
+				if (boosterMode)
 				{
-					gameBoard.HandleSwitchBoosterInput(currentBoosterButton);
+					if (currentBoosterButton.boosterType == BoosterType.Switch)
+					{
+						gameBoard.HandleSwitchBoosterInput(currentBoosterButton);
+					}
+					else
+					{
+						gameBoard.HandleBoosterInput(currentBoosterButton);
+					}
 				}
 				else
 				{
-					gameBoard.HandleBoosterInput(currentBoosterButton);
+					gameBoard.HandleInput();
 				}
 			}
-			else
-			{
-				gameBoard.HandleInput();
-			}
+		}
+
+		public void SetInputMode(bool mode)
+		{
+			_blockInput = mode;
 		}
 
 	    /// <summary>
@@ -120,7 +131,7 @@ namespace GameVanilla.Game.Scenes
 		    gameFinished = false;
 		    gameBoard.ResetLevelData();
 			level = gameBoard.level;
-            OpenPopup<LevelGoalsPopup>("Popups/LevelGoalsPopup", popup => popup.SetGoals(level.goals));
+            //OpenPopup<LevelGoalsPopup>("Popups/LevelGoalsPopup", popup => popup.SetGoals(level.goals));
 		}
 
         /// <summary>

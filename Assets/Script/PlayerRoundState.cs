@@ -8,7 +8,8 @@ public class PlayerRoundState : MonoBehaviour
     [Header("Reference")]
     [SerializeField] private TextMeshProUGUI _sckoreText;
     [Header("Events")]
-    [SerializeField] private UnityEvent _onUpdate;
+    [SerializeField] private UnityEvent _onEnter;
+    [SerializeField] private UnityEvent _onExit;
 
     private void Start()
     {
@@ -17,7 +18,11 @@ public class PlayerRoundState : MonoBehaviour
 
     public void Enter()
     {
-        _onUpdate.Invoke();
+        _onEnter.Invoke();
+    }
+    public void Exit()
+    {
+        _onExit.Invoke();
     }
 
     public void AddScore(int score)
